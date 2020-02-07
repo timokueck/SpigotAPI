@@ -28,14 +28,19 @@ dependencies {
 }
 
 def props = new Properties()
-file("build.properties").withInputStream { props.load(it) }
+def file = file("build.properties")
+def hasUploadSettings = file.exists();
+
+if(hasUploadSettings){
+    file.withInputStream { props.load(it) }
+}
 
 ssh.remotes {
     server {
-        host = props.getProperty("host")
-        port = Integer.valueOf(props.getProperty("port"))
-        user = props.getProperty("user")
-        password = props.getProperty("password")
+        host = hasUploadSettings ? props.getProperty("host") : ""
+        port = hasUploadSettings ? Integer.valueOf(props.getProperty("port")) : 22
+        user = hasUploadSettings ? props.getProperty("user") : ""
+        password = hasUploadSettings ? props.getProperty("password") : ""
     }
 }
 
@@ -67,7 +72,6 @@ buildscript {
 
 shadowJar {
     archiveName = 'SpigotAPI.jar'
-    destinationDir = file('build')
 }
 
 jar {
