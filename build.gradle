@@ -50,6 +50,8 @@ ssh.settings {
 }
 
 task upload {
+    if(!hasUploadSettings) return;
+
     doLast {
         ssh.run {
             session(ssh.remotes.server) {
