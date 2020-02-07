@@ -1,7 +1,10 @@
 package me.TechsCode.SpigotAPI.client.objects;
 
 import me.TechsCode.SpigotAPI.client.SpigotAPIClient;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import java.util.Arrays;
 
 public class APIObject {
 
@@ -19,6 +22,10 @@ public class APIObject {
 
     protected String getStringProperty(String property){
         return (String) jsonObject.get(property);
+    }
+
+    protected String[] getStringArrayProperty(String property){
+        return Arrays.stream((JSONArray[]) jsonObject.get("images")).map(x -> x.toString()).toArray(String[]::new);
     }
 
     protected long getLongProperty(String property){

@@ -31,6 +31,10 @@ public class Update extends APIObject {
         return getStringProperty("title");
     }
 
+    public String[] getImages(){
+        return getStringArrayProperty("images");
+    }
+
     public String getDescription() {
         return getStringProperty("description");
     }
