@@ -67,18 +67,20 @@ public class Parser {
 
             Elements resourceDetails = item.getElementsByClass("resourceDetails").first().getAllElements();
 
-            String resourceId = item.id().split("-")[1];
-            String resourceName = item.getElementsByClass("title").first().getElementsByTag("a").first().text();
-            String subTitle = item.getElementsByClass("tagLine").first().text();
+            String id = item.id().split("-")[1];
+            String name = item.getElementsByClass("title").first().getElementsByTag("a").first().text();
+            String version = item.getElementsByClass("title").first().getElementsByTag("span").first().text();
+            String tagLine = item.getElementsByClass("tagLine").first().text();
             String category = resourceDetails.get(4).text();
             String costString = category.equalsIgnoreCase("premium") ? item.getElementsByClass("cost").first().text() : null;
             String icon = BASE+"/"+resourceImg.attr("src");
             String time = resourceDetails.get(2).text();
 
             Entry entry = new Entry();
-            entry.set("resourceId", resourceId);
-            entry.set("resourceName", resourceName);
-            entry.set("subTitle", subTitle);
+            entry.set("id", id);
+            entry.set("name", name);
+            entry.set("version", version);
+            entry.set("tagLine", tagLine);
             entry.set("category", category);
             entry.setCost(costString);
             entry.set("icon", icon);
@@ -134,9 +136,9 @@ public class Parser {
             Element element = pair.getKey();
             Entry resource = pair.getValue();
 
+            String id = element.id().split("-")[1];
             String resourceId = resource.getString("resourceId");
             String resourceName = resource.getString("resourceName");
-            String reviewId = element.id().split("-")[1];
             String text = element.getElementsByTag("blockquote").text().replace("<br>", "\n");
             int rating = Math.round(Float.valueOf(element.getElementsByClass("ratings").first().attr("title")));
             String username = element.attr("data-author");
@@ -144,7 +146,7 @@ public class Parser {
             String time = element.getElementsByClass("DateTime").first().text();
 
             Entry entry = new Entry();
-            entry.set("reviewId", reviewId);
+            entry.set("id", id);
             entry.set("resourceId", resourceId);
             entry.set("resourceName", resourceName);
             entry.set("text", text);
@@ -180,7 +182,7 @@ public class Parser {
             Entry entry = new Entry();
             String resourceId = resource.getString("resourceId");
             String resourceName = resource.getString("resourceName");
-            entry.set("purchaseId", resourceId + "-" + userId);
+            entry.set("id", resourceId + "-" + userId);
             entry.set("resourceId", resourceId);
             entry.set("resourceName", resourceName);
             entry.set("username", username);

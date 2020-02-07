@@ -12,16 +12,16 @@ public class Resource extends APIObject {
         super(client, jsonObject);
     }
 
-    public String getResourceId() {
-        return getStringProperty("resourceId");
+    public String getId() {
+        return getStringProperty("id");
     }
 
-    public String getResourceName() {
-        return getStringProperty("resourceName");
+    public String getName() {
+        return getStringProperty("name");
     }
 
-    public String getSubTitle() {
-        return getStringProperty("subTitle");
+    public String getTagLine() {
+        return getStringProperty("tagLine");
     }
 
     public String getCategory() {
@@ -30,6 +30,10 @@ public class Resource extends APIObject {
 
     public String getIcon() {
         return getStringProperty("icon");
+    }
+
+    public String getVersion() {
+        return getStringProperty("resourceVersion");
     }
 
     public Cost getCost() {
@@ -41,15 +45,15 @@ public class Resource extends APIObject {
     }
 
     public UpdateCollection getUpdates(){
-        return client.getUpdates().resourceId(getResourceId());
+        return client.getUpdates().resourceId(getId());
     }
 
     public ReviewCollection getReviews(){
-        return client.getReviews().resourceId(getResourceId());
+        return client.getReviews().resourceId(getId());
     }
 
     public PurchaseCollection getPurchases(){
-        return client.getPurchases().resourceId(getResourceId());
+        return client.getPurchases().resourceId(getId());
     }
 
     public boolean isPremium(){

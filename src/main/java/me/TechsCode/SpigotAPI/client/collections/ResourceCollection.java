@@ -15,11 +15,11 @@ public class ResourceCollection {
     }
 
     public Optional<Resource> name(String resourceName){
-        return getStream().filter(x -> x.getResourceName().equalsIgnoreCase(resourceName)).findFirst();
+        return getStream().filter(x -> x.getName().equalsIgnoreCase(resourceName)).findFirst();
     }
 
     public Optional<Resource> id(String resourceId){
-        return getStream().filter(x -> x.getResourceId().equalsIgnoreCase(resourceId)).findFirst();
+        return getStream().filter(x -> x.getName().equalsIgnoreCase(resourceId)).findFirst();
     }
 
     public ResourceCollection olderThen(long time){

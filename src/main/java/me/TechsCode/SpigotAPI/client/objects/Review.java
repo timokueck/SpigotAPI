@@ -17,8 +17,8 @@ public class Review extends APIObject {
         return new User(client, getUserId(), getUsername());
     }
 
-    public String getReviewId() {
-        return getStringProperty("reviewId");
+    public String getId() {
+        return getStringProperty("id");
     }
 
     public String getResourceId() {

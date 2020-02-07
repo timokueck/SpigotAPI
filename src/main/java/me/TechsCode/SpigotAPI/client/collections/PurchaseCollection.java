@@ -15,7 +15,7 @@ public class PurchaseCollection {
     }
 
     public PurchaseCollection resource(Resource resource){
-        return resourceId(resource.getResourceId());
+        return resourceId(resource.getId());
     }
 
     public PurchaseCollection resourceName(String resourceName){

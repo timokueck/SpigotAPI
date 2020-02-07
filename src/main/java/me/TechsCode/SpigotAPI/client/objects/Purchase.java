@@ -17,8 +17,8 @@ public class Purchase extends APIObject {
         return new User(client, getUserId(), getUsername());
     }
 
-    public String getPurchaseId() {
-        return getStringProperty("purchaseId");
+    public String getId() {
+        return getStringProperty("id");
     }
 
     public String getResourceId() {
