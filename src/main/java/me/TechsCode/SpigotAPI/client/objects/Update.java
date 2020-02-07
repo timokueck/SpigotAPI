@@ -11,12 +11,12 @@ public class Update extends APIObject {
         super(client, jsonObject);
     }
 
-    public Optional<Resource> getResource(){
-        return client.getResources().id(getResourceId());
+    public Resource getResource(){
+        return client.getResources().id(getResourceId()).get();
     }
 
-    public String getUpdateId() {
-        return getStringProperty("updateId");
+    public String getId() {
+        return getStringProperty("id");
     }
 
     public String getResourceId() {

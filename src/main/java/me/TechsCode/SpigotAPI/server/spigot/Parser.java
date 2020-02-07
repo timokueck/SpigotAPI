@@ -104,9 +104,9 @@ public class Parser {
                 continue;
             }
 
-            String resourceId = resource.getString("resourceId");
+            String resourceId = resource.getString("id");
             String resourceName = resource.getString("resourceName");
-            String updateId = element.id().split("-")[1];
+            String id = element.id().split("-")[1];
             String title = element.getElementsByClass("textHeading").first().text();
             String description = element.getElementsByClass("messageText").first().text();
             String updatedAt = element.getElementsByClass("DateTime").first().text();
@@ -115,7 +115,7 @@ public class Parser {
             List<String> imagesEntry = imageElements.stream().map(elements -> elements.attr("data-url")).collect(Collectors.toList());
 
             Entry entry = new Entry();
-            entry.set("updateId", updateId);
+            entry.set("id", id);
             entry.set("resourceId", resourceId);
             entry.set("resourceName", resourceName);
             entry.set("title", title);
@@ -137,7 +137,7 @@ public class Parser {
             Entry resource = pair.getValue();
 
             String id = element.id().split("-")[1];
-            String resourceId = resource.getString("resourceId");
+            String resourceId = resource.getString("id");
             String resourceName = resource.getString("resourceName");
             String text = element.getElementsByTag("blockquote").text().replace("<br>", "\n");
             int rating = Math.round(Float.valueOf(element.getElementsByClass("ratings").first().attr("title")));
@@ -180,7 +180,7 @@ public class Parser {
             String costString = costElement.tagName().equalsIgnoreCase("div") ? costElement.text().split(": ")[1] : null;
 
             Entry entry = new Entry();
-            String resourceId = resource.getString("resourceId");
+            String resourceId = resource.getString("id");
             String resourceName = resource.getString("resourceName");
             entry.set("id", resourceId + "-" + userId);
             entry.set("resourceId", resourceId);
@@ -200,7 +200,7 @@ public class Parser {
         Map<Element, Entry> map = new HashMap();
 
         for(Entry resource : resources){
-            String resourceId = resource.getString("resourceId");
+            String resourceId = resource.getString("id");
             String category = resource.getString("category");
 
             if(!category.equalsIgnoreCase("premium")){
