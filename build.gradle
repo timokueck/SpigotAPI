@@ -1,0 +1,82 @@
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'org.hidetake.ssh'
+
+group = "me.TechsCode"
+version = 1.1
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    maven { url 'https://jitpack.io' }
+
+    jcenter()
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    // Server
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile "com.googlecode.json-simple:json-simple:1.1.1"
+
+    // Client
+    compile "org.jsoup:jsoup:1.8.3"
+    compile "net.sourceforge.htmlunit:htmlunit:2.29"
+    compile "org.nanohttpd:nanohttpd:2.3.1"
+}
+
+def props = new Properties()
+file("build.properties").withInputStream { props.load(it) }
+
+ssh.remotes {
+    server {
+        host = props.getProperty("host")
+        port = Integer.valueOf(props.getProperty("port"))
+        user = props.getProperty("user")
+        password = props.getProperty("password")
+    }
+}
+
+ssh.settings {
+    knownHosts = allowAnyHosts
+    dryRun = false
+}
+
+task upload {
+    doLast {
+        ssh.run {
+            session(ssh.remotes.server) {
+                put from: files('build/SpigotAPI.jar'), into: props.getProperty("location")
+            }
+        }
+    }
+}
+
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath 'org.hidetake:gradle-ssh-plugin:2.10.1'
+    }
+}
+
+shadowJar {
+    archiveName = 'SpigotAPI.jar'
+    destinationDir = file('build')
+}
+
+jar {
+    manifest {
+        attributes 'Class-Path': '/libs/a.jar'
+        attributes 'Main-Class': 'me.TechsCode.SpigotAPI.server.SpigotAPIServer'
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
