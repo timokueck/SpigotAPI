@@ -105,7 +105,7 @@ public class Parser {
             }
 
             String resourceId = resource.getString("id");
-            String resourceName = resource.getString("resourceName");
+            String resourceName = resource.getString("name");
             String id = element.id().split("-")[1];
             String title = element.getElementsByClass("textHeading").first().text();
             String description = element.getElementsByClass("messageText").first().text();
@@ -138,7 +138,7 @@ public class Parser {
 
             String id = element.id().split("-")[1];
             String resourceId = resource.getString("id");
-            String resourceName = resource.getString("resourceName");
+            String resourceName = resource.getString("name");
             String text = element.getElementsByTag("blockquote").text().replace("<br>", "\n");
             int rating = Math.round(Float.valueOf(element.getElementsByClass("ratings").first().attr("title")));
             String username = element.attr("data-author");
@@ -181,7 +181,7 @@ public class Parser {
 
             Entry entry = new Entry();
             String resourceId = resource.getString("id");
-            String resourceName = resource.getString("resourceName");
+            String resourceName = resource.getString("name");
             entry.set("id", resourceId + "-" + userId);
             entry.set("resourceId", resourceId);
             entry.set("resourceName", resourceName);
