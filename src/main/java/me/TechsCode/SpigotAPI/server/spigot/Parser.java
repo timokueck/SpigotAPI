@@ -32,9 +32,7 @@ public class Parser {
 
         this.ownUserId = getLoggedInUserId(page);
 
-        if(ownUserId == null){
-            throw new AuthenticationException(page);
-        }
+        if(ownUserId == null) throw new AuthenticationException(page);
     }
 
     private String getLoggedInUserId(HtmlPage htmlPage){
@@ -61,9 +59,6 @@ public class Parser {
         Document resourcesPage = getSpigotPage("resources/authors/"+ownUserId);
 
         for(Element item : resourcesPage.getElementsByClass("resourceListItem")){
-            Element resourceImg = item
-                    .getElementsByClass("resourceIcon").first()
-                    .getAllElements().first();
 
             Elements resourceDetails = item.getElementsByClass("resourceDetails").first().getAllElements();
 
@@ -73,7 +68,7 @@ public class Parser {
             String tagLine = item.getElementsByClass("tagLine").first().text();
             String category = resourceDetails.get(4).text();
             String costString = category.equalsIgnoreCase("premium") ? item.getElementsByClass("cost").first().text() : null;
-            String icon = BASE+"/"+resourceImg.attr("src");
+            String icon = BASE+"/"+item.getElementsByClass("resourceIcon").select("img").attr("src");
             String time = resourceDetails.get(2).text();
 
             Entry entry = new Entry();
@@ -88,7 +83,6 @@ public class Parser {
             entry.set("unixTime", 0);
             list.add(entry);
         }
-
         return list;
     }
 
@@ -99,10 +93,7 @@ public class Parser {
             Element element = pair.getKey();
             Entry resource = pair.getValue();
 
-            if(element.getElementsByClass("textHeading").isEmpty()){
-                // If there are no updates, spigot redirects to the homepage. Since that div is also used there we have to block it.
-                continue;
-            }
+            if(element.getElementsByClass("textHeading").isEmpty()) continue; // If there are no updates, spigot redirects to the homepage. Since that div is also used there we have to block it.continue.
 
             String resourceId = resource.getString("id");
             String resourceName = resource.getString("name");
@@ -125,7 +116,6 @@ public class Parser {
             entry.set("images", imagesEntry);
             list.add(entry);
         }
-
         return list;
     }
 
@@ -157,7 +147,6 @@ public class Parser {
             entry.set("unixTime", 0);
             list.add(entry);
         }
-
         return list;
     }
 
@@ -192,7 +181,6 @@ public class Parser {
             entry.setCost(costString);
             list.add(entry);
         }
-
         return list;
     }
 
@@ -203,9 +191,7 @@ public class Parser {
             String resourceId = resource.getString("id");
             String category = resource.getString("category");
 
-            if(!category.equalsIgnoreCase("premium")){
-                continue;
-            }
+            if(!category.equalsIgnoreCase("premium")) continue;
 
             int pageAmount = 1;
             int currentPage = 1;
@@ -221,25 +207,21 @@ public class Parser {
                 currentPage++;
             }
         }
-
         return map;
     }
 
     private int getPageAmount(Document document){
-        if(document.getElementsByClass("pageNavHeader").isEmpty()){
-            return 1;
-        }
+        if(document.getElementsByClass("pageNavHeader").isEmpty()) return 1;
 
         Element pageNavHeader = document.getElementsByClass("pageNavHeader").first();
         String value = pageNavHeader.text().split(" of ")[1];
-        return Integer.valueOf(value);
+        return Integer.parseInt(value);
     }
 
     private Document getSpigotPage(String subPage){
         HtmlPage htmlPage = virtualBrowser.request(BASE+"/"+subPage, HttpMethod.GET);
         return Jsoup.parse(htmlPage.asXml());
     }
-
 
     public String getOwnUserId() {
         return ownUserId;

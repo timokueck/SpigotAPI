@@ -32,7 +32,7 @@ public class DataCollectingThread extends Thread {
                 Logger.log("Fetching new data from SpigotMC..");
 
                 List<Entry> resources = spigotMC.retrieveResources();
-                Logger.log("[1/4] Collected Resource Info");
+                Logger.log("[1/4] Collected "+resources.size()+" Resources");
 
                 List<Entry> updates = spigotMC.retrieveUpdates(resources);
                 Logger.log("[2/4] Collected "+updates.size()+" Updates");

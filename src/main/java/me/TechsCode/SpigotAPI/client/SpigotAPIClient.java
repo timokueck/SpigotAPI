@@ -38,9 +38,7 @@ public class SpigotAPIClient extends Thread {
     @Override
     public void run() {
         while (true){
-            if(timeout != 0 && timeout > System.currentTimeMillis()){
-                continue;
-            }
+            if(timeout != 0 && timeout > System.currentTimeMillis()) continue;
 
             if(latest == null || (System.currentTimeMillis() - latest.getRetrievedTime()) > REFRESH_DELAY){
                 retrieveData();

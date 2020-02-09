@@ -60,5 +60,4 @@ public class Data {
 
         return jsonObject;
     }
-
 }

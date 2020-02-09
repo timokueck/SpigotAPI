@@ -41,7 +41,7 @@ public class APIEndpoint extends NanoHTTPD {
 
         if(data == null){
             root.put("status", "WAITING");
-            root.put("message", "Data is not available yet and currently beeing fetched.. Check back later");
+            root.put("message", "Data is not available yet and currently being fetched.. Check back later");
             return root;
         }
 
@@ -68,5 +68,4 @@ public class APIEndpoint extends NanoHTTPD {
     public Response serve(IHTTPSession session) {
         return newFixedLengthResponse(serve(session.getParms()).toJSONString().replace("\\/", "/"));
     }
-
 }
