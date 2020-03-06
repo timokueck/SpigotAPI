@@ -63,7 +63,8 @@ public class SpigotAPIClient extends Thread {
     }
 
     public boolean isAvailable(){
+        if(latest == null) return false;
         if(latest.getPurchases() == null || latest.getPurchases().length == 0) return false;
-        return latest != null;
+        return true;
     }
 }
