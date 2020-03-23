@@ -42,5 +42,4 @@ public class Update extends APIObject {
     public Time getTime() {
         return new Time(getStringProperty("time"), getLongProperty("unixTime"));
     }
-
 }

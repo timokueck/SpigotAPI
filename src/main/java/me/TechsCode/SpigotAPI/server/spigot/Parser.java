@@ -93,7 +93,7 @@ public class Parser {
             Element element = pair.getKey();
             Entry resource = pair.getValue();
 
-            if(element.getElementsByClass("textHeading").isEmpty()) continue; // If there are no updates, spigot redirects to the homepage. Since that div is also used there we have to block it.continue.
+            if(element.getElementsByClass("textHeading").isEmpty()) continue; // If there are no updates, spigot redirects to the homepage. Since that div is also used there we have to block it.
 
             String resourceId = resource.getString("id");
             String resourceName = resource.getString("name");
@@ -130,10 +130,11 @@ public class Parser {
             String resourceId = resource.getString("id");
             String resourceName = resource.getString("name");
             String text = element.getElementsByTag("blockquote").text().replace("<br>", "\n");
-            int rating = Math.round(Float.valueOf(element.getElementsByClass("ratings").first().attr("title")));
+            int rating = Math.round(Float.parseFloat(element.getElementsByClass("ratings").first().attr("title")));
             String username = element.attr("data-author");
             String userId = element.id().split("-")[2];
             String time = element.getElementsByClass("DateTime").first().text();
+            String avatarUrl = element.select("img").attr("src");
 
             Entry entry = new Entry();
             entry.set("id", id);
@@ -143,6 +144,7 @@ public class Parser {
             entry.set("rating", rating);
             entry.set("username", username);
             entry.set("userId", userId);
+            entry.set("avatarUrl", parseAvatarUrl(avatarUrl));
             entry.set("time", time);
             entry.set("unixTime", 0);
             list.add(entry);
@@ -167,6 +169,7 @@ public class Parser {
             String userId = link.attr("href").replace("/", "").split("[.]")[1];
             String time = element.getElementsByClass("DateTime").first().text();
             String costString = costElement.tagName().equalsIgnoreCase("div") ? costElement.text().split(": ")[1] : null;
+            String avatarUrl = link.getElementsByClass("s").first().attr("style").split("'")[1].split("'")[0];
 
             Entry entry = new Entry();
             String resourceId = resource.getString("id");
@@ -176,6 +179,7 @@ public class Parser {
             entry.set("resourceName", resourceName);
             entry.set("username", username);
             entry.set("userId", userId);
+            entry.set("avatarUrl", parseAvatarUrl(avatarUrl));
             entry.set("time", time);
             entry.set("unixTime", 0);
             entry.setCost(costString);
@@ -185,7 +189,7 @@ public class Parser {
     }
 
     private Map<Element, Entry> collectElementsOfSubPage(List<Entry> resources, String subPage, String uniqueClassName){
-        Map<Element, Entry> map = new HashMap();
+        HashMap<Element, Entry> map = new HashMap<>();
 
         for(Entry resource : resources){
             String resourceId = resource.getString("id");
@@ -221,6 +225,12 @@ public class Parser {
     private Document getSpigotPage(String subPage){
         HtmlPage htmlPage = virtualBrowser.request(BASE+"/"+subPage, HttpMethod.GET);
         return Jsoup.parse(htmlPage.asXml());
+    }
+
+    private String parseAvatarUrl(String url) {
+        if(url.startsWith("/data")) return BASE + url;
+        if(url.startsWith("//static")) return "https:" + url;
+        return url;
     }
 
     public String getOwnUserId() {

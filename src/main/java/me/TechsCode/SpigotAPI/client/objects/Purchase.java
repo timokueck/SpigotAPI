@@ -14,7 +14,7 @@ public class Purchase extends APIObject {
     }
 
     public User getUser(){
-        return new User(client, getUserId(), getUsername());
+        return new User(client, getUserId(), getUsername(), getAvatarUrl());
     }
 
     public String getId() {
@@ -37,10 +37,15 @@ public class Purchase extends APIObject {
         return getStringProperty("username");
     }
 
+    public String getAvatarUrl() {
+        return getStringProperty("avatarUrl");
+    }
+
     public Time getTime() {
         return new Time(getStringProperty("time"), getLongProperty("unixTime"));
     }
 
     public Cost getCost() {
         return new Cost(getDoubleProperty("costValue"), "EUR");
-    }}
+    }
+}

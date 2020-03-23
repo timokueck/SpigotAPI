@@ -7,12 +7,13 @@ import me.TechsCode.SpigotAPI.client.collections.ReviewCollection;
 public class User {
 
     private SpigotAPIClient client;
-    private String userId, username;
+    private String userId, username, avatarUrl;
 
-    public User(SpigotAPIClient client, String userId, String username) {
+    public User(SpigotAPIClient client, String userId, String username, String avatarUrl) {
         this.client = client;
         this.userId = userId;
         this.username = username;
+        this.avatarUrl = avatarUrl;
     }
 
     public ReviewCollection getReviews(){
@@ -25,5 +26,13 @@ public class User {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 }

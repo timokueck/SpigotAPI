@@ -20,7 +20,7 @@ public class Entry {
     public void setCost(String costString){
         if(costString == null) return;
 
-        double value = Double.valueOf(costString.split(" ")[0]);
+        double value = Double.parseDouble(costString.split(" ")[0]);
         String currency = costString.split(" ")[1];
 
         set("costValue", value);
