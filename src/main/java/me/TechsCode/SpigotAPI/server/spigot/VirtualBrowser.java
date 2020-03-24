@@ -46,7 +46,7 @@ public class VirtualBrowser {
             HtmlPage htmlPage = webClient.getPage(wr);
 
             if(htmlPage.asText().contains("DDoS protection by Cloudflare")){
-                Logger.log(ConsoleColor.YELLOW + "[CloudFlare]" + ConsoleColor.GREEN + "Bypassing Cloud Flare..");
+                Logger.log(ConsoleColor.YELLOW + "[CloudFlare] " + ConsoleColor.GREEN + "Bypassing Cloud Flare..");
 
                 try {
                     Thread.sleep(9000);
