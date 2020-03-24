@@ -169,7 +169,7 @@ public class Parser {
             String userId = link.attr("href").replace("/", "").split("[.]")[1];
             String time = element.getElementsByClass("DateTime").first().text();
             String costString = costElement.tagName().equalsIgnoreCase("div") ? costElement.text().split(": ")[1] : null;
-            String avatarUrl = link.getElementsByClass("s").first().attr("style").split("'")[1].split("'")[0];
+            String avatarUrl = element.getElementsByClass("s").first().attr("style").split("'")[1].split("'")[0];
 
             Entry entry = new Entry();
             String resourceId = resource.getString("id");
