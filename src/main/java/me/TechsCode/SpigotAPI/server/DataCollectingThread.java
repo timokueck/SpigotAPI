@@ -44,7 +44,7 @@ public class DataCollectingThread extends Thread {
                 Logger.log("[4/4] Collected "+purchases.size()+" Purchases");
 
                 long delay = System.currentTimeMillis() - now;
-                Logger.log(ConsoleColor.GREEN+"Completed Refreshing Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes");
+                Logger.log(ConsoleColor.GREEN+"Completed Refreshing Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes!");
                 Logger.log("");
 
                 Data data = new Data(System.currentTimeMillis());

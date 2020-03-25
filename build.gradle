@@ -18,13 +18,13 @@ repositories {
 
 dependencies {
     // Server
-    compile group: 'commons-io', name: 'commons-io', version: '2.6'
-    compile "com.googlecode.json-simple:json-simple:1.1.1"
+    shadow group: 'commons-io', name: 'commons-io', version: '2.6'
+    shadow "com.googlecode.json-simple:json-simple:1.1.1"
 
     // Client
-    compile "org.jsoup:jsoup:1.8.3"
-    compile "net.sourceforge.htmlunit:htmlunit:2.29"
-    compile "org.nanohttpd:nanohttpd:2.3.1"
+    shadow "org.jsoup:jsoup:1.8.3"
+    shadow "net.sourceforge.htmlunit:htmlunit:2.29"
+    shadow "org.nanohttpd:nanohttpd:2.3.1"
 }
 
 def props = new Properties()
@@ -75,6 +75,9 @@ buildscript {
 shadowJar {
     archiveName = 'SpigotAPI.jar'
     destinationDir = new File("build")
+
+    dependsOn 'build'
+    configurations = [project.configurations.shadow]
 }
 
 jar {
