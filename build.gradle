@@ -22,8 +22,8 @@ dependencies {
     shadow "com.googlecode.json-simple:json-simple:1.1.1"
 
     // Client
-    shadow "org.jsoup:jsoup:1.8.3"
-    shadow "net.sourceforge.htmlunit:htmlunit:2.29"
+    shadow "org.jsoup:jsoup:1.13.1"
+    shadow "net.sourceforge.htmlunit:htmlunit:2.38"
     shadow "org.nanohttpd:nanohttpd:2.3.1"
 }
 
