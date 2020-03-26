@@ -23,7 +23,7 @@ dependencies {
 
     // Client
     shadow "org.jsoup:jsoup:1.13.1"
-    shadow "net.sourceforge.htmlunit:htmlunit:2.38"
+    shadow "net.sourceforge.htmlunit:htmlunit:2.38.0"
     shadow "org.nanohttpd:nanohttpd:2.3.1"
 }
 
