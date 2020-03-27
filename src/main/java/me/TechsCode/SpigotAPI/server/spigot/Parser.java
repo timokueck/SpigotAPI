@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,18 +75,18 @@ public class Parser {
             String category = resourceDetails.get(4).text();
             String costString = category.equalsIgnoreCase("premium") ? item.getElementsByClass("cost").first().text() : null;
             String icon = BASE+"/"+resourceImg.attr("src");
-            String time = resourceDetails.get(2).text();
+            String time = resourceDetails.get(2).getAllElements().first().attr("title");
 
-            Entry entry = new Entry();
-            entry.set("id", id);
-            entry.set("name", name);
-            entry.set("version", version);
-            entry.set("tagLine", tagLine);
-            entry.set("category", category);
-            entry.setCost(costString);
-            entry.set("icon", icon);
-            entry.set("time", time);
-            entry.set("unixTime", 0);
+            Entry entry = new Entry()
+                    .set("id", id)
+                    .set("name", name)
+                    .set("version", version)
+                    .set("tagLine", tagLine)
+                    .set("category", category)
+                    .setCost(costString)
+                    .setTime(time)
+                    .set("icon", icon);
+
             list.add(entry);
         }
 
@@ -109,20 +110,20 @@ public class Parser {
             String id = element.id().split("-")[1];
             String title = element.getElementsByClass("textHeading").first().text();
             String description = element.getElementsByClass("messageText").first().text();
-            String updatedAt = element.getElementsByClass("DateTime").first().text();
+            String time = element.getElementsByClass("DateTime").first().attr("title");
 
             Elements imageElements = element.select("img[data-url]");
             List<String> imagesEntry = imageElements.stream().map(elements -> elements.attr("data-url")).collect(Collectors.toList());
 
-            Entry entry = new Entry();
-            entry.set("id", id);
-            entry.set("resourceId", resourceId);
-            entry.set("resourceName", resourceName);
-            entry.set("title", title);
-            entry.set("description", description);
-            entry.set("time", updatedAt);
-            entry.set("unixTime", 0);
-            entry.set("images", imagesEntry);
+            Entry entry = new Entry()
+                    .set("id", id)
+                    .set("resourceId", resourceId)
+                    .set("resourceName", resourceName)
+                    .set("title", title)
+                    .set("description", description)
+                    .setTime(time)
+                    .set("images", imagesEntry);
+
             list.add(entry);
         }
 
@@ -143,18 +144,18 @@ public class Parser {
             int rating = Math.round(Float.valueOf(element.getElementsByClass("ratings").first().attr("title")));
             String username = element.attr("data-author");
             String userId = element.id().split("-")[2];
-            String time = element.getElementsByClass("DateTime").first().text();
+            String time = element.getElementsByClass("DateTime").first().attr("title");
 
-            Entry entry = new Entry();
-            entry.set("id", id);
-            entry.set("resourceId", resourceId);
-            entry.set("resourceName", resourceName);
-            entry.set("text", text);
-            entry.set("rating", rating);
-            entry.set("username", username);
-            entry.set("userId", userId);
-            entry.set("time", time);
-            entry.set("unixTime", 0);
+            Entry entry = new Entry()
+                    .set("id", id)
+                    .set("resourceId", resourceId)
+                    .set("resourceName", resourceName)
+                    .set("text", text)
+                    .set("rating", rating)
+                    .set("username", username)
+                    .set("userId", userId)
+                    .setTime(time);
+
             list.add(entry);
         }
 
@@ -176,20 +177,25 @@ public class Parser {
 
             String username = link.text();
             String userId = link.attr("href").replace("/", "").split("[.]")[1];
-            String time = element.getElementsByClass("DateTime").first().text();
+
+            String time = element.getElementsByClass("DateTime").first().parent().html()
+                    .split("title=\"")[1]
+                    .split("\">")[0];
+
             String costString = costElement.tagName().equalsIgnoreCase("div") ? costElement.text().split(": ")[1] : null;
 
-            Entry entry = new Entry();
             String resourceId = resource.getString("id");
             String resourceName = resource.getString("name");
-            entry.set("id", resourceId + "-" + userId);
-            entry.set("resourceId", resourceId);
-            entry.set("resourceName", resourceName);
-            entry.set("username", username);
-            entry.set("userId", userId);
-            entry.set("time", time);
-            entry.set("unixTime", 0);
-            entry.setCost(costString);
+
+            Entry entry = new Entry()
+                    .set("id", resourceId + "-" + userId)
+                    .set("resourceId", resourceId)
+                    .set("resourceName", resourceName)
+                    .set("username", username)
+                    .set("userId", userId)
+                    .setTime(time)
+                    .setCost(costString);
+
             list.add(entry);
         }
 
