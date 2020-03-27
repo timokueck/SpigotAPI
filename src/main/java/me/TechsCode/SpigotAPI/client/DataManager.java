@@ -19,7 +19,6 @@ public class DataManager extends Thread {
         start();
     }
 
-
     public Data getData(){
         return latest;
     }

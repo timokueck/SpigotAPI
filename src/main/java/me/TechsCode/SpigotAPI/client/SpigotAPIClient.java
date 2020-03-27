@@ -36,11 +36,9 @@ public class SpigotAPIClient extends Thread {
     }
 
     @Override
-    public void run() {
+    public void run(){
         while (true){
-            if(timeout != 0 && timeout > System.currentTimeMillis()){
-                continue;
-            }
+            if(timeout != 0 && timeout > System.currentTimeMillis()) continue;
 
             if(latest == null || (System.currentTimeMillis() - latest.getRetrievedTime()) > REFRESH_DELAY){
                 retrieveData();
@@ -65,7 +63,7 @@ public class SpigotAPIClient extends Thread {
     }
 
     public boolean isAvailable(){
-        return latest != null;
+        if(latest == null) return false;
+        return latest.getPurchases() != null && latest.getPurchases().length != 0 && latest.getPurchases().length >= 5000;
     }
-
 }

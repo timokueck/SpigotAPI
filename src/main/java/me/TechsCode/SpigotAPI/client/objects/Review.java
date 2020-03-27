@@ -14,7 +14,7 @@ public class Review extends APIObject {
     }
 
     public User getUser(){
-        return new User(client, getUserId(), getUsername());
+        return new User(client, getUserId(), getUsername(), getAvatarUrl());
     }
 
     public String getId() {
@@ -35,6 +35,10 @@ public class Review extends APIObject {
 
     public String getUsername() {
         return getStringProperty("username");
+    }
+
+    public String getAvatarUrl() {
+        return getStringProperty("avatarUrl");
     }
 
     public String getText() {

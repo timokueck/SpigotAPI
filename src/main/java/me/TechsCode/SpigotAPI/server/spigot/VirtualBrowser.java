@@ -4,6 +4,8 @@ import com.gargoylesoftware.htmlunit.*;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.util.Cookie;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
+import me.TechsCode.SpigotAPI.logging.ConsoleColor;
+import me.TechsCode.SpigotAPI.logging.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,7 +38,7 @@ public class VirtualBrowser {
             WebRequest wr = new WebRequest(new URL(url), httpMethod);
 
             // Inject Cookies
-            cookies.entrySet().forEach(pair -> webClient.getCookieManager().addCookie(new Cookie("spigotmc.org", pair.getKey(), pair.getValue())));
+            cookies.forEach((key, value) -> webClient.getCookieManager().addCookie(new Cookie("spigotmc.org", key, value)));
 
             // Inject Parameters
             wr.setRequestParameters(Arrays.asList(parameters));
@@ -44,7 +46,7 @@ public class VirtualBrowser {
             HtmlPage htmlPage = webClient.getPage(wr);
 
             if(htmlPage.asText().contains("DDoS protection by Cloudflare")){
-                System.out.println("Bypassing Cloud Flare..");
+                Logger.log(ConsoleColor.YELLOW + "[CloudFlare] " + ConsoleColor.GREEN + "Bypassing Cloud Flare..");
 
                 try {
                     Thread.sleep(9000);
@@ -55,13 +57,10 @@ public class VirtualBrowser {
                 // Recursively trying again. Cloudflare should be bypassed next time
                 return request(url, httpMethod, parameters);
             }
-
             return htmlPage;
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 }

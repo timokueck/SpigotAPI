@@ -10,6 +10,4 @@ public class Logger {
 
         System.out.println(ConsoleColor.BLUE_BRIGHT+"["+ConsoleColor.WHITE_BOLD_BRIGHT+"SpigotAPI"+ConsoleColor.BLUE_BRIGHT+"] "+ConsoleColor.RESET+message);
     }
-
-
 }

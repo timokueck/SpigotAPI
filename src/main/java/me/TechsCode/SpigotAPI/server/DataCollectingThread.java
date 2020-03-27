@@ -32,7 +32,7 @@ public class DataCollectingThread extends Thread {
                 Logger.log("Fetching new data from SpigotMC..");
 
                 List<Entry> resources = spigotMC.retrieveResources();
-                Logger.log("[1/4] Collected Resource Infos");
+                Logger.log("[1/4] Collected "+resources.size()+" Resources");
 
                 List<Entry> updates = spigotMC.retrieveUpdates(resources);
                 Logger.log("[2/4] Collected "+updates.size()+" Updates");
@@ -44,7 +44,7 @@ public class DataCollectingThread extends Thread {
                 Logger.log("[4/4] Collected "+purchases.size()+" Purchases");
 
                 long delay = System.currentTimeMillis() - now;
-                Logger.log(ConsoleColor.GREEN+"Completed Refreshing Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes");
+                Logger.log(ConsoleColor.GREEN+"Completed Refreshing Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes!");
                 Logger.log("");
 
                 Data data = new Data(System.currentTimeMillis());
@@ -61,5 +61,4 @@ public class DataCollectingThread extends Thread {
     public Data getData(){
         return latest;
     }
-
 }

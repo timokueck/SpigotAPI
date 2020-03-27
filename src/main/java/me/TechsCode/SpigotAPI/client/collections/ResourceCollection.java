@@ -19,7 +19,7 @@ public class ResourceCollection {
     }
 
     public Optional<Resource> id(String resourceId){
-        return getStream().filter(x -> x.getName().equalsIgnoreCase(resourceId)).findFirst();
+        return getStream().filter(x -> x.getId().equalsIgnoreCase(resourceId)).findFirst();
     }
 
     public ResourceCollection olderThen(long time){
