@@ -235,7 +235,7 @@ public class Parser {
     }
 
     private String parseAvatarUrl(String url) {
-        if(url.startsWith("/data")) return BASE + url;
+        if(url.startsWith("data")) return BASE + "/" + url;
         if(url.startsWith("//static")) return "https:" + url;
         return url;
     }
