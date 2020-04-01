@@ -30,7 +30,7 @@ public class SpigotAPIServer {
             APIEndpoint webServer = new APIEndpoint(dataManager, apiToken);
 
             Logger.log(ConsoleColor.GREEN+"Listening on port "+webServer.getListeningPort()+" with token "+apiToken);
-            Logger.log("");
+            Logger.log("Startup Completed");
         } catch (AuthenticationException e){
             System.out.println("Could not connect to SpigotMC:");
             System.out.println(e.getPage().asText());
