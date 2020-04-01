@@ -35,9 +35,9 @@ public class Entry {
         if(!data.contains("at")){
             set("humanTime", "Unknown");
             set("unixTime", "0");
-            System.out.println("Couldnt read time "+data);
             return this;
         }
+
         String date = data.split(" at ")[0].replace(",", ""); // Jun 29 2017
         String time = data.split(" at ")[1]; // 6:12 PM
 
