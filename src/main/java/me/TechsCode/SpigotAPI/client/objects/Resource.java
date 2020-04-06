@@ -33,7 +33,7 @@ public class Resource extends APIObject {
     }
 
     public String getVersion() {
-        return getStringProperty("resourceVersion");
+        return getStringProperty("version");
     }
 
     public Cost getCost() {
