@@ -18,52 +18,68 @@ public class SpigotAPIClient extends Thread {
     private APIScanner scanner;
     private Data latest;
 
+    private APIScanner.APIStatus cacheStatus;
+
     public SpigotAPIClient(String url, String token){
-        Logger.log("Connecting to SpigotAPI instance on "+url);
+        Logger.log("Connecting to SpigotAPI instance on " + url);
         scanner = new APIScanner(this, url, token);
+
+        cacheStatus = APIScanner.APIStatus.WAITING;
 
         retrieveData();
         start();
     }
 
-    private void retrieveData(){
-        latest = scanner.retrieveData();
+    private void retrieveData() {
+        Data latest2 = scanner.retrieveData();
 
-        if(latest == null){
-            Logger.log(ConsoleColor.RED+"Could not retrieve new data.. Waiting 5 minutes..");
-            timeout = System.currentTimeMillis()+TimeUnit.MINUTES.toMillis(5);
+        if(latest2 == null) {
+            Logger.log(ConsoleColor.RED + " Could not retrieve new data.. Waiting 5 minutes.. (NEW: Saving old data)");
+            timeout = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(5);
+            if(latest == null) cacheStatus = scanner.getStatus();
+        } else {
+            latest = latest2;
+            cacheStatus = APIScanner.APIStatus.OK;
         }
     }
 
     @Override
-    public void run(){
-        while (true){
+    public void run() {
+        while (true) {
             if(timeout != 0 && timeout > System.currentTimeMillis()) continue;
 
-            if(latest == null || (System.currentTimeMillis() - latest.getRetrievedTime()) > REFRESH_DELAY){
+            if(latest == null || (System.currentTimeMillis() - latest.getRetrievedTime()) > REFRESH_DELAY) {
                 retrieveData();
             }
         }
     }
 
-    public ResourceCollection getResources(){
+    public ResourceCollection getResources() {
         return new ResourceCollection(isAvailable() ? latest.getResources() : new Resource[0]);
     }
 
-    public PurchaseCollection getPurchases(){
+    public PurchaseCollection getPurchases() {
         return new PurchaseCollection(isAvailable() ? latest.getPurchases() : new Purchase[0]);
     }
 
-    public ReviewCollection getReviews(){
+    public ReviewCollection getReviews() {
         return new ReviewCollection(isAvailable() ? latest.getReviews() : new Review[0]);
     }
 
-    public UpdateCollection getUpdates(){
+    public UpdateCollection getUpdates() {
         return new UpdateCollection(isAvailable() ? latest.getUpdates() : new Update[0]);
     }
 
-    public boolean isAvailable(){
+    public boolean isAvailable() {
         if(latest == null) return false;
-        return latest.getPurchases() != null && latest.getPurchases().length != 0 && latest.getPurchases().length >= 5000;
+        return latest.getPurchases() != null;
+    }
+
+    public APIScanner.APIStatus getStatus() {
+        return scanner.getStatus();
+    }
+
+    public APIScanner.APIStatus getCacheStatus() {
+        return cacheStatus;
     }
 }
