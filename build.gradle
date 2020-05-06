@@ -24,7 +24,8 @@ dependencies {
 
     // Client
     compile "org.jsoup:jsoup:1.13.1"
-    compile "net.sourceforge.htmlunit:htmlunit:2.38.0"
+    //compile "net.sourceforge.htmlunit:htmlunit:2.38.0"
+    compile "net.sourceforge.htmlunit:htmlunit:2.40.0"
     compile "org.nanohttpd:nanohttpd:2.3.1"
 }
 
