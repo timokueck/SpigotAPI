@@ -68,6 +68,7 @@ public class VirtualBrowser {
     public void close(){
         webClient.getCurrentWindow().getJobManager().removeAllJobs();
         webClient.close();
+        webClient = null;
         System.gc();
     }
 }
