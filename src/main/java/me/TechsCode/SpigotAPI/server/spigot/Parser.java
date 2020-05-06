@@ -27,22 +27,22 @@ public class Parser {
     public Parser(String username, String password) throws AuthenticationException {
         virtualBrowser = new VirtualBrowser();
 
-        HtmlPage page = virtualBrowser.request(Parser.BASE+"/login/login", HttpMethod.POST,
+        String xml = virtualBrowser.request(Parser.BASE+"/login/login", HttpMethod.POST,
                 new NameValuePair("cookieexists", "false"),
                 new NameValuePair("login", username),
                 new NameValuePair("password", password));
 
-        this.ownUserId = getLoggedInUserId(page);
+        this.ownUserId = getLoggedInUserId(xml);
 
-        if(ownUserId == null) throw new AuthenticationException(page);
+        if(ownUserId == null) throw new AuthenticationException(xml);
     }
 
     public void close(){
         virtualBrowser.close();
     }
 
-    private String getLoggedInUserId(HtmlPage htmlPage){
-        Document document = Jsoup.parse(htmlPage.asXml());
+    private String getLoggedInUserId(String xml){
+        Document document = Jsoup.parse(xml);
 
         try {
             Element link = document
@@ -235,8 +235,8 @@ public class Parser {
     }
 
     private Document getSpigotPage(String subPage){
-        HtmlPage htmlPage = virtualBrowser.request(BASE+"/"+subPage, HttpMethod.GET);
-        return Jsoup.parse(htmlPage.asXml());
+        String xml = virtualBrowser.request(BASE+"/"+subPage, HttpMethod.GET);
+        return Jsoup.parse(xml);
     }
 
     private String parseAvatarUrl(String url) {

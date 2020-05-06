@@ -4,13 +4,13 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class AuthenticationException extends Exception {
 
-    private HtmlPage page;
+    private String xml;
 
-    public AuthenticationException(HtmlPage page) {
-        this.page = page;
+    public AuthenticationException(String xml) {
+        this.xml = xml;
     }
 
-    public HtmlPage getPage() {
-        return page;
+    public String getPage() {
+        return xml;
     }
 }
