@@ -48,10 +48,12 @@ public class VirtualBrowser {
             HtmlPage htmlPage = webClient.getPage(wr);
             text = htmlPage.asText();
             xml = htmlPage.asXml();
+            htmlPage = null;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         } finally {
+            webClient.getWebWindows().forEach(webWindow -> webWindow.getJobManager().removeAllJobs());
             webClient.close();
         }
 
