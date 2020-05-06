@@ -34,11 +34,6 @@ public class VirtualBrowser {
     }
 
     public String request(String url, HttpMethod httpMethod, NameValuePair... parameters){
-        System.out.println("Current Opened:");
-        for(WebWindow window : webClient.getWebWindows()){
-            System.out.println("Opened: "+window.getName());
-        }
-        System.out.println("Opening New..");
         try {
             WebRequest wr = new WebRequest(new URL(url), httpMethod);
 
@@ -50,7 +45,6 @@ public class VirtualBrowser {
 
             HtmlPage htmlPage = webClient.getPage(wr);
             String xml = htmlPage.asXml();
-            webClient.close();
 
             if(htmlPage.asText().contains("DDoS protection by Cloudflare")){
                 Logger.log(ConsoleColor.YELLOW + "[CloudFlare] " + ConsoleColor.GREEN + "Bypassing Cloud Flare..");
@@ -64,6 +58,9 @@ public class VirtualBrowser {
                 // Recursively trying again. Cloudflare should be bypassed next time
                 return request(url, httpMethod, parameters);
             }
+
+            htmlPage = null;
+            webClient.close();
 
             return xml;
         } catch (IOException e) {
