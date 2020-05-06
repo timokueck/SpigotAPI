@@ -36,6 +36,10 @@ public class Parser {
         if(ownUserId == null) throw new AuthenticationException(page);
     }
 
+    public void close(){
+        virtualBrowser.close();
+    }
+
     private String getLoggedInUserId(HtmlPage htmlPage){
         Document document = Jsoup.parse(htmlPage.asXml());
 

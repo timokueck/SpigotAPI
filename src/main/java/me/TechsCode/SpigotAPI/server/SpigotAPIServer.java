@@ -23,17 +23,10 @@ public class SpigotAPIServer {
         String spigotPassword = args[1];
         String apiToken = args[2];
 
-        try {
-            Parser spigotMC = new Parser(spigotUsername, spigotPassword);
+        DataCollectingThread dataManager = new DataCollectingThread(spigotUsername, spigotPassword);
+        APIEndpoint webServer = new APIEndpoint(dataManager, apiToken);
 
-            DataCollectingThread dataManager = new DataCollectingThread(spigotMC);
-            APIEndpoint webServer = new APIEndpoint(dataManager, apiToken);
-
-            Logger.log(ConsoleColor.GREEN+"Listening on port "+webServer.getListeningPort()+" with token "+apiToken);
-            Logger.log("Startup Completed");
-        } catch (AuthenticationException e){
-            System.out.println("Could not connect to SpigotMC:");
-            System.out.println(e.getPage().asText());
-        }
+        Logger.log(ConsoleColor.GREEN+"Listening on port "+webServer.getListeningPort()+" with token "+apiToken);
+        Logger.log("Startup Completed");
     }
 }

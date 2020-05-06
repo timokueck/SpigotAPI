@@ -4,6 +4,7 @@ import me.TechsCode.SpigotAPI.logging.ConsoleColor;
 import me.TechsCode.SpigotAPI.logging.Logger;
 import me.TechsCode.SpigotAPI.server.data.Data;
 import me.TechsCode.SpigotAPI.server.data.Entry;
+import me.TechsCode.SpigotAPI.server.spigot.AuthenticationException;
 import me.TechsCode.SpigotAPI.server.spigot.Parser;
 
 import java.util.List;
@@ -13,11 +14,12 @@ public class DataCollectingThread extends Thread {
 
     private static final long REFRESH_DELAY = TimeUnit.MINUTES.toMillis(15);
 
-    private Parser spigotMC;
+    private String username, password;
     private Data latest;
 
-    public DataCollectingThread(Parser spigotMC) {
-        this.spigotMC = spigotMC;
+    public DataCollectingThread(String username, String password) {
+        this.username = username;
+        this.password = password;
         this.latest = null;
 
         start();
@@ -29,18 +31,28 @@ public class DataCollectingThread extends Thread {
             if(latest == null || (System.currentTimeMillis() - latest.getRecordTime()) > REFRESH_DELAY){
                 long now = System.currentTimeMillis();
 
-                Logger.log("Fetching new data from SpigotMC..");
+                Logger.log("Logging into Spigot ..");
 
-                List<Entry> resources = spigotMC.retrieveResources();
+                Parser parser;
+
+                try {
+                    parser = new Parser(username, password);
+                } catch (AuthenticationException e){
+                    Logger.log("§cCould not authenticate with Spigot");
+                    Logger.log(e.getMessage());
+                    return;
+                }
+
+                List<Entry> resources = parser.retrieveResources();
                 Logger.log("[1/4] Collected "+resources.size()+" Resources");
 
-                List<Entry> updates = spigotMC.retrieveUpdates(resources);
+                List<Entry> updates = parser.retrieveUpdates(resources);
                 Logger.log("[2/4] Collected "+updates.size()+" Updates");
 
-                List<Entry> reviews = spigotMC.retrieveReviews(resources);
+                List<Entry> reviews = parser.retrieveReviews(resources);
                 Logger.log("[3/4] Collected "+reviews.size()+" Reviews");
 
-                List<Entry> purchases = spigotMC.retrievePurchases(resources);
+                List<Entry> purchases = parser.retrievePurchases(resources);
                 Logger.log("[4/4] Collected "+purchases.size()+" Purchases");
 
                 long delay = System.currentTimeMillis() - now;
@@ -52,6 +64,8 @@ public class DataCollectingThread extends Thread {
                 data.set("updates", updates);
                 data.set("reviews", reviews);
                 data.set("purchases", purchases);
+
+                parser.close();
 
                 latest = data;
             }

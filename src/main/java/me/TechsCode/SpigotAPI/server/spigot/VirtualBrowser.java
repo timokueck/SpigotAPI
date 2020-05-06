@@ -57,10 +57,15 @@ public class VirtualBrowser {
                 // Recursively trying again. Cloudflare should be bypassed next time
                 return request(url, httpMethod, parameters);
             }
+
             return htmlPage;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void close(){
+        webClient.close();
     }
 }
