@@ -36,6 +36,8 @@ public class VirtualBrowser {
     public String request(String url, HttpMethod httpMethod, NameValuePair... parameters){
         String text, xml;
 
+        System.out.println(webClient.getWebWindows().size());
+
         try {
             WebRequest wr = new WebRequest(new URL(url), httpMethod);
 
