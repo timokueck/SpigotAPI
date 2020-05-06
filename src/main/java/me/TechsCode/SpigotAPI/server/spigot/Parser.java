@@ -3,6 +3,7 @@ package me.TechsCode.SpigotAPI.server.spigot;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
+import me.TechsCode.SpigotAPI.logging.Logger;
 import me.TechsCode.SpigotAPI.server.data.Entry;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
