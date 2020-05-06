@@ -8,9 +8,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class APIScanner {
@@ -19,32 +19,38 @@ public class APIScanner {
     private String url;
     private String token;
 
+    private APIStatus status;
+
     public APIScanner(SpigotAPIClient client, String url, String token) {
         this.client = client;
         this.url = url;
         this.token = token;
+        this.status = APIStatus.WAITING;
     }
 
-    public Data retrieveData(){
+    public Data retrieveData() {
         JSONObject data;
 
         try {
             JSONParser parser = new JSONParser();
-            String json = IOUtils.toString(new URI(url+"/?token="+token), "UTF-8");
+            String json = IOUtils.toString(new URI(url + "/?token=" + token), StandardCharsets.UTF_8);
             JSONObject root = (JSONObject) parser.parse(json);
 
             String status = (String) root.get("status");
             if(!status.equalsIgnoreCase("success")){
                 Logger.log("API returned error message:");
                 System.out.println(root.get("message"));
+                this.status = APIStatus.WAITING;
                 return null;
             }
-
             data = (JSONObject) root.get("data");
         } catch (Exception e) {
-            Logger.log("Could not reach SpigotAPI on "+url);
+            Logger.log("Could not reach SpigotAPI on " + url);
+            this.status = APIStatus.OFF;
             return null;
         }
+
+        this.status = APIStatus.OK;
 
         Resource[] resources = getChilds(data.get("resources")).map(item -> new Resource(client, item)).toArray(Resource[]::new);
         Purchase[] purchases = getChilds(data.get("purchases")).map(item -> new Purchase(client, item)).toArray(Purchase[]::new);
@@ -54,15 +60,33 @@ public class APIScanner {
         return new Data(System.currentTimeMillis(), resources, purchases, reviews, updates);
     }
 
-
-    private Stream<JSONObject> getChilds(Object object){
+    private Stream<JSONObject> getChilds(Object object) {
         JSONArray jsonArray = (JSONArray) object;
+        return IntStream.rangeClosed(0, jsonArray.size() - 1).mapToObj(i -> (JSONObject) jsonArray.get(i)).collect(Collectors.toList()).stream();
+    }
 
-        List<JSONObject> list = new ArrayList<>();
-        for(int i = 0; i <= jsonArray.size()-1; i++){
-            list.add((JSONObject) jsonArray.get(i));
+    public APIStatus getStatus() {
+        return status;
+    }
+
+    public enum APIStatus {
+        OK("Online", "The api is currently running with no issues!"),
+        WAITING("Gathering Info", "The api is currently gathering information. This usually takes around 5-10 mins."),
+        OFF("Offline", "The api is offline and it cannot even fetch the url!");
+
+        private String name, description;
+
+        APIStatus(String name, String description) {
+            this.name = name;
+            this.description = description;
         }
 
-        return list.stream();
+        public String getName() {
+            return name;
+        }
+
+        public String getDescription() {
+            return description;
+        }
     }
 }

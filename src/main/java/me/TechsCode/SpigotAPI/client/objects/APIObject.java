@@ -4,8 +4,6 @@ import me.TechsCode.SpigotAPI.client.SpigotAPIClient;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.Arrays;
-
 public class APIObject {
 
     protected SpigotAPIClient client;
@@ -25,15 +23,27 @@ public class APIObject {
     }
 
     protected String[] getStringArrayProperty(String property){
-        return Arrays.stream((JSONArray[]) jsonObject.get("images")).map(x -> x.toString()).toArray(String[]::new);
+        return jsonArrayToStringArray((JSONArray)jsonObject.get(property));
     }
 
     protected long getLongProperty(String property){
         return (long) jsonObject.get(property);
     }
 
+    protected long getIntProperty(String property){
+        return (int)(long) jsonObject.get(property);
+    }
+
     protected double getDoubleProperty(String property){
         return (double) jsonObject.get(property);
     }
 
+    private String[] jsonArrayToStringArray(JSONArray jsonArray) {
+        int arraySize = jsonArray.size();
+        String[] stringArray = new String[arraySize];
+
+        for(int i=0; i<arraySize; i++) stringArray[i] = (String) jsonArray.get(i);
+
+        return stringArray;
+    }
 }
