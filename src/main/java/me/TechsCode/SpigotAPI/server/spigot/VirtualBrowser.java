@@ -28,6 +28,10 @@ public class VirtualBrowser {
         webClient.getOptions().setThrowExceptionOnScriptError(false);
         webClient.getOptions().setPrintContentOnFailingStatusCode(false);
 
+        webClient.getOptions().setHistorySizeLimit(1);
+        webClient.getOptions().setHistoryPageCacheLimit(1);
+        webClient.getOptions().setDownloadImages(false);
+
         this.cookies = new HashMap<>();
 
         java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);
@@ -35,8 +39,6 @@ public class VirtualBrowser {
 
     public String request(String url, HttpMethod httpMethod, NameValuePair... parameters){
         String text, xml;
-
-        System.out.println(webClient.getWebWindows().size());
 
         try {
             WebRequest wr = new WebRequest(new URL(url), httpMethod);
@@ -50,7 +52,6 @@ public class VirtualBrowser {
             HtmlPage htmlPage = webClient.getPage(wr);
             text = htmlPage.asText();
             xml = htmlPage.asXml();
-            htmlPage = null;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
