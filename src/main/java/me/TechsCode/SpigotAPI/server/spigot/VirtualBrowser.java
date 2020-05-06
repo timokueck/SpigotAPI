@@ -59,9 +59,6 @@ public class VirtualBrowser {
                 return request(url, httpMethod, parameters);
             }
 
-            htmlPage = null;
-            webClient.close();
-
             return xml;
         } catch (IOException e) {
             e.printStackTrace();
