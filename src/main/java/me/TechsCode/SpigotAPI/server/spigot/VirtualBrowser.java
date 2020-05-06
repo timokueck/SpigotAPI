@@ -34,6 +34,8 @@ public class VirtualBrowser {
     }
 
     public String request(String url, HttpMethod httpMethod, NameValuePair... parameters){
+        String text, xml;
+
         try {
             WebRequest wr = new WebRequest(new URL(url), httpMethod);
 
@@ -44,26 +46,29 @@ public class VirtualBrowser {
             wr.setRequestParameters(Arrays.asList(parameters));
 
             HtmlPage htmlPage = webClient.getPage(wr);
-            String xml = htmlPage.asXml();
-
-            if(htmlPage.asText().contains("DDoS protection by Cloudflare")){
-                Logger.log(ConsoleColor.YELLOW + "[CloudFlare] " + ConsoleColor.GREEN + "Bypassing Cloud Flare..");
-
-                try {
-                    Thread.sleep(9000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                // Recursively trying again. Cloudflare should be bypassed next time
-                return request(url, httpMethod, parameters);
-            }
-
-            return xml;
+            text = htmlPage.asText();
+            xml = htmlPage.asXml();
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
+        } finally {
+            webClient.close();
         }
-        return null;
+
+        if(text.contains("DDoS protection by Cloudflare")){
+            Logger.log(ConsoleColor.YELLOW + "[CloudFlare] " + ConsoleColor.GREEN + "Bypassing Cloud Flare..");
+
+            try {
+                Thread.sleep(9000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            // Recursively trying again. Cloudflare should be bypassed next time
+            return request(url, httpMethod, parameters);
+        }
+
+        return xml;
     }
 
     public void close(){
