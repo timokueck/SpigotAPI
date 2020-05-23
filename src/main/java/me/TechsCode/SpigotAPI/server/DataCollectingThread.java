@@ -6,6 +6,7 @@ import me.TechsCode.SpigotAPI.server.data.Data;
 import me.TechsCode.SpigotAPI.server.data.Entry;
 import me.TechsCode.SpigotAPI.server.spigot.AuthenticationException;
 import me.TechsCode.SpigotAPI.server.spigot.Parser;
+import me.TechsCode.SpigotAPI.server.spigot.SpigotParser;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +23,8 @@ public class DataCollectingThread extends Thread {
         this.password = password;
         this.latest = null;
 
+        Logger.log("Logging into Spigot ..");
+
         start();
     }
 
@@ -31,17 +34,7 @@ public class DataCollectingThread extends Thread {
             if(latest == null || (System.currentTimeMillis() - latest.getRecordTime()) > REFRESH_DELAY){
                 long now = System.currentTimeMillis();
 
-                Logger.log("Logging into Spigot ..");
-
-                Parser parser;
-
-                try {
-                    parser = new Parser(username, password);
-                } catch (AuthenticationException e){
-                    Logger.log("§cCould not authenticate with Spigot");
-                    Logger.log(e.getMessage());
-                    return;
-                }
+                SpigotParser parser = new SpigotParser(username, password);
 
                 List<Entry> resources = parser.retrieveResources();
                 Logger.log("[1/4] Collected "+resources.size()+" Resources");
@@ -55,17 +48,17 @@ public class DataCollectingThread extends Thread {
                 List<Entry> purchases = parser.retrievePurchases(resources);
                 Logger.log("[4/4] Collected "+purchases.size()+" Purchases");
 
+                parser.close();
+
                 long delay = System.currentTimeMillis() - now;
                 Logger.log(ConsoleColor.GREEN+"Completed Refreshing Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes!");
                 Logger.log("");
 
-                Data data = new Data(System.currentTimeMillis());
+                Data data = new Data(now);
                 data.set("resources", resources);
                 data.set("updates", updates);
                 data.set("reviews", reviews);
                 data.set("purchases", purchases);
-
-                parser.close();
 
                 latest = data;
             }
