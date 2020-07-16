@@ -35,6 +35,7 @@ public class APIObject {
     }
 
     protected double getDoubleProperty(String property){
+        if(jsonObject.get(property) == null) return 0d;
         return (double) jsonObject.get(property);
     }
 
