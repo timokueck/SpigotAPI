@@ -50,6 +50,6 @@ public class Review extends APIObject {
     }
 
     public Time getTime() {
-        return new Time(getStringProperty("time"), getLongProperty("unixTime"));
+        return new Time(getStringProperty("humanTime"), getLongProperty("unixTime"));
     }
 }
