@@ -1,6 +1,5 @@
 package me.TechsCode.SpigotAPI.client.collections;
 
-import me.TechsCode.SpigotAPI.client.objects.Resource;
 import me.TechsCode.SpigotAPI.client.objects.Review;
 
 import java.util.Arrays;

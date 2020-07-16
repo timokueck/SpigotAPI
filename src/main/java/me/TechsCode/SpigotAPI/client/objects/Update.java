@@ -3,8 +3,6 @@ package me.TechsCode.SpigotAPI.client.objects;
 import me.TechsCode.SpigotAPI.client.SpigotAPIClient;
 import org.json.simple.JSONObject;
 
-import java.util.Optional;
-
 public class Update extends APIObject {
 
     public Update(SpigotAPIClient client, JSONObject jsonObject) {

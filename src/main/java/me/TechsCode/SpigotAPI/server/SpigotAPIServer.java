@@ -2,8 +2,6 @@ package me.TechsCode.SpigotAPI.server;
 
 import me.TechsCode.SpigotAPI.logging.ConsoleColor;
 import me.TechsCode.SpigotAPI.logging.Logger;
-import me.TechsCode.SpigotAPI.server.spigot.AuthenticationException;
-import me.TechsCode.SpigotAPI.server.spigot.Parser;
 
 public class SpigotAPIServer {
 
