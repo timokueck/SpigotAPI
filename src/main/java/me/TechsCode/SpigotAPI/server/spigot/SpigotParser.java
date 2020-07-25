@@ -100,7 +100,12 @@ public class SpigotParser {
             }
         }
 
-        while (browser.getPageSource().contains("ERR_TOO_MANY_REDIRECTS")){
+        if(i > 10 || browser.getPageSource().contains("ERR_TOO_MANY_REDIRECTS")){
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             browser.get(BASE+"/"+url);
         }
     }
