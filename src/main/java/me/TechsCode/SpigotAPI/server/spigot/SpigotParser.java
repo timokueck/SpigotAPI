@@ -34,8 +34,8 @@ public class SpigotParser {
         System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY, "true");
 
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--no-sandbox");
-        chromeOptions.addArguments("--headless");
+        //chromeOptions.addArguments("--no-sandbox");
+        //chromeOptions.addArguments("--headless");
 
         browser = new ChromeDriver(chromeOptions);
 
