@@ -99,6 +99,10 @@ public class SpigotParser {
                 e.printStackTrace();
             }
         }
+
+        while (browser.getPageSource().contains("ERR_TOO_MANY_REDIRECTS")){
+            browser.get(BASE+"/"+url);
+        }
     }
 
     public List<Entry> retrieveResources(){
