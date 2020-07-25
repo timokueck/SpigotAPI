@@ -47,12 +47,6 @@ public class SpigotParser {
     private void login(String username, String password){
         setPage("login");
 
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         for(WebElement element : browser.findElements(By.id("ctrl_pageLogin_login"))){
             if(element.isDisplayed()) element.sendKeys(username);
         }
@@ -60,7 +54,7 @@ public class SpigotParser {
         for(WebElement element : browser.findElements(By.id("ctrl_pageLogin_password"))){
             if(element.isDisplayed()){
                 element.sendKeys(password);
-                element.submit();
+                //element.submit();
             }
         }
 
