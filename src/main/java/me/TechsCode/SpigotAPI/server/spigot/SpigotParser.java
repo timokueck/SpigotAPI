@@ -53,7 +53,14 @@ public class SpigotParser {
 
         for(WebElement element : browser.findElements(By.id("ctrl_pageLogin_password"))){
             if(element.isDisplayed()){
-                element.sendKeys(password);
+                for(char character : password.toCharArray()){
+                    element.sendKeys(character+"");
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 //element.submit();
             }
         }
