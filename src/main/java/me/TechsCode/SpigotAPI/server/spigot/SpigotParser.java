@@ -53,15 +53,8 @@ public class SpigotParser {
 
         for(WebElement element : browser.findElements(By.id("ctrl_pageLogin_password"))){
             if(element.isDisplayed()){
-                for(char character : password.toCharArray()){
-                    element.sendKeys(character+"");
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                //element.submit();
+                element.sendKeys(password);
+                element.submit();
             }
         }
 
@@ -98,6 +91,14 @@ public class SpigotParser {
         }
 
         if(i != 0) System.out.println("Bypassed Cloudflare after "+i+" seconds");
+
+        while (browser.getPageSource().contains("One more step") && browser.getPageSource().contains("Please complete the security check to access")){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public List<Entry> retrieveResources(){
