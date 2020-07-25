@@ -1,6 +1,7 @@
 package me.TechsCode.SpigotAPI.server.spigot;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import me.TechsCode.SpigotAPI.server.SpigotAPIServer;
 import me.TechsCode.SpigotAPI.server.data.Entry;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -77,13 +78,19 @@ public class SpigotParser {
         browser.get(BASE+"/"+url);
 
         // Bypass Cloudflare
+        int i = 0;
         while (browser.getPageSource().contains("This process is automatic. Your browser will redirect to your requested content shortly.")){
+            if(i == 0) System.out.println("Cloudflare detected. Bypassing it now...");
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            i++;
         }
+
+        if(i != 0) System.out.println("Bypassed Cloudflare after "+i+" seconds");
     }
 
     public List<Entry> retrieveResources(){
