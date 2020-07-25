@@ -2,10 +2,11 @@ package me.TechsCode.SpigotAPI.server.data;
 
 import org.json.simple.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.time.Month;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Entry {
 

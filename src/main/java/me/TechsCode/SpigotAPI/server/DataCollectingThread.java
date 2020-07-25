@@ -4,8 +4,6 @@ import me.TechsCode.SpigotAPI.logging.ConsoleColor;
 import me.TechsCode.SpigotAPI.logging.Logger;
 import me.TechsCode.SpigotAPI.server.data.Data;
 import me.TechsCode.SpigotAPI.server.data.Entry;
-import me.TechsCode.SpigotAPI.server.spigot.AuthenticationException;
-import me.TechsCode.SpigotAPI.server.spigot.Parser;
 import me.TechsCode.SpigotAPI.server.spigot.SpigotParser;
 
 import java.util.List;

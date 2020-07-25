@@ -3,8 +3,6 @@ package me.TechsCode.SpigotAPI.client.objects;
 import me.TechsCode.SpigotAPI.client.SpigotAPIClient;
 import org.json.simple.JSONObject;
 
-import java.util.Optional;
-
 public class Update extends APIObject {
 
     public Update(SpigotAPIClient client, JSONObject jsonObject) {
@@ -40,6 +38,6 @@ public class Update extends APIObject {
     }
 
     public Time getTime() {
-        return new Time(getStringProperty("time"), getLongProperty("unixTime"));
+        return new Time(getStringProperty("humanTime"), getLongProperty("unixTime"));
     }
 }

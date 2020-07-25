@@ -1,16 +1,8 @@
 package me.TechsCode.SpigotAPI.server.spigot;
 
-import me.TechsCode.SpigotAPI.server.data.Entry;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Parser {
 

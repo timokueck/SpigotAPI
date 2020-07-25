@@ -41,7 +41,7 @@ public class Resource extends APIObject {
     }
 
     public Time getTime() {
-        return new Time(getStringProperty("time"), getLongProperty("unixTime"));
+        return new Time(getStringProperty("humanTime"), getLongProperty("unixTime"));
     }
 
     public UpdateCollection getUpdates(){

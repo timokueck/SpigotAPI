@@ -66,6 +66,8 @@ public class APIEndpoint extends NanoHTTPD {
 
     @Override
     public Response serve(IHTTPSession session) {
-        return newFixedLengthResponse(serve(session.getParms()).toJSONString().replace("\\/", "/"));
+        Response response = newFixedLengthResponse(serve(session.getParms()).toJSONString().replace("\\/", "/"));
+        response.addHeader("Content-Type", "application/json");
+        return response;
     }
 }
