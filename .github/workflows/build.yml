@@ -9,6 +9,7 @@ on:
 env:
   path: build/SpigotAPI.jar
   name: SpigotAPI.jar
+  build: build-${{ github.run_number }}
 
 jobs:
   build:
@@ -35,8 +36,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: build-${{ github.run_number }}
-        release_name: ${{ env.name }} Release
+        tag_name: ${{ env.build }}
+        release_name: Release ${{ env.build }}
     
     - name: Upload Release Asset
       id: upload-release-asset 
