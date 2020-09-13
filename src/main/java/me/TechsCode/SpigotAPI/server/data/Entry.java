@@ -55,7 +55,7 @@ public class Entry {
         c.set(year, month - 1, day, pm ? hour + 12 : hour, minute);
 
         set("humanTime", data);
-        set("unixTime", c.getTimeInMillis() / 1000);
+        set("unixTime", c.getTimeInMillis());
         return this;
     }
 
