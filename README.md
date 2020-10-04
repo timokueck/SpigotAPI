@@ -3,9 +3,12 @@ Standalone Web API for retrieving Information off of SpigotMC!
 
 ## How To Host This API
 
-Script: ``java -jar SpigotAPI.jar <Spigot Username> <Spigot Password> <API Token>``
+Requirements:
+* Google Chrome Installation
+* xvfb
 
-The API Token should be a secure random string that will be needed for accessing this api.
+Run the jar with xvfb:
+``xvfb-run java -jar SpigotAPI.jar``
 
 ## More Information
 
