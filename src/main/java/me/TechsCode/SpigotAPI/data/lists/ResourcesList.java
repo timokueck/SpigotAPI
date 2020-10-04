@@ -1,6 +1,5 @@
 package me.TechsCode.SpigotAPI.data.lists;
 
-import me.TechsCode.SpigotAPI.data.Purchase;
 import me.TechsCode.SpigotAPI.data.Resource;
 
 import java.util.ArrayList;
@@ -13,8 +12,7 @@ public class ResourcesList extends ArrayList<Resource> {
         super(initialCapacity);
     }
 
-    public ResourcesList() {
-    }
+    public ResourcesList() {}
 
     public ResourcesList(Collection<? extends Resource> c) {
         super(c);

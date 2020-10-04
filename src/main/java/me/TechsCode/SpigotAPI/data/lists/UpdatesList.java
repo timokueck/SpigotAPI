@@ -1,6 +1,5 @@
 package me.TechsCode.SpigotAPI.data.lists;
 
-import me.TechsCode.SpigotAPI.data.Purchase;
 import me.TechsCode.SpigotAPI.data.Update;
 
 import java.util.ArrayList;
@@ -13,8 +12,7 @@ public class UpdatesList extends ArrayList<Update> {
         super(initialCapacity);
     }
 
-    public UpdatesList() {
-    }
+    public UpdatesList() {}
 
     public UpdatesList(Collection<? extends Update> c) {
         super(c);

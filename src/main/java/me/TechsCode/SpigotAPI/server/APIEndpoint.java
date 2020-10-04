@@ -8,8 +8,8 @@ import java.util.Map;
 
 public class APIEndpoint extends NanoHTTPD {
 
-    private DataManager dataManager;
-    private String apiToken;
+    private final DataManager dataManager;
+    private final String apiToken;
 
     public APIEndpoint(DataManager dataManager, String apiToken) {
         super(3333);

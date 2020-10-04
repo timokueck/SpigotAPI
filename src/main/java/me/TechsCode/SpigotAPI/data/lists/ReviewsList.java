@@ -1,6 +1,5 @@
 package me.TechsCode.SpigotAPI.data.lists;
 
-import me.TechsCode.SpigotAPI.data.Purchase;
 import me.TechsCode.SpigotAPI.data.Review;
 
 import java.util.ArrayList;
@@ -13,8 +12,7 @@ public class ReviewsList extends ArrayList<Review> {
         super(initialCapacity);
     }
 
-    public ReviewsList() {
-    }
+    public ReviewsList() {}
 
     public ReviewsList(Collection<? extends Review> c) {
         super(c);
@@ -31,6 +29,4 @@ public class ReviewsList extends ArrayList<Review> {
     public ReviewsList resource(String resourceId){
         return stream().filter(review -> review.getResource().getId().equals(resourceId)).collect(Collectors.toCollection(ReviewsList::new));
     }
-
-
 }

@@ -12,8 +12,7 @@ public class PurchasesList extends ArrayList<Purchase> {
         super(initialCapacity);
     }
 
-    public PurchasesList() {
-    }
+    public PurchasesList() {}
 
     public PurchasesList(Collection<? extends Purchase> c) {
         super(c);

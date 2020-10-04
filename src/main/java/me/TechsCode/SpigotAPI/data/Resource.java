@@ -83,4 +83,13 @@ public class Resource extends JsonSerializable {
     public boolean isFree(){
         return cost == null;
     }
+
+    public String getIcon() {
+        try {
+            int resourceId = Integer.parseInt(id);
+            return String.format("https://www.spigotmc.org/data/resource_icons/%d/%d.jpg", (int) Math.floor(resourceId / 1000d), resourceId);
+        } catch (NumberFormatException ex) {
+            return "https://static.spigotmc.org/styles/spigot/xenresource/resource_icon.png";
+        }
+    }
 }

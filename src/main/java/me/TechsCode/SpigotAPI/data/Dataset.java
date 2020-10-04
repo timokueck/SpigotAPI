@@ -15,10 +15,10 @@ public class Dataset {
 
     private long timeCreated;
 
-    private ResourcesList resources;
-    private PurchasesList purchases;
-    private UpdatesList updates;
-    private ReviewsList reviews;
+    private final ResourcesList resources;
+    private final PurchasesList purchases;
+    private final UpdatesList updates;
+    private final ReviewsList reviews;
 
     public Dataset(JsonObject jsonObject){
         this.resources = StreamSupport.stream(jsonObject.getAsJsonArray("resources").spliterator(), false)

@@ -42,7 +42,6 @@ public class SpigotBrowser extends VirtualBrowser {
         usernameField.sendKeys(username);
         passwordField.sendKeys(password);
 
-
         // Login!
         passwordField.submit();
 
@@ -201,12 +200,9 @@ public class SpigotBrowser extends VirtualBrowser {
         return map;
     }
 
-
     private String parseAvatarUrl(String url) {
         if(url.startsWith("data")) return BASE + "/" + url;
         if(url.startsWith("//static")) return "https:" + url;
         return url;
     }
-
-
 }

@@ -6,7 +6,6 @@ public abstract class JsonSerializable {
 
     protected Dataset dataset;
 
-
     public void inject(Dataset dataset){
         this.dataset = dataset;
     }
