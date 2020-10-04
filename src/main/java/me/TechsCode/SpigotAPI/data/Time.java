@@ -9,8 +9,8 @@ import java.util.Calendar;
 
 public class Time {
 
-    private String humanTime;
-    private long unixTime;
+    private final String humanTime;
+    private final long unixTime;
 
     public Time(JsonObject jsonObject){
         this.humanTime = jsonObject.get("human").getAsString();

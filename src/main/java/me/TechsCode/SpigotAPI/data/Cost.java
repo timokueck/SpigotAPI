@@ -5,8 +5,8 @@ import com.google.gson.JsonObject;
 
 public class Cost {
 
-    private String currency;
-    private float value;
+    private final String currency;
+    private final float value;
 
     public Cost(JsonObject jsonObject){
         this.currency = jsonObject.get("currency").getAsString();

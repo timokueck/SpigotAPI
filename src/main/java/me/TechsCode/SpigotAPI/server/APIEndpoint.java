@@ -23,12 +23,7 @@ public class APIEndpoint extends NanoHTTPD {
             e.printStackTrace();
         }
 
-        Runtime.getRuntime().addShutdownHook(new Thread(){
-            @Override
-            public void run() {
-                APIEndpoint.super.stop();
-            }
-        });
+        Runtime.getRuntime().addShutdownHook(new Thread(APIEndpoint.super::stop));
     }
 
     @Override
