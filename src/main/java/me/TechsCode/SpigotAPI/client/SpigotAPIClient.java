@@ -24,19 +24,19 @@ public class SpigotAPIClient extends Thread {
         return getData().map(Dataset::getTimeCreated).orElse(0L);
     }
 
-    public List<Resource> getResources(){
+    public ResourcesList getResources(){
         return getData().map(Dataset::getResources).orElse(new ResourcesList());
     }
 
-    public List<Update> getUpdates(){
+    public UpdatesList getUpdates(){
         return getData().map(Dataset::getUpdates).orElse(new UpdatesList());
     }
 
-    public List<Review> getReviews(){
+    public ReviewsList getReviews(){
         return getData().map(Dataset::getReviews).orElse(new ReviewsList());
     }
 
-    public List<Purchase> getPurchases(){
+    public PurchasesList getPurchases(){
         return getData().map(Dataset::getPurchases).orElse(new PurchasesList());
     }
 }
