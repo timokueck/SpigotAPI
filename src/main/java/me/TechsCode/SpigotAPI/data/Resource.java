@@ -1,7 +1,11 @@
 package me.TechsCode.SpigotAPI.data;
 
 import com.google.gson.JsonObject;
+import me.TechsCode.SpigotAPI.data.lists.PurchasesList;
+import me.TechsCode.SpigotAPI.data.lists.ReviewsList;
+import me.TechsCode.SpigotAPI.data.lists.UpdatesList;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class Resource extends JsonSerializable {
@@ -45,6 +49,7 @@ public class Resource extends JsonSerializable {
         jsonObject.addProperty("version", version);
         if(cost != null) jsonObject.add("cost", cost.toJsonObject());
         jsonObject.add("time", time.toJsonObject());
+
         return jsonObject;
     }
 
@@ -91,5 +96,31 @@ public class Resource extends JsonSerializable {
         } catch (NumberFormatException ex) {
             return "https://static.spigotmc.org/styles/spigot/xenresource/resource_icon.png";
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Resource resource = (Resource) o;
+        return id.equals(resource.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    public UpdatesList getUpdates() {
+        return dataset.getUpdates().resource(id);
+    }
+
+    public ReviewsList getReviews() {
+        return dataset.getReviews().resource(id);
+    }
+
+    public PurchasesList getPurchases() {
+        return dataset.getPurchases().resource(id);
     }
 }

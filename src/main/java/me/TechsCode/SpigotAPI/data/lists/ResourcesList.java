@@ -1,10 +1,13 @@
 package me.TechsCode.SpigotAPI.data.lists;
 
+import com.sun.xml.internal.ws.api.ResourceLoader;
+import me.TechsCode.SpigotAPI.data.Purchase;
 import me.TechsCode.SpigotAPI.data.Resource;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ResourcesList extends ArrayList<Resource> {
 
@@ -24,5 +27,13 @@ public class ResourcesList extends ArrayList<Resource> {
 
     public Optional<Resource> name(String name){
         return stream().filter(resource -> resource.getName().equalsIgnoreCase(name)).findFirst();
+    }
+
+    public ResourcesList free(){
+        return stream().filter(Resource::isFree).collect(Collectors.toCollection(ResourcesList::new));
+    }
+
+    public ResourcesList premium(){
+        return stream().filter(Resource::isPremium).collect(Collectors.toCollection(ResourcesList::new));
     }
 }

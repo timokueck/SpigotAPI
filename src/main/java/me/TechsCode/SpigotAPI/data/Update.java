@@ -3,6 +3,7 @@ package me.TechsCode.SpigotAPI.data;
 import com.google.gson.JsonObject;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Update extends JsonSerializable {
 
@@ -46,6 +47,7 @@ public class Update extends JsonSerializable {
         jsonObject.addProperty("images", String.join(";", images));
         jsonObject.addProperty("description", description);
         jsonObject.add("time", time.toJsonObject());
+
         return jsonObject;
     }
 
@@ -75,5 +77,20 @@ public class Update extends JsonSerializable {
 
     public Time getTime() {
         return time;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Update update = (Update) o;
+        return id.equals(update.id) &&
+                resourceId.equals(update.resourceId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, resourceId);
     }
 }

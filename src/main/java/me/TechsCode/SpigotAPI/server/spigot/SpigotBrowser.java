@@ -116,6 +116,7 @@ public class SpigotBrowser extends VirtualBrowser {
             Resource resource = pair.getKey();
 
             for(Element element : pair.getValue()){
+                String id = element.id().split("-")[1];
                 String username = element.attr("data-author");
                 String userId = element.id().split("-")[2];
                 String avatarUrl = element.select("img").attr("src");
@@ -126,7 +127,7 @@ public class SpigotBrowser extends VirtualBrowser {
 
                 Time time = new Time(element.getElementsByClass("DateTime").first().attr("title"));
 
-                reviews.add(new Review(resource.getId(), user, text, rating, time));
+                reviews.add(new Review(id, resource.getId(), user, text, rating, time));
             }
 
         }

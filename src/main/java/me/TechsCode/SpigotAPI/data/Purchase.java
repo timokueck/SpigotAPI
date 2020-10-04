@@ -2,6 +2,7 @@ package me.TechsCode.SpigotAPI.data;
 
 import com.google.gson.JsonObject;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class Purchase extends JsonSerializable {
@@ -61,6 +62,22 @@ public class Purchase extends JsonSerializable {
         jsonObject.add("user", user.toJsonObject());
         jsonObject.add("time", time.toJsonObject());
         if(cost != null) jsonObject.add("cost", cost.toJsonObject());
+
         return jsonObject;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Purchase purchase = (Purchase) o;
+
+        return resourceId.equals(purchase.resourceId) &&
+                user.getUserId().equals(purchase.user.getUserId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(resourceId, user);
     }
 }

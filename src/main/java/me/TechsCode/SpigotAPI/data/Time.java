@@ -26,8 +26,8 @@ public class Time {
         Preconditions.checkArgument(humanTime.length() > 5, "Invalid Time Value (Too short)");
         this.humanTime = humanTime;
 
-        String date = humanTime.split(" at ")[0].replace(",", ""); // Jun 29 2017
-        String time = humanTime.split(" at ")[1]; // 6:12 PM
+        String date = humanTime.split(" at ")[0].replace(",", "");
+        String time = humanTime.split(" at ")[1];
 
         String monthString = date.split(" ")[0].toLowerCase();
         int month = Arrays.stream(Month.values()).filter(x -> x.name().toLowerCase().startsWith(monthString)).findFirst().get().getValue();
@@ -35,8 +35,10 @@ public class Time {
         int year = Integer.parseInt(date.split(" ")[2]);
 
         boolean pm = date.endsWith("PM");
-        int hour = Integer.parseInt(time.substring(0, time.length() - 3).split(":")[0]);
-        int minute = Integer.parseInt(time.substring(0, time.length() - 3).split(":")[1]);
+        String substring = time.substring(0, time.length() - 3);
+
+        int hour = Integer.parseInt(substring.split(":")[0]);
+        int minute = Integer.parseInt(substring.split(":")[1]);
 
         Calendar c = Calendar.getInstance();
         c.set(year, month - 1, day, pm ? hour + 12 : hour, minute);

@@ -37,6 +37,7 @@ public class Cost {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("currency", currency);
         jsonObject.addProperty("value", value);
+
         return jsonObject;
     }
 }
