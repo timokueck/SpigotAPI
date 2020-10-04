@@ -2,7 +2,7 @@ package me.TechsCode.SpigotAPI.server;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import me.TechsCode.SpigotAPI.data.*;
+import me.TechsCode.SpigotAPI.data.Dataset;
 import me.TechsCode.SpigotAPI.data.lists.PurchasesList;
 import me.TechsCode.SpigotAPI.data.lists.ResourcesList;
 import me.TechsCode.SpigotAPI.data.lists.ReviewsList;
@@ -13,7 +13,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class DataManager extends Thread {

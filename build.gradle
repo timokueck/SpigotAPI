@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
     // Server
-    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'commons-io', name: 'commons-io', version: '2.8.0'
 
     // Client
     compile "org.jsoup:jsoup:1.13.1"
