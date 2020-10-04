@@ -20,7 +20,6 @@ repositories {
 dependencies {
     // Server
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-    compile "com.googlecode.json-simple:json-simple:1.1.1"
 
     // Client
     compile "org.jsoup:jsoup:1.13.1"

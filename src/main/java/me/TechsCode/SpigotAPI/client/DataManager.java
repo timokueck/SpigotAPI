@@ -1,26 +1,62 @@
 package me.TechsCode.SpigotAPI.client;
 
-import me.TechsCode.SpigotAPI.client.objects.Data;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
+import me.TechsCode.SpigotAPI.data.Dataset;
+import org.apache.commons.io.IOUtils;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
-public class DataManager extends Thread {
+public class DataManager implements Runnable {
 
-    private static final long REFRESH_DELAY = TimeUnit.MINUTES.toMillis(15);
-    private long timeout = 0;
+    private static final long REFRESH_DELAY = TimeUnit.MINUTES.toMillis(1);
 
-    private APIScanner apiEndpoint;
-    private Data latest;
+    private final String url, token;
 
-    public DataManager(APIScanner apiEndpoint) {
-        this.apiEndpoint = apiEndpoint;
-        this.latest = null;
+    private final Thread thread;
 
-        start();
+    private Dataset dataset;
+
+    public DataManager(String url, String token) {
+        this.url = url;
+        this.token = token;
+
+        this.thread = new Thread(this);
+        thread.start();
     }
 
-    public Data getData(){
-        return latest;
+    @Override
+    public void run() {
+        try {
+            String json = IOUtils.toString(new URI(url + "/?token=" + token), StandardCharsets.UTF_8);
+
+            JsonParser parser = new JsonParser();
+
+            try {
+                JsonObject jsonObject = (JsonObject) parser.parse(json);
+                this.dataset = new Dataset(jsonObject);
+            } catch (JsonParseException e){
+                System.err.println("Server responded with '"+json+"'");
+            }
+
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Thread.sleep(REFRESH_DELAY);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Dataset getData(){
+        return dataset;
     }
 }
 

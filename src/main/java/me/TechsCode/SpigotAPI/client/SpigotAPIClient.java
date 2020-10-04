@@ -1,85 +1,40 @@
 package me.TechsCode.SpigotAPI.client;
 
-import me.TechsCode.SpigotAPI.client.collections.PurchaseCollection;
-import me.TechsCode.SpigotAPI.client.collections.ResourceCollection;
-import me.TechsCode.SpigotAPI.client.collections.ReviewCollection;
-import me.TechsCode.SpigotAPI.client.collections.UpdateCollection;
-import me.TechsCode.SpigotAPI.client.objects.*;
-import me.TechsCode.SpigotAPI.logging.ConsoleColor;
-import me.TechsCode.SpigotAPI.logging.Logger;
+import me.TechsCode.SpigotAPI.data.*;
 
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class SpigotAPIClient extends Thread {
 
-    private static final long REFRESH_DELAY = TimeUnit.MINUTES.toMillis(1);
-    private long timeout = 0;
-
-    private APIScanner scanner;
-    private Data latest;
-
-    private APIScanner.APIStatus cacheStatus;
+    private final DataManager dataManager;
 
     public SpigotAPIClient(String url, String token){
-        Logger.log("Connecting to SpigotAPI instance on " + url);
-        scanner = new APIScanner(this, url, token);
-
-        cacheStatus = APIScanner.APIStatus.WAITING;
-
-        retrieveData();
-        start();
+        this.dataManager = new DataManager(url, token);
     }
 
-    private void retrieveData() {
-        Data latest2 = scanner.retrieveData();
-
-        if(latest2 == null) {
-            Logger.log(ConsoleColor.RED + " Could not retrieve new data.. Waiting 5 minutes.. (NEW: Saving old data)");
-            timeout = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(5);
-            if(latest == null) cacheStatus = scanner.getStatus();
-        } else {
-            latest = latest2;
-            cacheStatus = APIScanner.APIStatus.OK;
-        }
+    public Optional<Dataset> getData(){
+        return Optional.ofNullable(dataManager.getData());
     }
 
-    @Override
-    public void run() {
-        while (true) {
-            if(timeout != 0 && timeout > System.currentTimeMillis()) continue;
-
-            if(latest == null || (System.currentTimeMillis() - latest.getRetrievedTime()) > REFRESH_DELAY) {
-                retrieveData();
-            }
-        }
+    public long getRefreshTime(){
+        return getData().map(Dataset::getTimeCreated).orElse(0L);
     }
 
-    public ResourceCollection getResources() {
-        return new ResourceCollection(isAvailable() ? latest.getResources() : new Resource[0]);
+    public List<Resource> getResources(){
+        return getData().map(Dataset::getResources).orElse(new ArrayList<>());
     }
 
-    public PurchaseCollection getPurchases() {
-        return new PurchaseCollection(isAvailable() ? latest.getPurchases() : new Purchase[0]);
+    public List<Update> getUpdates(){
+        return getData().map(Dataset::getUpdates).orElse(new ArrayList<>());
     }
 
-    public ReviewCollection getReviews() {
-        return new ReviewCollection(isAvailable() ? latest.getReviews() : new Review[0]);
+    public List<Review> getReviews(){
+        return getData().map(Dataset::getReviews).orElse(new ArrayList<>());
     }
 
-    public UpdateCollection getUpdates() {
-        return new UpdateCollection(isAvailable() ? latest.getUpdates() : new Update[0]);
-    }
-
-    public boolean isAvailable() {
-        if(latest == null) return false;
-        return latest.getPurchases() != null;
-    }
-
-    public APIScanner.APIStatus getStatus() {
-        return scanner.getStatus();
-    }
-
-    public APIScanner.APIStatus getCacheStatus() {
-        return cacheStatus;
+    public List<Purchase> getPurchases(){
+        return getData().map(Dataset::getPurchases).orElse(new ArrayList<>());
     }
 }

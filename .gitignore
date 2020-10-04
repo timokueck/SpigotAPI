@@ -5,3 +5,5 @@
 out/
 build/
 build.properties
+config.json
+lastDataset.json
