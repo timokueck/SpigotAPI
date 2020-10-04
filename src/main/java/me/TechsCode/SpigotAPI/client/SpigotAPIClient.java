@@ -1,10 +1,12 @@
 package me.TechsCode.SpigotAPI.client;
 
 import me.TechsCode.SpigotAPI.data.*;
+import me.TechsCode.SpigotAPI.data.lists.PurchasesList;
+import me.TechsCode.SpigotAPI.data.lists.ResourcesList;
+import me.TechsCode.SpigotAPI.data.lists.ReviewsList;
+import me.TechsCode.SpigotAPI.data.lists.UpdatesList;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class SpigotAPIClient extends Thread {
 
@@ -23,18 +25,18 @@ public class SpigotAPIClient extends Thread {
     }
 
     public List<Resource> getResources(){
-        return getData().map(Dataset::getResources).orElse(new ArrayList<>());
+        return getData().map(Dataset::getResources).orElse(new ResourcesList());
     }
 
     public List<Update> getUpdates(){
-        return getData().map(Dataset::getUpdates).orElse(new ArrayList<>());
+        return getData().map(Dataset::getUpdates).orElse(new UpdatesList());
     }
 
     public List<Review> getReviews(){
-        return getData().map(Dataset::getReviews).orElse(new ArrayList<>());
+        return getData().map(Dataset::getReviews).orElse(new ReviewsList());
     }
 
     public List<Purchase> getPurchases(){
-        return getData().map(Dataset::getPurchases).orElse(new ArrayList<>());
+        return getData().map(Dataset::getPurchases).orElse(new PurchasesList());
     }
 }
