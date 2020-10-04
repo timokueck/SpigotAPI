@@ -1,7 +1,5 @@
 package me.TechsCode.SpigotAPI.data.lists;
 
-import com.sun.xml.internal.ws.api.ResourceLoader;
-import me.TechsCode.SpigotAPI.data.Purchase;
 import me.TechsCode.SpigotAPI.data.Resource;
 
 import java.util.ArrayList;
