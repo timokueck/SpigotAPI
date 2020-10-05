@@ -12,6 +12,7 @@ public class Review extends JsonSerializable {
     private Time time;
 
     public Review(String id, String resourceId, User user, String text, int rating, Time time) {
+        this.id = id;
         this.resourceId = resourceId;
         this.user = user;
         this.text = text;
