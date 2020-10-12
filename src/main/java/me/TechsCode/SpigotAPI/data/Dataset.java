@@ -7,13 +7,12 @@ import me.TechsCode.SpigotAPI.data.lists.ResourcesList;
 import me.TechsCode.SpigotAPI.data.lists.ReviewsList;
 import me.TechsCode.SpigotAPI.data.lists.UpdatesList;
 
-import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class Dataset {
 
-    private long timeCreated;
+    private final long timeCreated;
 
     private final ResourcesList resources;
     private final PurchasesList purchases;
@@ -36,6 +35,8 @@ public class Dataset {
         this.reviews = StreamSupport.stream(jsonObject.getAsJsonArray("reviews").spliterator(), false)
                 .map(state -> new Review((JsonObject) state))
                 .collect(Collectors.toCollection(ReviewsList::new));
+
+        this.timeCreated = jsonObject.get("timeCreated").getAsLong();
 
         // Inject Dataset instance for cross references
         this.resources.forEach(x -> x.inject(this));
