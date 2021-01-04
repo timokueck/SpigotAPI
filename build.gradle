@@ -25,8 +25,8 @@ dependencies {
     compile "org.jsoup:jsoup:1.13.1"
     compile "org.nanohttpd:nanohttpd:2.3.1"
 
-    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.41.0'
-    implementation("io.github.bonigarcia:webdrivermanager:3.8.1")
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+    implementation("io.github.bonigarcia:webdrivermanager:4.2.2")
 }
 
 buildscript {

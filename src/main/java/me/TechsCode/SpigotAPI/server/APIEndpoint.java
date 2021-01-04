@@ -28,20 +28,19 @@ public class APIEndpoint extends NanoHTTPD {
 
     @Override
     public Response serve(IHTTPSession session) {
-        if(dataManager.getDataset() == null){
+        if(dataManager.getDataset() == null)
             return newFixedLengthResponse("Could not find any dataset!");
-        }
 
         Map<String, String> params = session.getParms();
 
-        if(!params.containsKey("token") || !params.get("token").equals(apiToken)){
+        if(!params.containsKey("token") || !params.get("token").equals(apiToken))
             return newFixedLengthResponse("The token you provided is invalid!");
-        }
 
         Dataset dataset = dataManager.getDataset();
 
         Response response = newFixedLengthResponse(dataset.toJsonObject().toString());
         response.addHeader("Content-Type", "application/json");
+
         return response;
     }
 }
