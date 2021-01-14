@@ -9,7 +9,7 @@ import java.util.Collections;
 
 public class VirtualBrowser {
 
-    protected ChromeDriver browser;
+    protected ChromeDriver driver;
 
     public VirtualBrowser() {
         WebDriverManager.chromedriver().setup();
@@ -21,15 +21,18 @@ public class VirtualBrowser {
         options.setExperimentalOption("useAutomationExtension", false);
         options.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
 
-        this.browser = new ChromeDriver(options);
+        this.driver = new ChromeDriver(options);
+
+        this.driver.executeScript("window.open('https://www.spigotmc.org');");
+        this.driver.executeScript("window.close();");
     }
 
     public void navigate(String url) throws InterruptedException {
-        browser.get(url);
+        driver.get(url);
 
         // Bypass Cloudflare
         int i = 0;
-        while (browser.getPageSource().contains("This process is automatic. Your browser will redirect to your requested content shortly.")) {
+        while (driver.getPageSource().contains("This process is automatic. Your browser will redirect to your requested content shortly.")) {
             if (i == 0)
                 System.out.println("Cloudflare detected. Bypassing it now...");
 
@@ -41,12 +44,12 @@ public class VirtualBrowser {
         if (i != 0)
             System.out.println("Bypassed Cloudflare after " + i + " seconds");
 
-        while (browser.getPageSource().contains("One more step") && browser.getPageSource().contains("Please complete the security check to access")) {
+        while (driver.getPageSource().contains("One more step") && driver.getPageSource().contains("Please complete the security check to access")) {
             sleep(1000);
             System.err.println("Detected an unsolvable captcha.. waiting...");
         }
 
-        if (i > 10 || browser.getPageSource().contains("ERR_TOO_MANY_REDIRECTS")) {
+        if (i > 10 || driver.getPageSource().contains("ERR_TOO_MANY_REDIRECTS")) {
             sleep(5000);
 
             System.out.println("Taking too long... retrying to access " + url);
@@ -55,7 +58,7 @@ public class VirtualBrowser {
     }
 
     public void close() {
-        browser.close();
+        driver.close();
     }
 
     public void sleep(long millis) throws InterruptedException {

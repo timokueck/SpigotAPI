@@ -8,12 +8,10 @@ import me.TechsCode.SpigotAPI.data.lists.UpdatesList;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SpigotBrowser extends VirtualBrowser {
 
@@ -28,7 +26,7 @@ public class SpigotBrowser extends VirtualBrowser {
     private String login(String username, String password) throws InterruptedException {
         navigate(BASE+"/login");
 
-        WebElement loginDialog = browser.findElement(By.id("pageLogin"));
+        WebElement loginDialog = driver.findElement(By.id("pageLogin"));
         WebElement usernameField = loginDialog.findElement(By.id("ctrl_pageLogin_login"));
         WebElement passwordField = loginDialog.findElement(By.id("ctrl_pageLogin_password"));
 
@@ -47,7 +45,7 @@ public class SpigotBrowser extends VirtualBrowser {
 
         sleep(2000);
 
-        WebElement link = browser.findElement(By.className("sidebar"))
+        WebElement link = driver.findElement(By.className("sidebar"))
                 .findElement(By.className("visitorPanel"))
                 .findElement(By.className("avatar"));
 
@@ -62,7 +60,7 @@ public class SpigotBrowser extends VirtualBrowser {
 
         navigate(BASE+"/resources/authors/"+loggedInUserId);
 
-        Document resourcesPage = Jsoup.parse(browser.getPageSource());
+        Document resourcesPage = Jsoup.parse(driver.getPageSource());
 
         for(Element item : resourcesPage.getElementsByClass("resourceListItem")){
             String id = item.id().split("-")[1];
@@ -181,7 +179,7 @@ public class SpigotBrowser extends VirtualBrowser {
             while (currentPage <= pageAmount){
                 navigate(BASE + "/resources/"+resource.getId()+"/"+subPage+"?page="+currentPage);
 
-                Document document = Jsoup.parse(browser.getPageSource());
+                Document document = Jsoup.parse(driver.getPageSource());
 
                 elements.addAll(document.getElementsByClass(uniqueClassName));
 
