@@ -11,6 +11,8 @@ public class VirtualBrowser {
 
     protected ChromeDriver driver;
 
+    private static String OS = System.getProperty("os.name").toLowerCase();
+
     public VirtualBrowser() {
         WebDriverManager.chromedriver().setup();
         System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY, "true");
@@ -21,10 +23,34 @@ public class VirtualBrowser {
         options.setExperimentalOption("useAutomationExtension", false);
         options.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
 
+        if(!isWindows() && !isMac()) {
+            options.addArguments("--disable-extensions");
+            options.addArguments("--headless");
+            options.addArguments("--disable-gpu");
+            options.addArguments("--no-sandbox");
+        }
+
         this.driver = new ChromeDriver(options);
 
-        this.driver.executeScript("window.open('https://www.spigotmc.org');");
-        this.driver.executeScript("window.close();");
+        driver.executeScript("popup_window = window.open('https://www.spigotmc.org')");
+
+        try {
+            Thread.sleep(10000L);
+        } catch (InterruptedException ignored) { }
+
+        driver.executeScript("popup_window.close()");
+
+        try {
+            Thread.sleep(2000L);
+        } catch (InterruptedException ignored) { }
+    }
+
+    public static boolean isWindows() {
+        return (OS.contains("win"));
+    }
+
+    public static boolean isMac() {
+        return (OS.contains("mac"));
     }
 
     public void navigate(String url) throws InterruptedException {
