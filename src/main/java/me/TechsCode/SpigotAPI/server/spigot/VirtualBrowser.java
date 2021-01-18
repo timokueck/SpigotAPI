@@ -11,7 +11,7 @@ public class VirtualBrowser {
 
     protected ChromeDriver driver;
 
-    private static String OS = System.getProperty("os.name").toLowerCase();
+    private static final String OS = System.getProperty("os.name").toLowerCase();
 
     public VirtualBrowser() {
         WebDriverManager.chromedriver().setup();
