@@ -67,6 +67,11 @@ public class VirtualBrowser {
             i++;
         }
 
+        if(i > 60) {
+            System.out.println("Bypass not working! Shutting down");
+            System.exit(0);
+        }
+
         if (i != 0)
             System.out.println("Bypassed Cloudflare after " + i + " seconds");
 
