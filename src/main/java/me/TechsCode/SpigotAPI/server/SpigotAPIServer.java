@@ -1,6 +1,11 @@
 package me.TechsCode.SpigotAPI.server;
 
+import com.sun.net.httpserver.HttpServer;
+
 public class SpigotAPIServer {
+    private static HttpServer server;
+    private static HttpRouter router;
+    private static String spigotStatus = "unknown";
 
     public static void main(String[] args){
         System.out.println("Starting up SpigotAPI Server...");
@@ -11,8 +16,31 @@ public class SpigotAPIServer {
         }
 
         DataManager dataManager = new DataManager();
-        APIEndpoint webServer = new APIEndpoint(dataManager, Config.getInstance().getToken());
 
-        System.out.println("Listening on port "+webServer.getListeningPort()+" with token "+Config.getInstance().getToken());
+        router = new HttpRouter(dataManager, Config.getInstance().getToken());
+    }
+
+    public static HttpServer getServer(){
+        return server;
+    }
+
+    public static void setServer(HttpServer HttpServer){
+        server = HttpServer;
+    }
+
+    public static HttpRouter getRouter(){
+        return router;
+    }
+
+    public static void setRouter(HttpRouter HttpRouter){
+        router = HttpRouter;
+    }
+
+    public static String getSpigotStatus() {
+        return spigotStatus;
+    }
+
+    public static void setSpigotStatus(String status) {
+        spigotStatus = status;
     }
 }

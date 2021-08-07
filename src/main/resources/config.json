@@ -2,5 +2,6 @@
   "spigotUsername": "someuser",
   "spigotPassword": "somepassword",
 
-  "token": "sometoken"
+  "token": "sometoken",
+  "port": 809
 }

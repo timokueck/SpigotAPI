@@ -1,2 +1,7 @@
+@echo off
+
+echo Starting SpigotAPI after delay
+TIMEOUT /T 5
+cls
 java -jar SpigotAPI.jar
-pause
+TIMEOUT /T 10

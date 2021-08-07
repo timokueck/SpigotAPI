@@ -65,7 +65,7 @@ public class DataManager extends Thread {
                     long now = System.currentTimeMillis();
 
                     Config config = Config.getInstance();
-                    SpigotBrowser parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword());
+                    SpigotBrowser parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword(), true);
 
                     ResourcesList resources = parser.collectResources();
                     System.out.println("[1/4] Collected "+resources.size()+" Resources");
@@ -79,9 +79,8 @@ public class DataManager extends Thread {
                     PurchasesList purchases = parser.collectPurchases(resources);
                     System.out.println("[4/4] Collected "+purchases.size()+" Purchases");
 
-                    PostsList posts = parser.getUserPosts("faab007.324536");
-                    System.out.println("[5/5] Collected "+posts.size()+" Posts");
-                    System.out.print(Arrays.toString(posts.toArray()));
+                    String spigotStatus = parser.getSpigotStatus();
+                    SpigotAPIServer.setSpigotStatus(spigotStatus);
 
                     parser.close();
 

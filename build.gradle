@@ -18,8 +18,11 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.jetbrains:annotations:20.1.0'
+
     // Server
     compile group: 'commons-io', name: 'commons-io', version: '2.8.0'
+    implementation('com.googlecode.json-simple:json-simple:1.1.1')
 
     // Client
     compile "org.jsoup:jsoup:1.13.1"

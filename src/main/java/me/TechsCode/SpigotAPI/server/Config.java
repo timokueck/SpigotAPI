@@ -63,4 +63,8 @@ public class Config {
     public String getToken(){
         return root.get("token").getAsString();
     }
+
+    public int getPort(){
+        return root.get("port").getAsInt();
+    }
 }

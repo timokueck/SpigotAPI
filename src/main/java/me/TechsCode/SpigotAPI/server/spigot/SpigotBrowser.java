@@ -5,6 +5,7 @@ import me.TechsCode.SpigotAPI.data.lists.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -16,8 +17,12 @@ public class SpigotBrowser extends VirtualBrowser {
 
     private final String loggedInUserId;
 
-    public SpigotBrowser(String username, String password) throws InterruptedException {
-        loggedInUserId = login(username, password);
+    public SpigotBrowser(String username, String password, Boolean loginRequired) throws InterruptedException {
+        if(loginRequired.equals(true)){
+            loggedInUserId = login(username, password);
+        }else{
+            loggedInUserId = null;
+        }
     }
 
     private String login(String username, String password) throws InterruptedException {
@@ -54,6 +59,10 @@ public class SpigotBrowser extends VirtualBrowser {
 
     public ResourcesList collectResources() throws InterruptedException {
         ResourcesList resources = new ResourcesList();
+
+        if(loggedInUserId == null){
+            return resources;
+        }
 
         navigate(BASE+"/resources/authors/"+loggedInUserId);
 
@@ -202,23 +211,59 @@ public class SpigotBrowser extends VirtualBrowser {
         return url;
     }
 
-    public PostsList getUserPosts(String userId) throws InterruptedException {
-        PostsList posts = new PostsList();
-
+    public ProfileComment[] getUserPosts(String userId, Boolean allMessages) throws InterruptedException {
         navigate(BASE+"/members/"+userId);
+        Document doc = Jsoup.parse(driver.getPageSource());
+        final List<ProfileComment> comments = new ArrayList<>();
 
-        Document resourcesPage = Jsoup.parse(driver.getPageSource());
+        final Elements pageCounter = doc.getElementsByClass("pageNavHeader");
+        int pages = 1;
 
-        for(Element item : resourcesPage.getElementById("ProfilePostList").getElementsByClass("messageSimple")){
-            Element messageInfo = item.getElementsByClass("messageInfo").first();
+        if (!pageCounter.isEmpty())
+            pages = Integer.parseInt(pageCounter.first().text().split("of ")[1]);
 
-            String user = messageInfo.getElementsByClass("username").first().text();
-            String message = messageInfo.getElementsByClass("baseHtml").first().text();
-            String date = messageInfo.getElementsByClass("DateTime").first().text();
+        for (int page = 1; page <= pages; ++page) {
+            navigate(BASE+"/members/"+userId+"?page="+page);
+            Document pageDoc = Jsoup.parse(driver.getPageSource());
 
-            posts.add(new Post(user, message, date));
+            if (pageDoc != null) {
+                for(Element item : pageDoc.getElementById("ProfilePostList").getElementsByClass("messageSimple")){
+                    final String commentId = item.attr("id").split("-")[2];
+                    final String user = item.attr("data-author");
+
+                    Element messageInfo = item.getElementsByClass("messageInfo").first();
+                    final String user2 = getUserFromHref(userId).getUsername();
+
+                    if(!user2.equalsIgnoreCase(user) && !allMessages) //Skip if comment is not from
+                        continue;
+
+                    final String text = messageInfo.getElementsByTag("blockquote").text();
+
+                    comments.add(new ProfileComment(commentId, userId, text));
+                }
+            }
         }
 
-        return posts;
+        return comments.toArray(new ProfileComment[0]);
+    }
+
+    private static User getUserFromHref(String href) {
+        href = href.replace("members/", "").replace("/", "");
+        final String username = href.split("[.]")[0];
+        final String id = href.split("[.]")[1];
+
+        return new User(id, username, null);
+    }
+
+    public String getSpigotStatus() throws InterruptedException {
+        navigate(BASE+"/");
+        Document doc = Jsoup.parse(driver.getPageSource());
+
+        Element el = doc.getElementById("content");
+        if(el == null){
+            return "offline";
+        }else{
+            return "online";
+        }
     }
 }
