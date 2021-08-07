@@ -32,13 +32,15 @@ public class VirtualBrowser {
 
         this.driver = new ChromeDriver(options);
 
-        driver.executeScript("popup_window = window.open('https://www.spigotmc.org')");
+        driver.executeScript("popup_window_spigot = window.open('https://www.spigotmc.org')");
+        driver.executeScript("popup_window_market = window.open('https://www.mc-market.org')");
 
         try {
             Thread.sleep(10000L);
         } catch (InterruptedException ignored) { }
 
-        driver.executeScript("popup_window.close()");
+        driver.executeScript("popup_window_spigot.close()");
+        driver.executeScript("popup_window_market.close()");
 
         try {
             Thread.sleep(2000L);

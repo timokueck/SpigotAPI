@@ -255,7 +255,7 @@ public class SpigotBrowser extends VirtualBrowser {
         return new User(id, username, null);
     }
 
-    public String getSpigotStatus() throws InterruptedException {
+    public String getAPIStatus() throws InterruptedException {
         navigate(BASE+"/");
         Document doc = Jsoup.parse(driver.getPageSource());
 

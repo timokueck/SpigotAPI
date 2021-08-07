@@ -36,7 +36,7 @@ public class Status implements HttpHandler {
                     obj.put("statusCode", spigotStatus);
                 }
 
-                long lastFetch = HttpRouter.getDataManager().getDataset().getTimeCreated();
+                long lastFetch = HttpRouter.getDataManager().getDataset_market().getTimeCreated();
                 Date created = new Date(lastFetch);
                 obj.put("lastFetch", lastFetch);
                 obj.put("lastFetchDate", created.toString());

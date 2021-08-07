@@ -27,11 +27,11 @@ public class Config {
     private JsonObject root;
 
     private Config() {
-        File file = new File("config.json");
+        File file = new File("data/config.json");
 
         if(!file.exists()){
             try {
-                InputStream src = Config.class.getResourceAsStream("/config.json");
+                InputStream src = Config.class.getResourceAsStream("/data/config.json");
                 Files.copy(src, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -49,7 +49,7 @@ public class Config {
     }
 
     public boolean isConfigured(){
-        return !getSpigotUsername().equals("someuser");
+        return !getSpigotUsername().equals("someuser") || !getMarketUsername().equals("someuser");
     }
 
     public String getSpigotUsername(){
@@ -58,6 +58,14 @@ public class Config {
 
     public String getSpigotPassword(){
         return root.get("spigotPassword").getAsString();
+    }
+
+    public String getMarketUsername(){
+        return root.get("marketUsername").getAsString();
+    }
+
+    public String getMarketPassword(){
+        return root.get("marketPassword").getAsString();
     }
 
     public String getToken(){

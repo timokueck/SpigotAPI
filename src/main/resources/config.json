@@ -1,7 +1,9 @@
 {
   "spigotUsername": "someuser",
   "spigotPassword": "somepassword",
+  "marketUsername": "someuser",
+  "marketPassword": "somepassword",
 
   "token": "sometoken",
-  "port": 809
+  "port": 80
 }

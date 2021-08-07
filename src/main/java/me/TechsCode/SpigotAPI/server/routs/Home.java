@@ -10,15 +10,28 @@ import org.json.simple.JSONObject;
 
 public class Home implements HttpHandler {
     public void handle(HttpExchange t) throws IOException {
-        JSONObject obj = new JSONObject();
-        obj.put("Status", "/status?token=");
-        obj.put("Resources", "/resources?token=");
-        obj.put("Reviews", "/reviews?token=");
-        obj.put("Purchases", "/purchases?token=");
-        obj.put("Updates", "/updates?token=");
-        obj.put("Actions", "/actions?token=");
-        obj.put("Verify", "/verifyUser?token=&user=&showAll=false");
-        String response = obj.toString();
+        JSONObject spigot = new JSONObject();
+        spigot.put("Spigot | Verify", "/spigot/verifyUser?token=&user=&showAll=false");
+        spigot.put("Spigot | All", "/data/spigot/all?token=");
+        spigot.put("Spigot | Resources", "/data/spigot/resources?token=");
+        spigot.put("Spigot | Reviews", "/data/spigot/reviews?token=");
+        spigot.put("Spigot | Purchases", "/data/spigot/purchases?token=");
+        spigot.put("Spigot | Updates", "/data/spigot/updates?token=");
+
+        JSONObject market = new JSONObject();
+        market.put("Market | Verify", "/market/verifyUser?token=&user=&showAll=false");
+        market.put("Market | All", "/data/market/all?token=");
+        market.put("Market | Resources", "/data/market/resources?token=");
+        market.put("Market | Reviews", "/data/market/reviews?token=");
+        market.put("Market | Purchases", "/data/market/purchases?token=");
+        market.put("Market | Updates", "/data/market/updates?token=");
+
+        JSONObject main = new JSONObject();
+        main.put("Status", "/status?token=");
+        main.put("Actions", "/actions?token=");
+        main.put("spigot", spigot);
+        main.put("market", market);
+        String response = main.toString();
         int responseCode = 200;
 
         t.sendResponseHeaders(responseCode, response.length());

@@ -18,6 +18,7 @@ public class Dataset {
     private final PurchasesList purchases;
     private final UpdatesList updates;
     private final ReviewsList reviews;
+    private final String market;
 
     public Dataset(JsonObject jsonObject){
         this.resources = StreamSupport.stream(jsonObject.getAsJsonArray("resources").spliterator(), false)
@@ -43,14 +44,16 @@ public class Dataset {
         this.purchases.forEach(x -> x.inject(this));
         this.updates.forEach(x -> x.inject(this));
         this.reviews.forEach(x -> x.inject(this));
+        this.market = jsonObject.get("market").getAsString();
     }
 
-    public Dataset(long timeCreated, ResourcesList resources, PurchasesList purchases, UpdatesList updates, ReviewsList reviews) {
+    public Dataset(long timeCreated, ResourcesList resources, PurchasesList purchases, UpdatesList updates, ReviewsList reviews, String market) {
         this.timeCreated = timeCreated;
         this.resources = resources;
         this.purchases = purchases;
         this.updates = updates;
         this.reviews = reviews;
+        this.market = market;
     }
 
     public ResourcesList getResources() {
@@ -67,6 +70,10 @@ public class Dataset {
 
     public ReviewsList getReviews() {
         return reviews;
+    }
+
+    public String getMarket() {
+        return market;
     }
 
     public long getTimeCreated() {
@@ -91,6 +98,7 @@ public class Dataset {
         jsonObject.add("updates", updates);
         jsonObject.add("reviews", reviews);
         jsonObject.addProperty("timeCreated", timeCreated);
+        jsonObject.addProperty("market", market);
 
         return jsonObject;
     }
