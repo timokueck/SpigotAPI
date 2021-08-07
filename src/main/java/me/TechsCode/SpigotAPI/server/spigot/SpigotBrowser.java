@@ -1,10 +1,7 @@
 package me.TechsCode.SpigotAPI.server.spigot;
 
 import me.TechsCode.SpigotAPI.data.*;
-import me.TechsCode.SpigotAPI.data.lists.PurchasesList;
-import me.TechsCode.SpigotAPI.data.lists.ResourcesList;
-import me.TechsCode.SpigotAPI.data.lists.ReviewsList;
-import me.TechsCode.SpigotAPI.data.lists.UpdatesList;
+import me.TechsCode.SpigotAPI.data.lists.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -203,5 +200,25 @@ public class SpigotBrowser extends VirtualBrowser {
         if(url.startsWith("data")) return BASE + "/" + url;
         if(url.startsWith("//static")) return "https:" + url;
         return url;
+    }
+
+    public PostsList getUserPosts(String userId) throws InterruptedException {
+        PostsList posts = new PostsList();
+
+        navigate(BASE+"/members/"+userId);
+
+        Document resourcesPage = Jsoup.parse(driver.getPageSource());
+
+        for(Element item : resourcesPage.getElementById("ProfilePostList").getElementsByClass("messageSimple")){
+            Element messageInfo = item.getElementsByClass("messageInfo").first();
+
+            String user = messageInfo.getElementsByClass("username").first().text();
+            String message = messageInfo.getElementsByClass("baseHtml").first().text();
+            String date = messageInfo.getElementsByClass("DateTime").first().text();
+
+            posts.add(new Post(user, message, date));
+        }
+
+        return posts;
     }
 }

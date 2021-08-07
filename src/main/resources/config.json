@@ -1,6 +1,6 @@
 {
-  "spigotUsername": "someuser",
-  "spigotPassword": "securepassword",
+  "spigotUsername": "mail@fabiandingemans.nl",
+  "spigotPassword": "c7fHYULRt",
 
-  "token": "a-random-secure-string-required-for-requests"
+  "token": "test123"
 }

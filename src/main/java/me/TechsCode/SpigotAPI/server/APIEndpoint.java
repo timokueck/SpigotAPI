@@ -28,15 +28,15 @@ public class APIEndpoint extends NanoHTTPD {
         if (this.dataManager.getDataset() == null)
             return newFixedLengthResponse("Could not find any dataset!");
         Map<String, String> params = session.getParms();
-        if (((String)params.get("token")).equals(this.apiToken + "restart")) {
-            try {
-                Runtime.getRuntime().exec("cmd.exe /c start C:\\Users\\Administrator\\Desktop\\SpigotAPI\\start.bat");
-                Thread.sleep(1000L);
-            } catch (IOException|InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.exit(0);
-        }
+//        if (((String)params.get("token")).equals(this.apiToken + "restart")) {
+//            try {
+//                Runtime.getRuntime().exec("cmd.exe /c start C:\\Users\\Administrator\\Desktop\\SpigotAPI\\start.bat");
+//                Thread.sleep(1000L);
+//            } catch (IOException|InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            System.exit(0);
+//        }
         if (!params.containsKey("token") || !((String)params.get("token")).equals(this.apiToken))
             return newFixedLengthResponse("The token you provided is invalid!");
         Dataset dataset = this.dataManager.getDataset();

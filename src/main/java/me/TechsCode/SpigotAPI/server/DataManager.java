@@ -3,16 +3,14 @@ package me.TechsCode.SpigotAPI.server;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.TechsCode.SpigotAPI.data.Dataset;
-import me.TechsCode.SpigotAPI.data.lists.PurchasesList;
-import me.TechsCode.SpigotAPI.data.lists.ResourcesList;
-import me.TechsCode.SpigotAPI.data.lists.ReviewsList;
-import me.TechsCode.SpigotAPI.data.lists.UpdatesList;
+import me.TechsCode.SpigotAPI.data.lists.*;
 import me.TechsCode.SpigotAPI.server.spigot.SpigotBrowser;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class DataManager extends Thread {
@@ -80,6 +78,10 @@ public class DataManager extends Thread {
 
                     PurchasesList purchases = parser.collectPurchases(resources);
                     System.out.println("[4/4] Collected "+purchases.size()+" Purchases");
+
+                    PostsList posts = parser.getUserPosts("faab007.324536");
+                    System.out.println("[5/5] Collected "+posts.size()+" Posts");
+                    System.out.print(Arrays.toString(posts.toArray()));
 
                     parser.close();
 
