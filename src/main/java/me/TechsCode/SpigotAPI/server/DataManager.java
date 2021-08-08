@@ -6,6 +6,7 @@ import me.TechsCode.SpigotAPI.data.Dataset;
 import me.TechsCode.SpigotAPI.data.lists.*;
 import me.TechsCode.SpigotAPI.server.spigot.MarketBrowser;
 import me.TechsCode.SpigotAPI.server.spigot.SpigotBrowser;
+import me.TechsCode.SpigotAPI.server.spigot.VirtualBrowser;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -67,22 +68,20 @@ public class DataManager extends Thread {
                     long now = System.currentTimeMillis();
 
                     Config config = Config.getInstance();
-                    SpigotBrowser parser = new SpigotBrowser(config.getMarketUsername(), config.getMarketPassword(), true);
+                    VirtualBrowser.enableSpigotPreload();
+                    SpigotBrowser parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword(), true);
 
                     ResourcesList resources = parser.collectResources();
-                    System.out.println("[1/4] Collected "+resources.size()+" Resources");
+                    System.out.println("[1/4] Collected "+resources.size()+" Resources on spigotmc");
 
                     UpdatesList updates = parser.collectUpdates(resources);
-                    System.out.println("[2/4] Collected "+updates.size()+" Updates");
+                    System.out.println("[2/4] Collected "+updates.size()+" Updates on spigotmc");
 
                     ReviewsList reviews = parser.collectReviews(resources);
-                    System.out.println("[3/4] Collected "+reviews.size()+" Reviews");
+                    System.out.println("[3/4] Collected "+reviews.size()+" Reviews on spigotmc");
 
                     PurchasesList purchases = parser.collectPurchases(resources);
-                    System.out.println("[4/4] Collected "+purchases.size()+" Purchases");
-
-                    String spigotStatus = parser.getAPIStatus();
-                    SpigotAPIServer.setSpigotStatus(spigotStatus);
+                    System.out.println("[4/4] Collected "+purchases.size()+" Purchases on spigotmc");
 
                     parser.close();
 
@@ -90,7 +89,7 @@ public class DataManager extends Thread {
                     save(latest_spigot);
 
                     long delay = System.currentTimeMillis() - now;
-                    System.out.println("Completed Refreshing Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes!");
+                    System.out.println("Completed Spigot Refreshing Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes!");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -101,22 +100,20 @@ public class DataManager extends Thread {
                     long now = System.currentTimeMillis();
 
                     Config config = Config.getInstance();
+                    VirtualBrowser.enableMarketPreload();
                     MarketBrowser parser = new MarketBrowser(config.getMarketUsername(), config.getMarketPassword(), true);
 
                     ResourcesList resources = parser.collectResources();
-                    System.out.println("[1/4] Collected "+resources.size()+" Resources");
+                    System.out.println("[1/4] Collected "+resources.size()+" Resources on mc-market");
 
                     UpdatesList updates = parser.collectUpdates(resources);
-                    System.out.println("[2/4] Collected "+updates.size()+" Updates");
+                    System.out.println("[2/4] Collected "+updates.size()+" Updates on mc-market");
 
                     ReviewsList reviews = parser.collectReviews(resources);
-                    System.out.println("[3/4] Collected "+reviews.size()+" Reviews");
+                    System.out.println("[3/4] Collected "+reviews.size()+" Reviews on mc-market");
 
                     PurchasesList purchases = parser.collectPurchases(resources);
-                    System.out.println("[4/4] Collected "+purchases.size()+" Purchases");
-
-                    String spigotStatus = parser.getAPIStatus();
-                    SpigotAPIServer.setSpigotStatus(spigotStatus);
+                    System.out.println("[4/4] Collected "+purchases.size()+" Purchases on mc-market");
 
                     parser.close();
 
@@ -124,7 +121,7 @@ public class DataManager extends Thread {
                     save(latest_market);
 
                     long delay = System.currentTimeMillis() - now;
-                    System.out.println("Completed Refreshing Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes!");
+                    System.out.println("Completed Market Refreshing Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes!");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
