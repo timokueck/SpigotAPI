@@ -1,15 +1,19 @@
 package me.TechsCode.SpigotAPI.server.spigot;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.github.bonigarcia.wdm.managers.ChromeDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.sql.Driver;
 import java.util.Collections;
 
 public class VirtualBrowser {
 
     protected ChromeDriver driver;
+    private static boolean preloadSpigot = false;
+    private static boolean preloadMarket = false;
 
     private static final String OS = System.getProperty("os.name").toLowerCase();
 
@@ -32,19 +36,41 @@ public class VirtualBrowser {
 
         this.driver = new ChromeDriver(options);
 
-        driver.executeScript("popup_window_spigot = window.open('https://www.spigotmc.org')");
-        driver.executeScript("popup_window_market = window.open('https://www.mc-market.org')");
+        if(preloadSpigot){
+            driver.executeScript("popup_window_spigot = window.open('https://www.spigotmc.org')");
 
-        try {
-            Thread.sleep(10000L);
-        } catch (InterruptedException ignored) { }
+            try {
+                Thread.sleep(10000L);
+            } catch (InterruptedException ignored) { }
 
-        driver.executeScript("popup_window_spigot.close()");
-        driver.executeScript("popup_window_market.close()");
+            driver.executeScript("popup_window_spigot.close()");
 
-        try {
-            Thread.sleep(2000L);
-        } catch (InterruptedException ignored) { }
+            try {
+                Thread.sleep(2000L);
+            } catch (InterruptedException ignored) { }
+        }
+
+        if(preloadMarket){
+            driver.executeScript("popup_window_market = window.open('https://www.mc-market.org')");
+
+            try {
+                Thread.sleep(10000L);
+            } catch (InterruptedException ignored) { }
+
+            driver.executeScript("popup_window_market.close()");
+
+            try {
+                Thread.sleep(2000L);
+            } catch (InterruptedException ignored) { }
+        }
+    }
+
+    public static void enableSpigotPreload() {
+        preloadSpigot = true;
+    }
+
+    public static void enableMarketPreload() {
+        preloadMarket = true;
     }
 
     public static boolean isWindows() {
@@ -91,6 +117,8 @@ public class VirtualBrowser {
     }
 
     public void close() {
+        preloadSpigot = false;
+        preloadMarket = false;
         driver.close();
     }
 

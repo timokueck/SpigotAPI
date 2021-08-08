@@ -6,7 +6,8 @@ import com.sun.net.httpserver.HttpHandler;
 import me.TechsCode.SpigotAPI.data.ProfileComment;
 import me.TechsCode.SpigotAPI.server.Config;
 import me.TechsCode.SpigotAPI.server.HttpRouter;
-import me.TechsCode.SpigotAPI.server.spigot.SpigotBrowser;
+import me.TechsCode.SpigotAPI.server.spigot.MarketBrowser;
+import me.TechsCode.SpigotAPI.server.spigot.VirtualBrowser;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
@@ -37,7 +38,8 @@ public class VerifyUser_Market implements HttpHandler {
                                 long now = System.currentTimeMillis();
                                 try {
                                     Config config = Config.getInstance();
-                                    SpigotBrowser parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword(), false);
+                                    VirtualBrowser.enableMarketPreload();
+                                    MarketBrowser parser = new MarketBrowser(config.getMarketUsername(), config.getMarketPassword(), true);
 
                                     JsonArray comments = new JsonArray();
                                     ProfileComment[] profileComments = parser.getUserPosts(user, showAll);
@@ -46,7 +48,7 @@ public class VerifyUser_Market implements HttpHandler {
                                     parser.close();
 
                                     long delay = System.currentTimeMillis() - now;
-                                    System.out.println("Completed Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes!");
+                                    System.out.println("Completed Market Posts Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes!");
 
                                     obj.put("data", comments);
                                     response = obj.toString();
