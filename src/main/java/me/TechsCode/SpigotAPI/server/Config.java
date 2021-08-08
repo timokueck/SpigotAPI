@@ -72,7 +72,12 @@ public class Config {
         return root.get("token").getAsString();
     }
 
+    public String getWebhookUrl(){
+        return root.get("discordWebhookUrl").getAsString();
+    }
+
     public int getPort(){
         return root.get("port").getAsInt();
     }
+
 }

@@ -9,7 +9,7 @@ public class Logger {
 
         if(!sendDiscord)return;
 
-        String url = "https://discord.com/api/webhooks/873942374479446026/GzCrkjWACcuR6IzaMquHBS2YE5kjJwkJtrI9FFKbNPTCdR1I55-q7-fLu0ExvuHOqIGh";
+        String url = Config.getInstance().getWebhookUrl();
         WebhookClientBuilder builder = new WebhookClientBuilder(url); // or id, token
         builder.setThreadFactory((job) -> {
             Thread thread = new Thread(job);
