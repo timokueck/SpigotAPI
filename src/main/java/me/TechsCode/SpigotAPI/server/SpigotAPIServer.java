@@ -7,12 +7,12 @@ public class SpigotAPIServer {
     private static HttpRouter router;
 
     public static void main(String[] args){
-        Logger.send("Starting up SpigotAPI Server...", true);
-
         if(!Config.getInstance().isConfigured()){
             System.err.println("Please configure everything in the config.json!");
             return;
         }
+
+        Logger.send("Starting up SpigotAPI Server...", true);
 
         DataManager dataManager = new DataManager();
 

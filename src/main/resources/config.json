@@ -6,5 +6,5 @@
 
   "token": "sometoken",
   "port": 80,
-  "discordWebhookUrl": "url"
+  "discordWebhookUrl": "someurl"
 }
