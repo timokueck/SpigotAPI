@@ -3,6 +3,7 @@ package me.TechsCode.SpigotAPI.server.routs.actions;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import me.TechsCode.SpigotAPI.server.HttpRouter;
+import me.TechsCode.SpigotAPI.server.Logger;
 import me.TechsCode.SpigotAPI.server.SpigotAPIServer;
 import org.json.simple.JSONObject;
 
@@ -20,6 +21,7 @@ public class Restart implements HttpHandler {
         if(params.get("token") !=null){
             String token = params.get("token");
             if(HttpRouter.isTokenValid(token)){
+                Logger.send("Restarting SpigotAPI Server...", true);
                 try {
                     Runtime.getRuntime().exec("cmd.exe /c start C:\\Users\\fabia\\Documents\\JavaApps\\SpigotAPI\\startFiles\\start.bat");
                     Thread.sleep(1000L);

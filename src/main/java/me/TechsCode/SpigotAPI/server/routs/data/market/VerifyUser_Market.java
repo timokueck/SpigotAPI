@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import me.TechsCode.SpigotAPI.data.ProfileComment;
 import me.TechsCode.SpigotAPI.server.Config;
 import me.TechsCode.SpigotAPI.server.HttpRouter;
+import me.TechsCode.SpigotAPI.server.Logger;
 import me.TechsCode.SpigotAPI.server.spigot.MarketBrowser;
 import me.TechsCode.SpigotAPI.server.spigot.VirtualBrowser;
 import org.json.simple.JSONObject;
@@ -48,7 +49,7 @@ public class VerifyUser_Market implements HttpHandler {
                                     parser.close();
 
                                     long delay = System.currentTimeMillis() - now;
-                                    System.out.println("Completed Market Posts Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes!");
+                                    Logger.send("Completed Market Posts Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes!", true);
 
                                     obj.put("data", comments);
                                     response = obj.toString();

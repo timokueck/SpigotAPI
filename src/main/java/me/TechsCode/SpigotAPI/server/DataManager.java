@@ -3,7 +3,10 @@ package me.TechsCode.SpigotAPI.server;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.TechsCode.SpigotAPI.data.Dataset;
-import me.TechsCode.SpigotAPI.data.lists.*;
+import me.TechsCode.SpigotAPI.data.lists.PurchasesList;
+import me.TechsCode.SpigotAPI.data.lists.ResourcesList;
+import me.TechsCode.SpigotAPI.data.lists.ReviewsList;
+import me.TechsCode.SpigotAPI.data.lists.UpdatesList;
 import me.TechsCode.SpigotAPI.server.spigot.MarketBrowser;
 import me.TechsCode.SpigotAPI.server.spigot.SpigotBrowser;
 import me.TechsCode.SpigotAPI.server.spigot.VirtualBrowser;
@@ -28,10 +31,10 @@ public class DataManager extends Thread {
         start();
     }
 
-    private void save(Dataset dataset){
-        File file = new File("data/lastDataset_"+dataset.getMarket()+".json");
+    private void save(Dataset dataset) {
+        File file = new File("data/lastDataset_" + dataset.getMarket() + ".json");
 
-        if(file.exists()) file.delete();
+        if (file.exists()) file.delete();
 
         String json = dataset.toJsonObject().toString();
 
@@ -42,10 +45,10 @@ public class DataManager extends Thread {
         }
     }
 
-    private Dataset load(String market){
-        File file = new File("data/lastDataset_"+market+".json");
+    private Dataset load(String market) {
+        File file = new File("data/lastDataset_" + market + ".json");
 
-        if(!file.exists()) return null;
+        if (!file.exists()) return null;
 
         try {
             String json = FileUtils.readFileToString(file, Charset.defaultCharset());
@@ -62,8 +65,8 @@ public class DataManager extends Thread {
 
     @Override
     public void run() {
-        while (true){
-            if(latest_spigot == null || (System.currentTimeMillis() - latest_spigot.getTimeCreated()) > REFRESH_DELAY){
+        while (true) {
+            if (latest_spigot == null || (System.currentTimeMillis() - latest_spigot.getTimeCreated()) > REFRESH_DELAY) {
                 try {
                     long now = System.currentTimeMillis();
 
@@ -72,16 +75,16 @@ public class DataManager extends Thread {
                     SpigotBrowser parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword(), true);
 
                     ResourcesList resources = parser.collectResources();
-                    System.out.println("[1/4] Collected "+resources.size()+" Resources on spigotmc");
+                    Logger.send("[1/4] Collected " + resources.size() + " Resources on SpigotMC", false);
 
                     UpdatesList updates = parser.collectUpdates(resources);
-                    System.out.println("[2/4] Collected "+updates.size()+" Updates on spigotmc");
+                    Logger.send("[2/4] Collected " + updates.size() + " Updates on SpigotMC", false);
 
                     ReviewsList reviews = parser.collectReviews(resources);
-                    System.out.println("[3/4] Collected "+reviews.size()+" Reviews on spigotmc");
+                    Logger.send("[3/4] Collected " + reviews.size() + " Reviews on SpigotMC", false);
 
                     PurchasesList purchases = parser.collectPurchases(resources);
-                    System.out.println("[4/4] Collected "+purchases.size()+" Purchases on spigotmc");
+                    Logger.send("[4/4] Collected " + purchases.size() + " Purchases on SpigotMC", false);
 
                     parser.close();
 
@@ -89,13 +92,13 @@ public class DataManager extends Thread {
                     save(latest_spigot);
 
                     long delay = System.currentTimeMillis() - now;
-                    System.out.println("Completed Spigot Refreshing Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes!");
+                    Logger.send("Completed SpigotMC Refreshing Cycle in " + Math.round(TimeUnit.MILLISECONDS.toMinutes(delay)) + " minutes!", true);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
-            if(latest_market == null || (System.currentTimeMillis() - latest_market.getTimeCreated()) > REFRESH_DELAY){
+            if (latest_market == null || (System.currentTimeMillis() - latest_market.getTimeCreated()) > REFRESH_DELAY) {
                 try {
                     long now = System.currentTimeMillis();
 
@@ -104,16 +107,16 @@ public class DataManager extends Thread {
                     MarketBrowser parser = new MarketBrowser(config.getMarketUsername(), config.getMarketPassword(), true);
 
                     ResourcesList resources = parser.collectResources();
-                    System.out.println("[1/4] Collected "+resources.size()+" Resources on mc-market");
+                    Logger.send("[1/4] Collected " + resources.size() + " Resources on MC-Market", false);
 
                     UpdatesList updates = parser.collectUpdates(resources);
-                    System.out.println("[2/4] Collected "+updates.size()+" Updates on mc-market");
+                    Logger.send("[2/4] Collected " + updates.size() + " Updates on MC-Market", false);
 
                     ReviewsList reviews = parser.collectReviews(resources);
-                    System.out.println("[3/4] Collected "+reviews.size()+" Reviews on mc-market");
+                    Logger.send("[3/4] Collected " + reviews.size() + " Reviews on MC-Market", false);
 
                     PurchasesList purchases = parser.collectPurchases(resources);
-                    System.out.println("[4/4] Collected "+purchases.size()+" Purchases on mc-market");
+                    Logger.send("[4/4] Collected " + purchases.size() + " Purchases on MC-Market", false);
 
                     parser.close();
 
@@ -121,7 +124,7 @@ public class DataManager extends Thread {
                     save(latest_market);
 
                     long delay = System.currentTimeMillis() - now;
-                    System.out.println("Completed Market Refreshing Cycle in "+Math.round(TimeUnit.MILLISECONDS.toMinutes(delay))+" minutes!");
+                    Logger.send("Completed MC-Market Refreshing Cycle in " + Math.round(TimeUnit.MILLISECONDS.toMinutes(delay)) + " minutes!", true);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -130,11 +133,11 @@ public class DataManager extends Thread {
         }
     }
 
-    public Dataset getDataset_spigot(){
+    public Dataset getDataset_spigot() {
         return latest_spigot;
     }
 
-    public Dataset getDataset_market(){
+    public Dataset getDataset_market() {
         return latest_market;
     }
 }
