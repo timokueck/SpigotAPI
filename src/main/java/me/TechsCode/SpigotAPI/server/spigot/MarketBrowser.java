@@ -231,15 +231,14 @@ public class MarketBrowser extends VirtualBrowser {
             if (pageDoc != null) {
                 for(Element item : pageDoc.getElementById("ProfilePostList").getElementsByClass("messageSimple")){
                     final String commentId = item.attr("id").split("-")[2];
-                    final String user = item.attr("data-author");
+                    final String userId2 = getUserFromHref(item.getElementsByTag("a").first().attr("href")).getUserId();
 
                     Element messageInfo = item.getElementsByClass("messageInfo").first();
-                    final String user2 = getUserFromHref(userId).getUsername();
 
-                    if(!user2.equalsIgnoreCase(user) && !allMessages) //Skip if comment is not from
+                    if(!userId.equalsIgnoreCase(userId2) && !allMessages) //Skip if comment is not from page user and allMessage is false
                         continue;
 
-                    final String text = messageInfo.getElementsByTag("blockquote").text();
+                    final String text = messageInfo.getElementsByClass("baseHtml").first().text();
 
                     comments.add(new ProfileComment(commentId, userId, text));
                 }
@@ -251,10 +250,9 @@ public class MarketBrowser extends VirtualBrowser {
 
     private static User getUserFromHref(String href) {
         href = href.replace("members/", "").replace("/", "");
-        final String username = href.split("[.]")[0];
-        final String id = href.split("[.]")[1];
+        final String id = href;
 
-        return new User(id, username, null);
+        return new User(id, null, null);
     }
 
     public String getAPIStatus() throws InterruptedException {
