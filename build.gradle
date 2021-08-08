@@ -30,6 +30,7 @@ dependencies {
 
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
     implementation("io.github.bonigarcia:webdrivermanager:4.4.3")
+    implementation 'club.minnced:discord-webhooks:0.5.8'
 }
 
 buildscript {
