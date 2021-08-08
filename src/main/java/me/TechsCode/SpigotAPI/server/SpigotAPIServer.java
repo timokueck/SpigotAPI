@@ -5,7 +5,6 @@ import com.sun.net.httpserver.HttpServer;
 public class SpigotAPIServer {
     private static HttpServer server;
     private static HttpRouter router;
-    private static String spigotStatus = "unknown";
 
     public static void main(String[] args){
         System.out.println("Starting up SpigotAPI Server...");
@@ -34,13 +33,5 @@ public class SpigotAPIServer {
 
     public static void setRouter(HttpRouter HttpRouter){
         router = HttpRouter;
-    }
-
-    public static String getSpigotStatus() {
-        return spigotStatus;
-    }
-
-    public static void setSpigotStatus(String status) {
-        spigotStatus = status;
     }
 }
