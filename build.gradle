@@ -29,7 +29,7 @@ dependencies {
     compile "org.nanohttpd:nanohttpd:2.3.1"
 
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
-    implementation("io.github.bonigarcia:webdrivermanager:4.2.2")
+    implementation("io.github.bonigarcia:webdrivermanager:4.4.3")
 }
 
 buildscript {
