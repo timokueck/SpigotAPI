@@ -1,14 +1,18 @@
 # SpigotAPI
-Standalone Web API for retrieving Information off of SpigotMC!
+Standalone Web API for retrieving Information off of SpigotMC And MC-Market!
 
 ## How To Host This API
 
 Requirements:
-* Google Chrome Installation
-* xvfb
+* Windows machine
+* Available port
+* Google Chrome
 
-Run the jar with xvfb:
-``xvfb-run java -jar SpigotAPI.jar``
+## How To Start
+1. Run `start.bat`.
+2. Enter all info into `config.json`.
+3. Run `start.bat` again.
+4. View the api on `http://localhost:port/`
 
 ## More Information
 
