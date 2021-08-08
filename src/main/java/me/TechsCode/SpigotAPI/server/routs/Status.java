@@ -33,7 +33,15 @@ public class Status implements HttpHandler {
                     obj.put("spigotStatus", "online");
                 }else{
                     obj.put("spigotStatus", "offline");
-                    obj.put("statusCode", spigotStatus);
+                    obj.put("spigotsCode", spigotStatus);
+                }
+
+                String marketStatus = getStatus("https://www.mc-market.org/styles/mcmarketv2/xenforo/_logo.png");
+                if(marketStatus.equals("200")){
+                    obj.put("marketStatus", "online");
+                }else{
+                    obj.put("marketStatus", "offline");
+                    obj.put("marketCode", marketStatus);
                 }
 
                 long lastFetch = HttpRouter.getDataManager().getDataset_market().getTimeCreated();
