@@ -3,6 +3,7 @@ package me.TechsCode.SpigotAPI.server;
 import com.sun.net.httpserver.HttpServer;
 import me.TechsCode.SpigotAPI.server.routs.Actions;
 import me.TechsCode.SpigotAPI.server.routs.Home;
+import me.TechsCode.SpigotAPI.server.routs.NotFound;
 import me.TechsCode.SpigotAPI.server.routs.Status;
 import me.TechsCode.SpigotAPI.server.routs.actions.Restart;
 import me.TechsCode.SpigotAPI.server.routs.actions.Stop;
@@ -38,7 +39,8 @@ public class HttpRouter {
         InetSocketAddress sockAddress = new InetSocketAddress("0.0.0.0", Config.getInstance().getPort());
         SpigotAPIServer.setServer(HttpServer.create(sockAddress, 0));
 
-        SpigotAPIServer.getServer().createContext("/", new Home());
+        SpigotAPIServer.getServer().createContext("/", new NotFound());
+        SpigotAPIServer.getServer().createContext("/docs", new Home());
         SpigotAPIServer.getServer().createContext("/status", new Status());
         SpigotAPIServer.getServer().createContext("/actions", new Actions());
         SpigotAPIServer.getServer().createContext("/actions/restart", new Restart());
@@ -55,7 +57,7 @@ public class HttpRouter {
         SpigotAPIServer.getServer().createContext("/data/market/all", new All_Market());
         SpigotAPIServer.getServer().createContext("/data/market/resources", new Resources_Market());
         SpigotAPIServer.getServer().createContext("/data/market/purchases", new Purchases_Market());
-        SpigotAPIServer.getServer().createContext("/data/spigot/updates", new Updates_Market());
+        SpigotAPIServer.getServer().createContext("/data/market/updates", new Updates_Market());
         SpigotAPIServer.getServer().createContext("/data/market/reviews", new Reviews_Market());
 
         //Verify User
