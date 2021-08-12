@@ -146,7 +146,7 @@ public class MarketBrowser extends VirtualBrowser {
     public PurchasesList collectPurchases(List<Resource> resources) throws InterruptedException {
         PurchasesList purchases = new PurchasesList();
 
-        for(Map.Entry<Resource, List<Element>> pair : collectElementsOfSubPage(resources, "purchases", "memberListItem").entrySet()) {
+        for(Map.Entry<Resource, List<Element>> pair : collectElementsOfSubPage(resources, "market-place-purchases", "memberListItem").entrySet()) {
             Resource resource = pair.getKey();
 
             for(Element element : pair.getValue()){
