@@ -65,8 +65,7 @@ public class MarketBrowser extends VirtualBrowser {
             return resources;
         }
 
-        //navigate(BASE+"/resources/authors/"+loggedInUserId);
-        navigate(BASE+"/resources/authors/49672"); //TechsCode Account
+        navigate(BASE+"/resources/authors/"+loggedInUserId);
 
         Document resourcesPage = Jsoup.parse(driver.getPageSource());
 
