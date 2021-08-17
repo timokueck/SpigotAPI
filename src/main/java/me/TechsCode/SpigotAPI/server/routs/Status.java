@@ -44,10 +44,16 @@ public class Status implements HttpHandler {
                 }
                 obj.put("marketCode", marketStatus);
 
-                long lastFetch = HttpRouter.getDataManager().getDataset_market().getTimeCreated();
-                Date created = new Date(lastFetch);
-                obj.put("lastFetch", lastFetch);
-                obj.put("lastFetchDate", created.toString());
+                long lastSpigotFetch = HttpRouter.getDataManager().getDataset_spigot().getTimeCreated();
+                Date createdSpigot = new Date(lastSpigotFetch);
+                obj.put("lastSpigotFetch", lastSpigotFetch);
+                obj.put("lastSpigotFetchDate", createdSpigot.toString());
+
+                long lastMarketFetch = HttpRouter.getDataManager().getDataset_market().getTimeCreated();
+                Date createdMarket = new Date(lastMarketFetch);
+                obj.put("lastMarketFetch", lastMarketFetch);
+                obj.put("lastMarketFetchDate", createdMarket.toString());
+
                 response = obj.toString();
                 responseCode = 200;
             }else{
