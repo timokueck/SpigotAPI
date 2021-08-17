@@ -40,7 +40,7 @@ public class VerifyUser_Spigot implements HttpHandler {
                                 try {
                                     Config config = Config.getInstance();
                                     VirtualBrowser.enableSpigotPreload();
-                                    SpigotBrowser parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword(), false);
+                                    SpigotBrowser parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword(), config.getSpigotUserId(), false);
 
                                     JsonArray comments = new JsonArray();
                                     ProfileComment[] profileComments = parser.getUserPosts(user, showAll);

@@ -3,6 +3,7 @@ package me.TechsCode.SpigotAPI.server.spigot;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.managers.ChromeDriverManager;
 import me.TechsCode.SpigotAPI.server.Logger;
+import me.TechsCode.SpigotAPI.server.SpigotAPIServer;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -27,6 +28,9 @@ public class VirtualBrowser {
         options.addArguments("--disable-blink-features=AutomationControlled");
         options.setExperimentalOption("useAutomationExtension", false);
         options.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
+        options.addArguments("--disable-gpu");
+        options.addArguments("--disable-infobars");
+        options.addArguments("enable-features=NetworkServiceInProcess");
 
         if(!isWindows() && !isMac()) {
             options.addArguments("--disable-extensions");
@@ -37,8 +41,14 @@ public class VirtualBrowser {
 
         this.driver = new ChromeDriver(options);
 
+        try{
+            preloadSites("");
+        }catch (Exception ignored){}
+    }
+
+    public void preloadSites(String url) throws InterruptedException {
         if(preloadSpigot){
-            driver.executeScript("popup_window_spigot = window.open('https://www.spigotmc.org')");
+            driver.executeScript("popup_window_spigot = window.open('https://www.spigotmc.org/"+ SpigotAPIServer.getRandomInt() +"')");
 
             try {
                 Thread.sleep(12000L);
@@ -52,7 +62,7 @@ public class VirtualBrowser {
         }
 
         if(preloadMarket){
-            driver.executeScript("popup_window_market = window.open('https://www.mc-market.org')");
+            driver.executeScript("popup_window_market = window.open('https://www.mc-market.org/"+ SpigotAPIServer.getRandomInt() +"')");
 
             try {
                 Thread.sleep(12000L);
@@ -63,6 +73,10 @@ public class VirtualBrowser {
             try {
                 Thread.sleep(2000L);
             } catch (InterruptedException ignored) { }
+        }
+
+        if(!url.isEmpty()){
+            navigate(url);
         }
     }
 
@@ -87,18 +101,24 @@ public class VirtualBrowser {
 
         // Bypass Cloudflare
         int i = 0;
-        while (driver.getPageSource().contains("This process is automatic. Your browser will redirect to your requested content shortly.")) {
+        while (driver.getPageSource().contains("This process is automatic")) {
             if (i == 0)
                 Logger.send("Cloudflare detected. Bypassing it now...", true);
+
+            if(i == 15 || i == 60){
+                Logger.send("Could not bypass cloudflare. Preloading site.", true);
+                driver.navigate().to("https://google.com");
+                preloadSites(url);
+            }
+
+            if(i > 90) {
+                Logger.send("<@&311178859171282944> Bypass not working! Shutting down", true);
+                System.exit(0);
+            }
 
             sleep(1000);
 
             i++;
-        }
-
-        if(i > 60) {
-            Logger.send("<@&311178859171282944> Bypass not working! Shutting down", true);
-            System.exit(0);
         }
 
         if (i != 0)
@@ -107,13 +127,6 @@ public class VirtualBrowser {
         while (driver.getPageSource().contains("One more step") && driver.getPageSource().contains("Please complete the security check to access")) {
             sleep(1000);
             System.err.println("<@&311178859171282944> Detected an unsolvable captcha.. waiting...");
-        }
-
-        if (i > 10 || driver.getPageSource().contains("ERR_TOO_MANY_REDIRECTS")) {
-            sleep(5000);
-
-            Logger.send("Taking too long... retrying to access " + url, true);
-            navigate(url);
         }
     }
 

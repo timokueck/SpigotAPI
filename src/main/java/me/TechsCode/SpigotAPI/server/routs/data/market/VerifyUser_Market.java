@@ -40,7 +40,7 @@ public class VerifyUser_Market implements HttpHandler {
                                 try {
                                     Config config = Config.getInstance();
                                     VirtualBrowser.enableMarketPreload();
-                                    MarketBrowser parser = new MarketBrowser(config.getMarketUsername(), config.getMarketPassword(), true);
+                                    MarketBrowser parser = new MarketBrowser(config.getMarketUsername(), config.getMarketPassword(), config.getMarketUserId(), true);
 
                                     JsonArray comments = new JsonArray();
                                     ProfileComment[] profileComments = parser.getUserPosts(user, showAll);

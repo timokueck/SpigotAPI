@@ -17,15 +17,16 @@ public class SpigotBrowser extends VirtualBrowser {
 
     private final String loggedInUserId;
 
-    public SpigotBrowser(String username, String password, Boolean loginRequired) throws InterruptedException {
+    public SpigotBrowser(String username, String password, String userId, Boolean loginRequired) throws InterruptedException {
         if(loginRequired.equals(true)){
-            loggedInUserId = login(username, password);
+            login(username, password);
+            loggedInUserId = userId;
         }else{
             loggedInUserId = null;
         }
     }
 
-    private String login(String username, String password) throws InterruptedException {
+    private void login(String username, String password) throws InterruptedException {
         navigate(BASE+"/login");
 
         WebElement loginDialog = driver.findElement(By.id("pageLogin"));
@@ -46,15 +47,6 @@ public class SpigotBrowser extends VirtualBrowser {
         passwordField.submit();
 
         sleep(2000);
-
-        WebElement link = driver.findElement(By.className("sidebar"))
-                .findElement(By.className("visitorPanel"))
-                .findElement(By.className("avatar"));
-
-        return link.getAttribute("href")
-                .split("/members/")[1]
-                .replace("/", "")
-                .split("[.]")[1];
     }
 
     public ResourcesList collectResources() throws InterruptedException {

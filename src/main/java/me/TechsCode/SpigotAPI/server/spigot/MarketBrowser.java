@@ -20,15 +20,16 @@ public class MarketBrowser extends VirtualBrowser {
 
     private final String loggedInUserId;
 
-    public MarketBrowser(String username, String password, Boolean loginRequired) throws InterruptedException {
+    public MarketBrowser(String username, String password, String userId, Boolean loginRequired) throws InterruptedException {
         if(loginRequired.equals(true)){
-            loggedInUserId = login(username, password);
+            login(username, password);
+            loggedInUserId = userId;
         }else{
             loggedInUserId = null;
         }
     }
 
-    private String login(String username, String password) throws InterruptedException {
+    private void login(String username, String password) throws InterruptedException {
         navigate(BASE+"/login");
 
         WebElement loginDialog = driver.findElement(By.id("pageLogin"));
@@ -49,13 +50,6 @@ public class MarketBrowser extends VirtualBrowser {
         passwordField.submit();
 
         sleep(2000);
-
-        WebElement link = driver.findElementsById("AccountMenu").get(0)
-                .findElement(By.className("avatar"));
-
-        return link.getAttribute("href")
-                .split("members/")[1]
-                .replace("/", "");
     }
 
     public ResourcesList collectResources() throws InterruptedException {

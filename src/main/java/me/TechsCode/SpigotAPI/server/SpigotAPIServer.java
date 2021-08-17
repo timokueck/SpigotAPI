@@ -1,6 +1,10 @@
 package me.TechsCode.SpigotAPI.server;
 
 import com.sun.net.httpserver.HttpServer;
+import com.sun.org.slf4j.internal.*;
+
+import java.util.Arrays;
+import java.util.Random;
 
 public class SpigotAPIServer {
     private static HttpServer server;
@@ -27,11 +31,11 @@ public class SpigotAPIServer {
         server = HttpServer;
     }
 
-    public static HttpRouter getRouter(){
-        return router;
-    }
-
-    public static void setRouter(HttpRouter HttpRouter){
-        router = HttpRouter;
+    public static int getRandomInt(){
+        Random r = new Random();
+        int low = 10;
+        int high = 100;
+        int result = r.nextInt(high-low) + low;
+        return result;
     }
 }
