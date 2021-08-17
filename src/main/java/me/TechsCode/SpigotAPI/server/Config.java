@@ -49,7 +49,7 @@ public class Config {
     }
 
     public boolean isConfigured(){
-        return !getSpigotUsername().equals("someuser") || !getMarketUsername().equals("someuser") || !getWebhookUrl().equals("someurl");
+        return !getSpigotUsername().equals("someuser") || !getMarketUsername().equals("someuser") || !getMarketUserId().equals("someid") || !getSpigotUserId().equals("someid") || !getWebhookUrl().equals("someurl");
     }
 
     public String getSpigotUsername(){
@@ -60,12 +60,20 @@ public class Config {
         return root.get("spigotPassword").getAsString();
     }
 
+    public String getSpigotUserId(){
+        return root.get("spigotUserId").getAsString();
+    }
+
     public String getMarketUsername(){
         return root.get("marketUsername").getAsString();
     }
 
     public String getMarketPassword(){
         return root.get("marketPassword").getAsString();
+    }
+
+    public String getMarketUserId(){
+        return root.get("marketUserId").getAsString();
     }
 
     public String getToken(){
@@ -78,6 +86,14 @@ public class Config {
 
     public int getPort(){
         return root.get("port").getAsInt();
+    }
+
+    public int getSpigotRefreshDelay(){
+        return root.get("spigotRefreshDelay").getAsInt();
+    }
+
+    public int getMarketRefreshDelay(){
+        return root.get("marketRefreshDelay").getAsInt();
     }
 
 }

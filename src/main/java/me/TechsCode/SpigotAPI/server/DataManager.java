@@ -19,7 +19,8 @@ import java.util.concurrent.TimeUnit;
 
 public class DataManager extends Thread {
 
-    private static final long REFRESH_DELAY = TimeUnit.MINUTES.toMillis(15);
+    private static final long SPIGOT_REFRESH_DELAY = TimeUnit.MINUTES.toMillis(Config.getInstance().getSpigotRefreshDelay());
+    private static final long MARKET_REFRESH_DELAY = TimeUnit.MINUTES.toMillis(Config.getInstance().getMarketRefreshDelay());
 
     private Dataset latest_spigot;
     private Dataset latest_market;
@@ -66,13 +67,13 @@ public class DataManager extends Thread {
     @Override
     public void run() {
         while (true) {
-            if (latest_spigot == null || (System.currentTimeMillis() - latest_spigot.getTimeCreated()) > REFRESH_DELAY) {
+            if (latest_spigot == null || (System.currentTimeMillis() - latest_spigot.getTimeCreated()) > SPIGOT_REFRESH_DELAY) {
                 try {
                     long now = System.currentTimeMillis();
 
                     Config config = Config.getInstance();
                     VirtualBrowser.enableSpigotPreload();
-                    SpigotBrowser parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword(), true);
+                    SpigotBrowser parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword(), config.getSpigotUserId(), true);
 
                     ResourcesList resources = parser.collectResources();
                     Logger.send("[1/4] Collected " + resources.size() + " Resources on SpigotMC", false);
@@ -98,13 +99,13 @@ public class DataManager extends Thread {
                 }
             }
 
-            if (latest_market == null || (System.currentTimeMillis() - latest_market.getTimeCreated()) > REFRESH_DELAY) {
+            if (latest_market == null || (System.currentTimeMillis() - latest_market.getTimeCreated()) > MARKET_REFRESH_DELAY) {
                 try {
                     long now = System.currentTimeMillis();
 
                     Config config = Config.getInstance();
                     VirtualBrowser.enableMarketPreload();
-                    MarketBrowser parser = new MarketBrowser(config.getMarketUsername(), config.getMarketPassword(), true);
+                    MarketBrowser parser = new MarketBrowser(config.getMarketUsername(), config.getMarketPassword(), config.getMarketUserId(), true);
 
                     ResourcesList resources = parser.collectResources();
                     Logger.send("[1/4] Collected " + resources.size() + " Resources on MC-Market", false);

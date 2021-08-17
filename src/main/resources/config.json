@@ -1,10 +1,14 @@
 {
   "spigotUsername": "someuser",
   "spigotPassword": "somepassword",
+  "spigotUserId": "someid",
   "marketUsername": "someuser",
   "marketPassword": "somepassword",
+  "marketUserId": "someid",
 
   "token": "sometoken",
   "port": 80,
-  "discordWebhookUrl": "someurl"
+  "discordWebhookUrl": "someurl",
+  "spigotRefreshDelay": 1,
+  "marketRefreshDelay": 1
 }
