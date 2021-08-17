@@ -17,7 +17,7 @@ public class Purchases_Market implements HttpHandler {
         Map<String, String> params = HttpRouter.getParamMap(t.getRequestURI().getQuery());
         JSONObject obj = new JSONObject();
         String response;
-        int responseCode ;
+        int responseCode;
 
         if(params.get("token") !=null){
             String token = params.get("token");

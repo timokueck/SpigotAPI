@@ -5,7 +5,9 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import me.TechsCode.SpigotAPI.data.ProfileComment;
 import me.TechsCode.SpigotAPI.server.Config;
+import me.TechsCode.SpigotAPI.server.DataManager;
 import me.TechsCode.SpigotAPI.server.HttpRouter;
+import me.TechsCode.SpigotAPI.server.SpigotAPIServer;
 import me.TechsCode.SpigotAPI.server.spigot.SpigotBrowser;
 import org.json.simple.JSONObject;
 
@@ -17,6 +19,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Status implements HttpHandler {
     public void handle(HttpExchange t) throws IOException {
@@ -28,21 +31,19 @@ public class Status implements HttpHandler {
         if(params.get("token") !=null){
             String token = params.get("token");
             if(HttpRouter.isTokenValid(token)){
-                String spigotStatus = getStatus("https://static.spigotmc.org/img/spigot.png");
-                if(spigotStatus.equals("200")){
-                    obj.put("spigotStatus", "online");
+                long spigotTimeCreated = HttpRouter.getDataManager().getDataset_spigot().getTimeCreated();
+                if(spigotTimeCreated + TimeUnit.MINUTES.toMillis(Config.getInstance().getSpigotRefreshDelay() + 10) < System.currentTimeMillis()){
+                    obj.put("spigotFetching", false);
                 }else{
-                    obj.put("spigotStatus", "offline");
+                    obj.put("spigotFetching", true);
                 }
-                obj.put("spigotCode", spigotStatus);
 
-                String marketStatus = getStatus("https://www.mc-market.org/styles/mcmarketv2/xenforo/_logo.png");
-                if(marketStatus.equals("200")){
-                    obj.put("marketStatus", "online");
+                long marketTimeCreated = HttpRouter.getDataManager().getDataset_market().getTimeCreated();
+                if(marketTimeCreated + TimeUnit.MINUTES.toMillis(Config.getInstance().getMarketRefreshDelay() + 10) < System.currentTimeMillis()){
+                    obj.put("marketFetching", false);
                 }else{
-                    obj.put("marketStatus", "offline");
+                    obj.put("marketFetching", true);
                 }
-                obj.put("marketCode", marketStatus);
 
                 long lastSpigotFetch = HttpRouter.getDataManager().getDataset_spigot().getTimeCreated();
                 Date createdSpigot = new Date(lastSpigotFetch);
