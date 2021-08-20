@@ -32,13 +32,13 @@ public class All_Spigot implements HttpHandler {
                 obj.put("Status", "Error");
                 obj.put("Msg", "Invalid token");
                 response = obj.toString();
-                responseCode = 403;
+                responseCode = 401;
             }
         }else{
             obj.put("Status", "Error");
             obj.put("Msg", "Missing token");
             response = obj.toString();
-            responseCode = 400;
+            responseCode = 401;
         }
 
         t.sendResponseHeaders(responseCode, response.length());

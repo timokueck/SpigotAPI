@@ -59,44 +59,44 @@ public class VerifyUser_Market implements HttpHandler {
                                     obj.put("E", "Error");
                                     obj.put("Msg", e.getMessage());
                                     response = obj.toString();
-                                    responseCode = 200;
+                                    responseCode = 500;
                                 }
 
                             }else{
                                 obj.put("Status", "Error");
                                 obj.put("Msg", "Invalid showAll value");
                                 response = obj.toString();
-                                responseCode = 403;
+                                responseCode = 400;
                             }
                         }else{
                             obj.put("Status", "Error");
                             obj.put("Msg", "Missing showAll");
                             response = obj.toString();
-                            responseCode = 403;
+                            responseCode = 400;
                         }
                     }else{
                         obj.put("Status", "Error");
                         obj.put("Msg", "Missing user");
                         response = obj.toString();
-                        responseCode = 403;
+                        responseCode = 400;
                     }
                 }else{
                     obj.put("Status", "Error");
                     obj.put("Msg", "Missing user");
                     response = obj.toString();
-                    responseCode = 403;
+                    responseCode = 400;
                 }
             }else{
                 obj.put("Status", "Error");
                 obj.put("Msg", "Invalid token");
                 response = obj.toString();
-                responseCode = 403;
+                responseCode = 401;
             }
         }else{
             obj.put("Status", "Error");
             obj.put("Msg", "Missing token");
             response = obj.toString();
-            responseCode = 400;
+            responseCode = 401;
         }
 
         t.sendResponseHeaders(responseCode, response.length());
