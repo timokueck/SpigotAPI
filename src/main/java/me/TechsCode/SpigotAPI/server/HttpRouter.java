@@ -2,7 +2,7 @@ package me.TechsCode.SpigotAPI.server;
 
 import com.sun.net.httpserver.HttpServer;
 import me.TechsCode.SpigotAPI.server.routs.Actions;
-import me.TechsCode.SpigotAPI.server.routs.Home;
+import me.TechsCode.SpigotAPI.server.routs.Docs;
 import me.TechsCode.SpigotAPI.server.routs.NotFound;
 import me.TechsCode.SpigotAPI.server.routs.Status;
 import me.TechsCode.SpigotAPI.server.routs.actions.Restart;
@@ -40,11 +40,10 @@ public class HttpRouter {
         SpigotAPIServer.setServer(HttpServer.create(sockAddress, 0));
 
         SpigotAPIServer.getServer().createContext("/", new NotFound());
-        SpigotAPIServer.getServer().createContext("/docs", new Home());
+        SpigotAPIServer.getServer().createContext("/docs", new Docs());
         SpigotAPIServer.getServer().createContext("/status", new Status());
         SpigotAPIServer.getServer().createContext("/actions", new Actions());
         SpigotAPIServer.getServer().createContext("/actions/restart", new Restart());
-        SpigotAPIServer.getServer().createContext("/actions/stop", new Stop());
 
         //Data spigot
         SpigotAPIServer.getServer().createContext("/data/spigot/all", new All_Spigot());

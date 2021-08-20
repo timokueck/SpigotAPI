@@ -8,7 +8,7 @@ import java.io.OutputStream;
 
 import org.json.simple.JSONObject;
 
-public class Home implements HttpHandler {
+public class Docs implements HttpHandler {
     public void handle(HttpExchange t) throws IOException {
         JSONObject spigot = new JSONObject();
         spigot.put("Spigot | Verify", "/spigot/verifyUser?token=&user=&showAll=false");
