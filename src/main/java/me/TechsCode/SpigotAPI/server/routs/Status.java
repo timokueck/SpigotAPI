@@ -1,22 +1,15 @@
 package me.TechsCode.SpigotAPI.server.routs;
 
-import com.google.gson.JsonArray;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import me.TechsCode.SpigotAPI.data.ProfileComment;
 import me.TechsCode.SpigotAPI.server.Config;
-import me.TechsCode.SpigotAPI.server.DataManager;
 import me.TechsCode.SpigotAPI.server.HttpRouter;
-import me.TechsCode.SpigotAPI.server.SpigotAPIServer;
-import me.TechsCode.SpigotAPI.server.spigot.SpigotBrowser;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;

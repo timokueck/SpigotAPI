@@ -1,14 +1,12 @@
-package me.TechsCode.SpigotAPI.server.spigot;
+package me.TechsCode.SpigotAPI.server.browsers;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.github.bonigarcia.wdm.managers.ChromeDriverManager;
 import me.TechsCode.SpigotAPI.server.Logger;
 import me.TechsCode.SpigotAPI.server.SpigotAPIServer;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.sql.Driver;
 import java.util.Collections;
 
 public class VirtualBrowser {

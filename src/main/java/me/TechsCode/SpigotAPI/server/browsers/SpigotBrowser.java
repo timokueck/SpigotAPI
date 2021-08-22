@@ -1,4 +1,4 @@
-package me.TechsCode.SpigotAPI.server.spigot;
+package me.TechsCode.SpigotAPI.server.browsers;
 
 import me.TechsCode.SpigotAPI.data.*;
 import me.TechsCode.SpigotAPI.data.lists.*;

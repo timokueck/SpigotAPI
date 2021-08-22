@@ -1,4 +1,4 @@
-package me.TechsCode.SpigotAPI.server.spigot;
+package me.TechsCode.SpigotAPI.server.browsers;
 
 import me.TechsCode.SpigotAPI.data.*;
 import me.TechsCode.SpigotAPI.data.lists.PurchasesList;
@@ -140,19 +140,24 @@ public class MarketBrowser extends VirtualBrowser {
     public PurchasesList collectPurchases(List<Resource> resources) throws InterruptedException {
         PurchasesList purchases = new PurchasesList();
 
-        for(Map.Entry<Resource, List<Element>> pair : collectElementsOfSubPage(resources, "market-place-purchases", "memberListItem").entrySet()) {
+        for(Map.Entry<Resource, List<Element>> pair : collectElementsOfSubPage(resources, "market-place-purchases", "dataRow").entrySet()) {
             Resource resource = pair.getKey();
 
             for(Element element : pair.getValue()){
-                Element link = element.getElementsByClass("username").first()
-                        .getElementsByTag("a").first();
+                if(element.child(0).className().equals("purchaseType"))continue;
 
-                String userId = link.attr("href")
-                        .replace("member/", "").replace("/", "");
-                String username = link.getAllElements().first().text();
+                String status = element.getElementsByClass("statusValidated").first().text();
+                if(!status.equals("Validated"))continue;
+
+                Element userElement = element.getElementsByClass("username").first().getElementsByTag("a").first();
+                String userId = userElement.attr("href").replace("members", "").replace("/", "");
+                String username = userElement.text();
+
                 User user = new User(userId, username, "");
 
-                Time time = new Time(element.getElementsByClass("DateTime").attr("title"));
+                String PurchaseDate = element.getElementsByClass("DateTime").first().attr("title");
+                Time time = new Time(PurchaseDate);
+
                 String costString = element.getElementsByClass("price").first().text();
                 Cost cost = !costString.equals("0.00 EUR") ? new Cost(costString) : null;
 

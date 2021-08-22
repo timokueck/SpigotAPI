@@ -7,9 +7,9 @@ import me.TechsCode.SpigotAPI.data.lists.PurchasesList;
 import me.TechsCode.SpigotAPI.data.lists.ResourcesList;
 import me.TechsCode.SpigotAPI.data.lists.ReviewsList;
 import me.TechsCode.SpigotAPI.data.lists.UpdatesList;
-import me.TechsCode.SpigotAPI.server.spigot.MarketBrowser;
-import me.TechsCode.SpigotAPI.server.spigot.SpigotBrowser;
-import me.TechsCode.SpigotAPI.server.spigot.VirtualBrowser;
+import me.TechsCode.SpigotAPI.server.browsers.MarketBrowser;
+import me.TechsCode.SpigotAPI.server.browsers.SpigotBrowser;
+import me.TechsCode.SpigotAPI.server.browsers.VirtualBrowser;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

@@ -7,8 +7,8 @@ import me.TechsCode.SpigotAPI.data.ProfileComment;
 import me.TechsCode.SpigotAPI.server.Config;
 import me.TechsCode.SpigotAPI.server.HttpRouter;
 import me.TechsCode.SpigotAPI.server.Logger;
-import me.TechsCode.SpigotAPI.server.spigot.MarketBrowser;
-import me.TechsCode.SpigotAPI.server.spigot.VirtualBrowser;
+import me.TechsCode.SpigotAPI.server.browsers.MarketBrowser;
+import me.TechsCode.SpigotAPI.server.browsers.VirtualBrowser;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
