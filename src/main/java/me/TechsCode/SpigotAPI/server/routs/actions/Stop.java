@@ -2,8 +2,12 @@ package me.TechsCode.SpigotAPI.server.routs.actions;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import me.TechsCode.SpigotAPI.server.DataManager;
 import me.TechsCode.SpigotAPI.server.HttpRouter;
 import me.TechsCode.SpigotAPI.server.Logger;
+import me.TechsCode.SpigotAPI.server.SpigotAPIServer;
+import me.TechsCode.SpigotAPI.server.browsers.MarketBrowser;
+import me.TechsCode.SpigotAPI.server.browsers.VirtualBrowser;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
@@ -15,15 +19,20 @@ public class Stop implements HttpHandler {
         Map<String, String> params = HttpRouter.getParamMap(t.getRequestURI().getQuery());
         JSONObject obj = new JSONObject();
         String response;
-        int responseCode ;
+        int responseCode;
+
+        boolean stopAPI = false;
 
         if(params.get("token") !=null){
             String token = params.get("token");
             if(HttpRouter.isTokenValid(token)){
                 Logger.send("Stopping SpigotAPI Server...", true);
-                System.exit(0);
+                stopAPI = true;
+                VirtualBrowser.quit();
 
-                response = "";
+                obj.put("Status", "Success");
+                obj.put("Msg", "Stopping API");
+                response = obj.toString();
                 responseCode = 200;
             }else{
                 obj.put("Status", "Error");
@@ -42,5 +51,9 @@ public class Stop implements HttpHandler {
         OutputStream os = t.getResponseBody();
         os.write(response.getBytes());
         os.close();
+
+        if(stopAPI){
+            System.exit(0);
+        }
     }
 }

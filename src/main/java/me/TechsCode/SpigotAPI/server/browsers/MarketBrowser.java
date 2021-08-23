@@ -144,10 +144,10 @@ public class MarketBrowser extends VirtualBrowser {
             Resource resource = pair.getKey();
 
             for(Element element : pair.getValue()){
-                if(element.child(0).className().equals("purchaseType"))continue;
+                if(element.getElementsByClass("typePurchase") == null) continue;
 
                 String status = element.getElementsByClass("statusValidated").first().text();
-                if(!status.equals("Validated"))continue;
+                if(!status.equals("Validated")) continue;
 
                 Element userElement = element.getElementsByClass("username").first().getElementsByTag("a").first();
                 String userId = userElement.attr("href").replace("members", "").replace("/", "");

@@ -11,7 +11,7 @@ import java.util.Collections;
 
 public class VirtualBrowser {
 
-    protected ChromeDriver driver;
+    protected static ChromeDriver driver;
     private static boolean preloadSpigot = false;
     private static boolean preloadMarket = false;
 
@@ -132,6 +132,12 @@ public class VirtualBrowser {
         preloadSpigot = false;
         preloadMarket = false;
         driver.close();
+    }
+
+    public static void quit() {
+        preloadSpigot = false;
+        preloadMarket = false;
+        driver.quit();
     }
 
     public void sleep(long millis) throws InterruptedException {

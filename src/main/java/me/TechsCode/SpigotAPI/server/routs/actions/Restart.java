@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import me.TechsCode.SpigotAPI.server.HttpRouter;
 import me.TechsCode.SpigotAPI.server.Logger;
 import me.TechsCode.SpigotAPI.server.SpigotAPIServer;
+import me.TechsCode.SpigotAPI.server.browsers.VirtualBrowser;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
@@ -16,21 +17,20 @@ public class Restart implements HttpHandler {
         Map<String, String> params = HttpRouter.getParamMap(t.getRequestURI().getQuery());
         JSONObject obj = new JSONObject();
         String response;
-        int responseCode ;
+        int responseCode;
+
+        boolean restartAPI = false;
 
         if(params.get("token") !=null){
             String token = params.get("token");
             if(HttpRouter.isTokenValid(token)){
                 Logger.send("Restarting SpigotAPI Server...", true);
-                try {
-                    Runtime.getRuntime().exec("cmd.exe /c start C:\\Users\\fabia\\Documents\\JavaApps\\SpigotAPI\\startFiles\\start.bat");
-                    Thread.sleep(1000L);
-                } catch (IOException|InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.exit(0);
+                restartAPI = true;
+                VirtualBrowser.quit();
 
-                response = "";
+                obj.put("Status", "Success");
+                obj.put("Msg", "Restarting API");
+                response = obj.toString();
                 responseCode = 200;
             }else{
                 obj.put("Status", "Error");
@@ -49,5 +49,16 @@ public class Restart implements HttpHandler {
         OutputStream os = t.getResponseBody();
         os.write(response.getBytes());
         os.close();
+
+        if (restartAPI){
+            try {
+                String currentPath = new java.io.File(".").getCanonicalPath();
+                Runtime.getRuntime().exec("cmd.exe /c start "+currentPath+"\\start.bat");
+                Thread.sleep(1000L);
+            } catch (IOException|InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.exit(0);
+        }
     }
 }
