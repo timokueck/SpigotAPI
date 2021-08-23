@@ -116,8 +116,9 @@ public class DataManager extends Thread {
                     ReviewsList reviews = parser.collectReviews(resources);
                     Logger.send("[3/4] Collected " + reviews.size() + " Reviews on MC-Market", false);
 
-                    PurchasesList purchases = parser.collectPurchases(resources);
-                    Logger.send("[4/4] Collected " + purchases.size() + " Purchases on MC-Market", false);
+                    PurchasesList purchases = new PurchasesList();
+                    //PurchasesList purchases = parser.collectPurchases(resources);
+                    //Logger.send("[4/4] Collected " + purchases.size() + " Purchases on MC-Market", false);
 
                     parser.close();
 
