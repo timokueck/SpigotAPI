@@ -6,6 +6,7 @@ import me.TechsCode.SpigotAPI.server.routs.Docs;
 import me.TechsCode.SpigotAPI.server.routs.NotFound;
 import me.TechsCode.SpigotAPI.server.routs.Status;
 import me.TechsCode.SpigotAPI.server.routs.actions.Restart;
+import me.TechsCode.SpigotAPI.server.routs.actions.Screenshot;
 import me.TechsCode.SpigotAPI.server.routs.actions.Stop;
 import me.TechsCode.SpigotAPI.server.routs.data.market.*;
 import me.TechsCode.SpigotAPI.server.routs.data.spigot.*;
@@ -43,7 +44,9 @@ public class HttpRouter {
         SpigotAPIServer.getServer().createContext("/docs", new Docs());
         SpigotAPIServer.getServer().createContext("/status", new Status());
         SpigotAPIServer.getServer().createContext("/actions", new Actions());
+        SpigotAPIServer.getServer().createContext("/actions/stop", new Stop());
         SpigotAPIServer.getServer().createContext("/actions/restart", new Restart());
+        SpigotAPIServer.getServer().createContext("/actions/screenshot", new Screenshot());
 
         //Data spigot
         SpigotAPIServer.getServer().createContext("/data/spigot/all", new All_Spigot());

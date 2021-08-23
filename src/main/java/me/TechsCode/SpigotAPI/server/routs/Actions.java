@@ -21,6 +21,7 @@ public class Actions implements HttpHandler {
             if(HttpRouter.isTokenValid(token)){
                 obj.put("Restart", "/actions/restart?token=");
                 obj.put("Stop", "/actions/stop?token=");
+                obj.put("Screenshot", "/actions/screenshot?token=");
                 response = obj.toString();
                 responseCode = 200;
             }else{
