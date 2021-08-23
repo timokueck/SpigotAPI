@@ -6,3 +6,4 @@ TIMEOUT /T 5
 cls
 java -jar SpigotAPI.jar
 TIMEOUT /T 10
+exit 0
