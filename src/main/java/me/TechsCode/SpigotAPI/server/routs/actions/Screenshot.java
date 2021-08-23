@@ -14,6 +14,7 @@ import java.io.*;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Screenshot implements HttpHandler {
@@ -29,6 +30,14 @@ public class Screenshot implements HttpHandler {
                 String currentPath = new java.io.File(".").getCanonicalPath();
                 try {
                     Robot robot = new Robot();
+
+                    robot.mouseMove(50, 50);
+                    Thread.sleep(200);
+                    robot.mouseMove(800, 800);
+                    Thread.sleep(200);
+                    robot.mouseMove(400, 400);
+                    Thread.sleep(500);
+
                     BufferedImage image = robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
                     ImageIO.write(image, "png", new File(currentPath+"\\data\\screenshot.png"));
 
@@ -49,7 +58,7 @@ public class Screenshot implements HttpHandler {
 
                     response = "";
                     responseCode = 200;
-                } catch (AWTException e) {
+                } catch (Exception e) {
                     Logger.send(Arrays.toString(e.getStackTrace()), true);
                     obj.put("Status", "Error");
                     obj.put("Msg", e.getStackTrace());
