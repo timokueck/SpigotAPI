@@ -55,7 +55,7 @@ public class VerifyUser_Market implements HttpHandler {
                                     response = obj.toString();
                                     responseCode = 200;
                                 } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                                    Logger.send(Arrays.toString(e.getStackTrace()), true);
                                     obj.put("E", "Error");
                                     obj.put("Msg", e.getMessage());
                                     response = obj.toString();

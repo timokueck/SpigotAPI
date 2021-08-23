@@ -13,6 +13,7 @@ import me.TechsCode.SpigotAPI.server.routs.data.spigot.*;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class HttpRouter {
             initServer();
             startServer();
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
 
         Runtime.getRuntime().addShutdownHook(new Thread(HttpRouter::stopServer));
@@ -77,7 +78,7 @@ public class HttpRouter {
                 Logger.send("Listening on port "+Config.getInstance().getPort(), true);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 
@@ -88,7 +89,7 @@ public class HttpRouter {
                 System.out.print("API stopped");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 

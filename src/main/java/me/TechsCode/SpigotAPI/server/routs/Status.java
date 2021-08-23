@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import me.TechsCode.SpigotAPI.server.Config;
 import me.TechsCode.SpigotAPI.server.HttpRouter;
+import me.TechsCode.SpigotAPI.server.Logger;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
@@ -24,29 +25,39 @@ public class Status implements HttpHandler {
         if(params.get("token") !=null){
             String token = params.get("token");
             if(HttpRouter.isTokenValid(token)){
-                long spigotTimeCreated = HttpRouter.getDataManager().getDataset_spigot().getTimeCreated();
-                if(spigotTimeCreated + TimeUnit.MINUTES.toMillis(Config.getInstance().getSpigotRefreshDelay() + 10) < System.currentTimeMillis()){
+                if(HttpRouter.getDataManager().getDataset_spigot() != null){
+                    long spigotTimeCreated = HttpRouter.getDataManager().getDataset_spigot().getTimeCreated();
+                    if(spigotTimeCreated + TimeUnit.MINUTES.toMillis(Config.getInstance().getSpigotRefreshDelay() + 10) < System.currentTimeMillis()){
+                        obj.put("spigotFetching", false);
+                    }else{
+                        obj.put("spigotFetching", true);
+                    }
+                    long lastSpigotFetch = HttpRouter.getDataManager().getDataset_spigot().getTimeCreated();
+                    Date createdSpigot = new Date(lastSpigotFetch);
+                    obj.put("lastSpigotFetch", lastSpigotFetch);
+                    obj.put("lastSpigotFetchDate", createdSpigot.toString());
+                }else{
                     obj.put("spigotFetching", false);
-                }else{
-                    obj.put("spigotFetching", true);
+                    obj.put("lastSpigotFetch", 0);
+                    obj.put("lastSpigotFetchDate", "Unknown");
                 }
 
-                long marketTimeCreated = HttpRouter.getDataManager().getDataset_market().getTimeCreated();
-                if(marketTimeCreated + TimeUnit.MINUTES.toMillis(Config.getInstance().getMarketRefreshDelay() + 10) < System.currentTimeMillis()){
+                if(HttpRouter.getDataManager().getDataset_market() != null) {
+                    long marketTimeCreated = HttpRouter.getDataManager().getDataset_market().getTimeCreated();
+                    if (marketTimeCreated + TimeUnit.MINUTES.toMillis(Config.getInstance().getMarketRefreshDelay() + 10) < System.currentTimeMillis()) {
+                        obj.put("marketFetching", false);
+                    } else {
+                        obj.put("marketFetching", true);
+                    }
+                    long lastMarketFetch = HttpRouter.getDataManager().getDataset_market().getTimeCreated();
+                    Date createdMarket = new Date(lastMarketFetch);
+                    obj.put("lastMarketFetch", lastMarketFetch);
+                    obj.put("lastMarketFetchDate", createdMarket.toString());
+                }else{
                     obj.put("marketFetching", false);
-                }else{
-                    obj.put("marketFetching", true);
+                    obj.put("lastMarketFetch", 0);
+                    obj.put("lastMarketFetchDate", "Unknown");
                 }
-
-                long lastSpigotFetch = HttpRouter.getDataManager().getDataset_spigot().getTimeCreated();
-                Date createdSpigot = new Date(lastSpigotFetch);
-                obj.put("lastSpigotFetch", lastSpigotFetch);
-                obj.put("lastSpigotFetchDate", createdSpigot.toString());
-
-                long lastMarketFetch = HttpRouter.getDataManager().getDataset_market().getTimeCreated();
-                Date createdMarket = new Date(lastMarketFetch);
-                obj.put("lastMarketFetch", lastMarketFetch);
-                obj.put("lastMarketFetchDate", createdMarket.toString());
 
                 response = obj.toString();
                 responseCode = 200;
@@ -67,23 +78,5 @@ public class Status implements HttpHandler {
         OutputStream os = t.getResponseBody();
         os.write(response.getBytes());
         os.close();
-    }
-
-    public static String getStatus(String url) throws IOException {
-        String result = "";
-        int code = 200;
-        try {
-            URL siteURL = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setConnectTimeout(3000);
-            connection.connect();
-
-            code = connection.getResponseCode();
-            result = String.valueOf(code);
-        } catch (Exception e) {
-            result = e.getMessage();
-        }
-        return result;
     }
 }

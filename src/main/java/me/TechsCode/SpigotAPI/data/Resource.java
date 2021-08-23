@@ -4,7 +4,9 @@ import com.google.gson.JsonObject;
 import me.TechsCode.SpigotAPI.data.lists.PurchasesList;
 import me.TechsCode.SpigotAPI.data.lists.ReviewsList;
 import me.TechsCode.SpigotAPI.data.lists.UpdatesList;
+import me.TechsCode.SpigotAPI.server.Logger;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -93,7 +95,8 @@ public class Resource extends JsonSerializable {
         try {
             int resourceId = Integer.parseInt(id);
             return String.format("https://www.spigotmc.org/data/resource_icons/%d/%d.jpg", (int) Math.floor(resourceId / 1000d), resourceId);
-        } catch (NumberFormatException ex) {
+        } catch (NumberFormatException e) {
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
             return "https://static.spigotmc.org/styles/spigot/xenresource/resource_icon.png";
         }
     }

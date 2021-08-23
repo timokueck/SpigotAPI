@@ -15,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class DataManager extends Thread {
@@ -42,7 +43,7 @@ public class DataManager extends Thread {
         try {
             FileUtils.writeStringToFile(file, json, Charset.defaultCharset());
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 
@@ -59,7 +60,7 @@ public class DataManager extends Thread {
 
             return new Dataset(jsonObject);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
             return null;
         }
     }
@@ -95,7 +96,7 @@ public class DataManager extends Thread {
                     long delay = System.currentTimeMillis() - now;
                     Logger.send("Completed SpigotMC Refreshing Cycle in " + Math.round(TimeUnit.MILLISECONDS.toMinutes(delay)) + " minutes!", true);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Logger.send(Arrays.toString(e.getStackTrace()), true);
                 }
             }
 
@@ -128,7 +129,7 @@ public class DataManager extends Thread {
                     long delay = System.currentTimeMillis() - now;
                     Logger.send("Completed MC-Market Refreshing Cycle in " + Math.round(TimeUnit.MILLISECONDS.toMinutes(delay)) + " minutes!", true);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Logger.send(Arrays.toString(e.getStackTrace()), true);
                 }
             }
 

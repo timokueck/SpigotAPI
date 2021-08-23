@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 public class VirtualBrowser {
@@ -41,7 +42,9 @@ public class VirtualBrowser {
 
         try{
             preloadSites("");
-        }catch (Exception ignored){}
+        }catch (Exception e){
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
+        }
     }
 
     public void preloadSites(String url) throws InterruptedException {
@@ -50,13 +53,17 @@ public class VirtualBrowser {
 
             try {
                 Thread.sleep(12000L);
-            } catch (InterruptedException ignored) { }
+            } catch (InterruptedException e) {
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
+            }
 
             driver.executeScript("popup_window_spigot.close()");
 
             try {
                 Thread.sleep(2000L);
-            } catch (InterruptedException ignored) { }
+            } catch (InterruptedException e) {
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
+            }
         }
 
         if(preloadMarket){
@@ -64,13 +71,17 @@ public class VirtualBrowser {
 
             try {
                 Thread.sleep(12000L);
-            } catch (InterruptedException ignored) { }
+            } catch (InterruptedException e) {
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
+            }
 
             driver.executeScript("popup_window_market.close()");
 
             try {
                 Thread.sleep(2000L);
-            } catch (InterruptedException ignored) { }
+            } catch (InterruptedException e) {
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
+            }
         }
 
         if(!url.isEmpty()){

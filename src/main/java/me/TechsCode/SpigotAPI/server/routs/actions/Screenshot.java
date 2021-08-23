@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -27,7 +28,8 @@ public class Screenshot implements HttpHandler {
             if(HttpRouter.isTokenValid(token)){
                 String currentPath = new java.io.File(".").getCanonicalPath();
                 try {
-                    BufferedImage image = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+                    Robot robot = new Robot();
+                    BufferedImage image = robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
                     ImageIO.write(image, "png", new File(currentPath+"\\data\\screenshot.png"));
 
                     Logger.send("Someone took a screenshot", true);
@@ -48,6 +50,7 @@ public class Screenshot implements HttpHandler {
                     response = "";
                     responseCode = 200;
                 } catch (AWTException e) {
+                    Logger.send(Arrays.toString(e.getStackTrace()), true);
                     obj.put("Status", "Error");
                     obj.put("Msg", e.getStackTrace());
                     response = obj.toString();

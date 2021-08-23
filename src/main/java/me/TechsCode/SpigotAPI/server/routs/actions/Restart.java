@@ -10,6 +10,7 @@ import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Map;
 
 public class Restart implements HttpHandler {
@@ -56,7 +57,7 @@ public class Restart implements HttpHandler {
                 Runtime.getRuntime().exec("cmd.exe /c start "+currentPath+"\\start.bat");
                 Thread.sleep(1000L);
             } catch (IOException|InterruptedException e) {
-                e.printStackTrace();
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
             System.exit(0);
         }

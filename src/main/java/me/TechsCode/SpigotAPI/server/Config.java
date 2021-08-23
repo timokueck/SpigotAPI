@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 
 public class Config {
 
@@ -34,7 +35,7 @@ public class Config {
                 InputStream src = Config.class.getResourceAsStream("/config.json");
                 Files.copy(src, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
         }
 
@@ -44,7 +45,7 @@ public class Config {
             JsonParser jsonParser = new JsonParser();
             root = (JsonObject) jsonParser.parse(json);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 

@@ -4,12 +4,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import me.TechsCode.SpigotAPI.data.Dataset;
+import me.TechsCode.SpigotAPI.server.Logger;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class DataManager implements Runnable {
@@ -44,17 +46,18 @@ public class DataManager implements Runnable {
                     this.dataset = new Dataset(jsonObject);
                     this.lastParsed = System.currentTimeMillis();
                 } catch (JsonParseException e) {
-                    System.err.println("Server responded with '" + json + "'");
+                    Logger.send("Server responded with '" + json + "'", true);
+                    Logger.send(Arrays.toString(e.getStackTrace()), true);
                 }
 
             } catch (IOException | URISyntaxException e) {
-                e.printStackTrace();
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
 
             try {
                 Thread.sleep(REFRESH_DELAY);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
         }
     }

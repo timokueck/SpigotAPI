@@ -2,14 +2,14 @@ package me.TechsCode.SpigotAPI.server;
 
 import com.sun.net.httpserver.HttpServer;
 
-import java.util.Arrays;
+import java.io.FileNotFoundException;
 import java.util.Random;
 
 public class SpigotAPIServer {
     private static HttpServer server;
     private static HttpRouter router;
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws FileNotFoundException {
         if(!Config.getInstance().isConfigured()){
             System.err.println("Please configure everything in the config.json!");
             return;
