@@ -44,7 +44,7 @@ public class Logger {
         });
         builder.setWait(true);
         WebhookClient client = builder.build();
-        client.send(getCurrentDateTime() + " > " + message);
+        client.send(message);
         client.close();
     }
 
