@@ -26,6 +26,9 @@ public class DataManager extends Thread {
     private Dataset latest_spigot;
     private Dataset latest_market;
 
+    private boolean spigotParseDone = true;
+    private boolean marketParseDone = true;
+
     public DataManager() {
         this.latest_spigot = load("spigot");
         this.latest_market = load("market");
@@ -34,6 +37,7 @@ public class DataManager extends Thread {
     }
 
     private void save(Dataset dataset) {
+        Logger.send("Saved "+dataset.getMarket(), true);
         File file = new File("data/lastDataset_" + dataset.getMarket() + ".json");
 
         if (file.exists()) file.delete();
@@ -68,68 +72,98 @@ public class DataManager extends Thread {
     @Override
     public void run() {
         while (true) {
-            if (latest_spigot == null || (System.currentTimeMillis() - latest_spigot.getTimeCreated()) > SPIGOT_REFRESH_DELAY) {
-                try {
-                    long now = System.currentTimeMillis();
+            if ((latest_spigot == null || (System.currentTimeMillis() - latest_spigot.getTimeCreated()) > SPIGOT_REFRESH_DELAY) && spigotParseDone) {
+                spigotParseDone = false;
+                Config config = Config.getInstance();
+                long now = System.currentTimeMillis();
 
-                    Config config = Config.getInstance();
+                SpigotBrowser parser = null;
+                try{
                     VirtualBrowser.enableSpigotPreload();
-                    SpigotBrowser parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword(), config.getSpigotUserId(), true);
+                    parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword(), config.getSpigotUserId(), true);
+                }catch (InterruptedException e){
+                    Logger.send(Arrays.toString(e.getStackTrace()), true);
+                    spigotParseDone = true;
+                }
 
-                    ResourcesList resources = parser.collectResources();
-                    Logger.send("[1/4] Collected " + resources.size() + " Resources on SpigotMC", false);
+                try {
+                    if(parser != null){
+                        ResourcesList resources = parser.collectResources();
+                        Logger.send("[1/4] Collected " + resources.size() + " Resources on SpigotMC", false);
 
-                    UpdatesList updates = parser.collectUpdates(resources);
-                    Logger.send("[2/4] Collected " + updates.size() + " Updates on SpigotMC", false);
+                        UpdatesList updates = parser.collectUpdates(resources);
+                        Logger.send("[2/4] Collected " + updates.size() + " Updates on SpigotMC", false);
 
-                    ReviewsList reviews = parser.collectReviews(resources);
-                    Logger.send("[3/4] Collected " + reviews.size() + " Reviews on SpigotMC", false);
+                        ReviewsList reviews = parser.collectReviews(resources);
+                        Logger.send("[3/4] Collected " + reviews.size() + " Reviews on SpigotMC", false);
 
-                    PurchasesList purchases = parser.collectPurchases(resources);
-                    Logger.send("[4/4] Collected " + purchases.size() + " Purchases on SpigotMC", false);
+                        PurchasesList purchases = parser.collectPurchases(resources);
+                        Logger.send("[4/4] Collected " + purchases.size() + " Purchases on SpigotMC", false);
 
-                    parser.close();
+                        parser.close();
 
-                    latest_spigot = new Dataset(now, resources, purchases, updates, reviews, "spigot");
-                    save(latest_spigot);
+                        latest_spigot = new Dataset(now, resources, purchases, updates, reviews, "spigot");
+                        save(latest_spigot);
 
-                    long delay = System.currentTimeMillis() - now;
-                    Logger.send("Completed SpigotMC Refreshing Cycle in " + Math.round(TimeUnit.MILLISECONDS.toMinutes(delay)) + " minutes!", true);
+                        long delay = System.currentTimeMillis() - now;
+                        Logger.send("Completed SpigotMC Refreshing Cycle in " + Math.round(TimeUnit.MILLISECONDS.toMinutes(delay)) + " minutes!", true);
+                    }else{
+                        Logger.send("Failed SpigotMC Refreshing Cycle", true);
+                    }
+                    spigotParseDone = true;
                 } catch (InterruptedException e) {
                     Logger.send(Arrays.toString(e.getStackTrace()), true);
+                    if(parser != null)
+                        parser.close();
+                    spigotParseDone = true;
                 }
             }
 
-            if (latest_market == null || (System.currentTimeMillis() - latest_market.getTimeCreated()) > MARKET_REFRESH_DELAY) {
-                try {
-                    long now = System.currentTimeMillis();
+            if ((latest_market == null || (System.currentTimeMillis() - latest_market.getTimeCreated()) > MARKET_REFRESH_DELAY) && marketParseDone) {
+                marketParseDone = false;
+                long now = System.currentTimeMillis();
 
+                MarketBrowser parser = null;
+                try{
                     Config config = Config.getInstance();
                     VirtualBrowser.enableMarketPreload();
-                    MarketBrowser parser = new MarketBrowser(config.getMarketUsername(), config.getMarketPassword(), config.getMarketUserId(), true);
+                    parser = new MarketBrowser(config.getMarketUsername(), config.getMarketPassword(), config.getMarketUserId(), true);
+                }catch (InterruptedException e){
+                    Logger.send(Arrays.toString(e.getStackTrace()), true);
+                    marketParseDone = true;
+                }
 
-                    ResourcesList resources = parser.collectResources();
-                    Logger.send("[1/4] Collected " + resources.size() + " Resources on MC-Market", false);
+                try {
+                    if(parser != null) {
+                        ResourcesList resources = parser.collectResources();
+                        Logger.send("[1/4] Collected " + resources.size() + " Resources on MC-Market", false);
 
-                    UpdatesList updates = parser.collectUpdates(resources);
-                    Logger.send("[2/4] Collected " + updates.size() + " Updates on MC-Market", false);
+                        UpdatesList updates = parser.collectUpdates(resources);
+                        Logger.send("[2/4] Collected " + updates.size() + " Updates on MC-Market", false);
 
-                    ReviewsList reviews = parser.collectReviews(resources);
-                    Logger.send("[3/4] Collected " + reviews.size() + " Reviews on MC-Market", false);
+                        ReviewsList reviews = parser.collectReviews(resources);
+                        Logger.send("[3/4] Collected " + reviews.size() + " Reviews on MC-Market", false);
 
-                    PurchasesList purchases = new PurchasesList();
-                    //PurchasesList purchases = parser.collectPurchases(resources);
-                    //Logger.send("[4/4] Collected " + purchases.size() + " Purchases on MC-Market", false);
+                        PurchasesList purchases = new PurchasesList();
+                        //PurchasesList purchases = parser.collectPurchases(resources);
+                        //Logger.send("[4/4] Collected " + purchases.size() + " Purchases on MC-Market", false);
 
-                    parser.close();
+                        parser.close();
 
-                    latest_market = new Dataset(now, resources, purchases, updates, reviews, "market");
-                    save(latest_market);
+                        latest_market = new Dataset(now, resources, purchases, updates, reviews, "market");
+                        save(latest_market);
 
-                    long delay = System.currentTimeMillis() - now;
-                    Logger.send("Completed MC-Market Refreshing Cycle in " + Math.round(TimeUnit.MILLISECONDS.toMinutes(delay)) + " minutes!", true);
+                        long delay = System.currentTimeMillis() - now;
+                        Logger.send("Completed MC-Market Refreshing Cycle in " + Math.round(TimeUnit.MILLISECONDS.toMinutes(delay)) + " minutes!", true);
+                    }else{
+                        Logger.send("Failed MC-Market Refreshing Cycle", true);
+                    }
+                    marketParseDone = true;
                 } catch (InterruptedException e) {
                     Logger.send(Arrays.toString(e.getStackTrace()), true);
+                    if(parser != null)
+                        parser.close();
+                    marketParseDone = true;
                 }
             }
 
