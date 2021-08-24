@@ -31,13 +31,6 @@ public class Screenshot implements HttpHandler {
                 try {
                     Robot robot = new Robot();
 
-                    robot.mouseMove(50, 50);
-                    Thread.sleep(200);
-                    robot.mouseMove(800, 800);
-                    Thread.sleep(200);
-                    robot.mouseMove(400, 400);
-                    Thread.sleep(500);
-
                     BufferedImage image = robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
                     ImageIO.write(image, "png", new File(currentPath+"\\data\\screenshot.png"));
 
