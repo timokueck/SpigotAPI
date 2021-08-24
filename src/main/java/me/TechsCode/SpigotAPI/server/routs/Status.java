@@ -27,7 +27,7 @@ public class Status implements HttpHandler {
             if(HttpRouter.isTokenValid(token)){
                 if(HttpRouter.getDataManager().getDataset_spigot() != null){
                     long spigotTimeCreated = HttpRouter.getDataManager().getDataset_spigot().getTimeCreated();
-                    if(spigotTimeCreated + TimeUnit.MINUTES.toMillis(Config.getInstance().getSpigotRefreshDelay() + 10) < System.currentTimeMillis()){
+                    if(spigotTimeCreated + TimeUnit.MINUTES.toMillis(Config.getInstance().getSpigotRefreshDelay() * 2L) < System.currentTimeMillis()){
                         obj.put("spigotFetching", false);
                     }else{
                         obj.put("spigotFetching", true);
@@ -44,7 +44,7 @@ public class Status implements HttpHandler {
 
                 if(HttpRouter.getDataManager().getDataset_market() != null) {
                     long marketTimeCreated = HttpRouter.getDataManager().getDataset_market().getTimeCreated();
-                    if (marketTimeCreated + TimeUnit.MINUTES.toMillis(Config.getInstance().getMarketRefreshDelay() + 10) < System.currentTimeMillis()) {
+                    if (marketTimeCreated + TimeUnit.MINUTES.toMillis(Config.getInstance().getMarketRefreshDelay() * 2L) < System.currentTimeMillis()) {
                         obj.put("marketFetching", false);
                     } else {
                         obj.put("marketFetching", true);
