@@ -22,7 +22,7 @@ public class Logger {
 
         saveToFile(message);
 
-        if(!sendDiscord){
+        if(sendDiscord){
             sendDiscord(message);
         }
     }
