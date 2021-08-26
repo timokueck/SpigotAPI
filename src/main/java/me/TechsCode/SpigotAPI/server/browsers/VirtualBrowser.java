@@ -43,7 +43,8 @@ public class VirtualBrowser {
         try{
             preloadSites("");
         }catch (Exception e){
-            Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 
@@ -54,7 +55,8 @@ public class VirtualBrowser {
             try {
                 Thread.sleep(12000L);
             } catch (InterruptedException e) {
-                Logger.send(Arrays.toString(e.getStackTrace()), true);
+                Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
 
             driver.executeScript("popup_window_spigot.close()");
@@ -62,7 +64,8 @@ public class VirtualBrowser {
             try {
                 Thread.sleep(2000L);
             } catch (InterruptedException e) {
-                Logger.send(Arrays.toString(e.getStackTrace()), true);
+                Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
         }
 
@@ -72,7 +75,8 @@ public class VirtualBrowser {
             try {
                 Thread.sleep(12000L);
             } catch (InterruptedException e) {
-                Logger.send(Arrays.toString(e.getStackTrace()), true);
+                Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
 
             driver.executeScript("popup_window_market.close()");
@@ -80,7 +84,8 @@ public class VirtualBrowser {
             try {
                 Thread.sleep(2000L);
             } catch (InterruptedException e) {
-                Logger.send(Arrays.toString(e.getStackTrace()), true);
+                Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
         }
 

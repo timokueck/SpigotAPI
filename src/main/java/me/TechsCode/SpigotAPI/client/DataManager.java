@@ -47,17 +47,20 @@ public class DataManager implements Runnable {
                     this.lastParsed = System.currentTimeMillis();
                 } catch (JsonParseException e) {
                     Logger.send("Server responded with '" + json + "'", true);
-                    Logger.send(Arrays.toString(e.getStackTrace()), true);
+                    Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
                 }
 
             } catch (IOException | URISyntaxException e) {
-                Logger.send(Arrays.toString(e.getStackTrace()), true);
+                Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
 
             try {
                 Thread.sleep(REFRESH_DELAY);
             } catch (InterruptedException e) {
-                Logger.send(Arrays.toString(e.getStackTrace()), true);
+                Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
         }
     }

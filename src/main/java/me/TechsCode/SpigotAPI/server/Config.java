@@ -35,7 +35,8 @@ public class Config {
                 InputStream src = Config.class.getResourceAsStream("/config.json");
                 Files.copy(src, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
-                Logger.send(Arrays.toString(e.getStackTrace()), true);
+                Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
         }
 
@@ -45,7 +46,8 @@ public class Config {
             JsonParser jsonParser = new JsonParser();
             root = (JsonObject) jsonParser.parse(json);
         } catch (IOException e) {
-            Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 

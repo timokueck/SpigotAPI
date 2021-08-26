@@ -31,7 +31,8 @@ public class HttpRouter {
             initServer();
             startServer();
         } catch (Exception e) {
-            Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
 
         Runtime.getRuntime().addShutdownHook(new Thread(HttpRouter::stopServer));
@@ -78,7 +79,8 @@ public class HttpRouter {
                 Logger.send("Listening on port "+Config.getInstance().getPort(), true);
             }
         } catch (Exception e) {
-            Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 
@@ -89,7 +91,8 @@ public class HttpRouter {
                 System.out.print("API stopped");
             }
         } catch (Exception e) {
-            Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 

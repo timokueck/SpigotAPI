@@ -96,7 +96,8 @@ public class Resource extends JsonSerializable {
             int resourceId = Integer.parseInt(id);
             return String.format("https://www.spigotmc.org/data/resource_icons/%d/%d.jpg", (int) Math.floor(resourceId / 1000d), resourceId);
         } catch (NumberFormatException e) {
-            Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
             return "https://static.spigotmc.org/styles/spigot/xenresource/resource_icon.png";
         }
     }

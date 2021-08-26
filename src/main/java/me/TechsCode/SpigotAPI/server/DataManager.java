@@ -47,7 +47,8 @@ public class DataManager extends Thread {
         try {
             FileUtils.writeStringToFile(file, json, Charset.defaultCharset());
         } catch (IOException e) {
-            Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 
@@ -64,7 +65,8 @@ public class DataManager extends Thread {
 
             return new Dataset(jsonObject);
         } catch (IOException e) {
-            Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
             return null;
         }
     }
@@ -77,30 +79,43 @@ public class DataManager extends Thread {
                 Config config = Config.getInstance();
                 long now = System.currentTimeMillis();
 
-                SpigotBrowser parser = null;
+                SpigotBrowser spigot_parser = null;
                 try{
                     VirtualBrowser.enableSpigotPreload();
-                    parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword(), config.getSpigotUserId(), true);
+                    spigot_parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword(), config.getSpigotUserId(), true);
                 }catch (InterruptedException e){
-                    Logger.send(Arrays.toString(e.getStackTrace()), true);
+                    Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
                     spigotParseDone = true;
                 }
 
                 try {
-                    if(parser != null){
-                        ResourcesList resources = parser.collectResources();
+                    if(spigot_parser != null){
+                        ResourcesList resources = spigot_parser.collectResources();
                         Logger.send("[1/4] Collected " + resources.size() + " Resources on SpigotMC", false);
+                        if(resources.isEmpty()){
+                            resources = HttpRouter.getDataManager().latest_spigot.getResources();
+                        }
 
-                        UpdatesList updates = parser.collectUpdates(resources);
+                        UpdatesList updates = spigot_parser.collectUpdates(resources);
                         Logger.send("[2/4] Collected " + updates.size() + " Updates on SpigotMC", false);
+                        if(updates.isEmpty()){
+                            updates = HttpRouter.getDataManager().latest_spigot.getUpdates();
+                        }
 
-                        ReviewsList reviews = parser.collectReviews(resources);
+                        ReviewsList reviews = spigot_parser.collectReviews(resources);
                         Logger.send("[3/4] Collected " + reviews.size() + " Reviews on SpigotMC", false);
+                        if(reviews.isEmpty()){
+                            reviews = HttpRouter.getDataManager().latest_spigot.getReviews();
+                        }
 
-                        PurchasesList purchases = parser.collectPurchases(resources);
+                        PurchasesList purchases = spigot_parser.collectPurchases(resources);
                         Logger.send("[4/4] Collected " + purchases.size() + " Purchases on SpigotMC", false);
+                        if(purchases.isEmpty()){
+                            purchases = HttpRouter.getDataManager().latest_spigot.getPurchases();
+                        }
 
-                        parser.close();
+                        spigot_parser.close();
 
                         latest_spigot = new Dataset(now, resources, purchases, updates, reviews, "spigot");
                         save(latest_spigot);
@@ -112,9 +127,10 @@ public class DataManager extends Thread {
                     }
                     spigotParseDone = true;
                 } catch (InterruptedException e) {
-                    Logger.send(Arrays.toString(e.getStackTrace()), true);
-                    if(parser != null)
-                        parser.close();
+                    Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
+                    if(spigot_parser != null)
+                        spigot_parser.close();
                     spigotParseDone = true;
                 }
             }
@@ -123,32 +139,33 @@ public class DataManager extends Thread {
                 marketParseDone = false;
                 long now = System.currentTimeMillis();
 
-                MarketBrowser parser = null;
+                MarketBrowser market_parser = null;
                 try{
                     Config config = Config.getInstance();
                     VirtualBrowser.enableMarketPreload();
-                    parser = new MarketBrowser(config.getMarketUsername(), config.getMarketPassword(), config.getMarketUserId(), true);
+                    market_parser = new MarketBrowser(config.getMarketUsername(), config.getMarketPassword(), config.getMarketUserId(), true);
                 }catch (InterruptedException e){
-                    Logger.send(Arrays.toString(e.getStackTrace()), true);
+                    Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
                     marketParseDone = true;
                 }
 
                 try {
-                    if(parser != null) {
-                        ResourcesList resources = parser.collectResources();
+                    if(market_parser != null) {
+                        ResourcesList resources = market_parser.collectResources();
                         Logger.send("[1/4] Collected " + resources.size() + " Resources on MC-Market", false);
 
-                        UpdatesList updates = parser.collectUpdates(resources);
+                        UpdatesList updates = market_parser.collectUpdates(resources);
                         Logger.send("[2/4] Collected " + updates.size() + " Updates on MC-Market", false);
 
-                        ReviewsList reviews = parser.collectReviews(resources);
+                        ReviewsList reviews = market_parser.collectReviews(resources);
                         Logger.send("[3/4] Collected " + reviews.size() + " Reviews on MC-Market", false);
 
                         PurchasesList purchases = new PurchasesList();
                         //PurchasesList purchases = parser.collectPurchases(resources);
                         //Logger.send("[4/4] Collected " + purchases.size() + " Purchases on MC-Market", false);
 
-                        parser.close();
+                        market_parser.close();
 
                         latest_market = new Dataset(now, resources, purchases, updates, reviews, "market");
                         save(latest_market);
@@ -160,9 +177,10 @@ public class DataManager extends Thread {
                     }
                     marketParseDone = true;
                 } catch (InterruptedException e) {
-                    Logger.send(Arrays.toString(e.getStackTrace()), true);
-                    if(parser != null)
-                        parser.close();
+                    Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
+                    if(market_parser != null)
+                        market_parser.close();
                     marketParseDone = true;
                 }
             }

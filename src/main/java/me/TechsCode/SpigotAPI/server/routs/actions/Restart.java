@@ -57,7 +57,8 @@ public class Restart implements HttpHandler {
                 Runtime.getRuntime().exec("cmd.exe /c start "+currentPath+"\\start.bat");
                 Thread.sleep(1000L);
             } catch (IOException|InterruptedException e) {
-                Logger.send(Arrays.toString(e.getStackTrace()), true);
+                Logger.send(e.getMessage(), true);
+Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
             System.exit(0);
         }

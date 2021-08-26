@@ -55,6 +55,7 @@ public class VerifyUser_Spigot implements HttpHandler {
                                     response = obj.toString();
                                     responseCode = 200;
                                 } catch (InterruptedException e) {
+                                    Logger.send(e.getMessage(), true);
                                     Logger.send(Arrays.toString(e.getStackTrace()), true);
                                     obj.put("E", "Error");
                                     obj.put("Msg", e.getMessage());
