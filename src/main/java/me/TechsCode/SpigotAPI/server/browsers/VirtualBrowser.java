@@ -44,19 +44,20 @@ public class VirtualBrowser {
             preloadSites("");
         }catch (Exception e){
             Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 
     public void preloadSites(String url) throws InterruptedException {
         if(preloadSpigot){
-            driver.executeScript("popup_window_spigot = window.open('https://www.spigotmc.org/"+ SpigotAPIServer.getRandomInt() +"')");
+
+            driver.executeScript("var popup_window_spigot = window.open('https://www.spigotmc.org/"+ SpigotAPIServer.getRandomInt() +"')");
 
             try {
                 Thread.sleep(12000L);
             } catch (InterruptedException e) {
                 Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
 
             driver.executeScript("popup_window_spigot.close()");
@@ -65,18 +66,18 @@ Logger.send(Arrays.toString(e.getStackTrace()), true);
                 Thread.sleep(2000L);
             } catch (InterruptedException e) {
                 Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
         }
 
         if(preloadMarket){
-            driver.executeScript("popup_window_market = window.open('https://www.mc-market.org/"+ SpigotAPIServer.getRandomInt() +"')");
+            driver.executeScript("var popup_window_market = window.open('https://www.mc-market.org/"+ SpigotAPIServer.getRandomInt() +"')");
 
             try {
                 Thread.sleep(12000L);
             } catch (InterruptedException e) {
                 Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
 
             driver.executeScript("popup_window_market.close()");
@@ -85,7 +86,7 @@ Logger.send(Arrays.toString(e.getStackTrace()), true);
                 Thread.sleep(2000L);
             } catch (InterruptedException e) {
                 Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
         }
 

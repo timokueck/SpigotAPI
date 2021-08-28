@@ -20,6 +20,7 @@ public class SpigotAPIServer {
         DataManager dataManager = new DataManager();
 
         router = new HttpRouter(dataManager, Config.getInstance().getToken());
+
     }
 
     public static HttpServer getServer(){
