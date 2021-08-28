@@ -91,11 +91,10 @@ public class Screenshot implements HttpHandler {
             responseCode = 401;
         }
 
-        assert fileResponse != null;
-        if(fileResponse.isFile()){
+        t.sendResponseHeaders(responseCode, response.length());
+
+        if(fileResponse != null){
             t.sendResponseHeaders(responseCode, fileResponse.length());
-        }else{
-            t.sendResponseHeaders(responseCode, response.length());
         }
 
         OutputStream os = t.getResponseBody();
