@@ -48,7 +48,7 @@ public class DataManager extends Thread {
             FileUtils.writeStringToFile(file, json, Charset.defaultCharset());
         } catch (IOException e) {
             Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 
@@ -66,7 +66,7 @@ Logger.send(Arrays.toString(e.getStackTrace()), true);
             return new Dataset(jsonObject);
         } catch (IOException e) {
             Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
             return null;
         }
     }
@@ -85,7 +85,7 @@ Logger.send(Arrays.toString(e.getStackTrace()), true);
                     spigot_parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword(), config.getSpigotUserId(), true);
                 }catch (InterruptedException e){
                     Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+                    Logger.send(Arrays.toString(e.getStackTrace()), true);
                     spigotParseDone = true;
                 }
 
@@ -128,7 +128,7 @@ Logger.send(Arrays.toString(e.getStackTrace()), true);
                     spigotParseDone = true;
                 } catch (InterruptedException e) {
                     Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+                    Logger.send(Arrays.toString(e.getStackTrace()), true);
                     if(spigot_parser != null)
                         spigot_parser.close();
                     spigotParseDone = true;
@@ -146,7 +146,7 @@ Logger.send(Arrays.toString(e.getStackTrace()), true);
                     market_parser = new MarketBrowser(config.getMarketUsername(), config.getMarketPassword(), config.getMarketUserId(), true);
                 }catch (InterruptedException e){
                     Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+                    Logger.send(Arrays.toString(e.getStackTrace()), true);
                     marketParseDone = true;
                 }
 
@@ -178,7 +178,7 @@ Logger.send(Arrays.toString(e.getStackTrace()), true);
                     marketParseDone = true;
                 } catch (InterruptedException e) {
                     Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+                    Logger.send(Arrays.toString(e.getStackTrace()), true);
                     if(market_parser != null)
                         market_parser.close();
                     marketParseDone = true;
