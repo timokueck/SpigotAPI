@@ -3,6 +3,7 @@ package me.TechsCode.SpigotAPI.server.browsers;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import me.TechsCode.SpigotAPI.server.Logger;
 import me.TechsCode.SpigotAPI.server.SpigotAPIServer;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -38,7 +39,8 @@ public class VirtualBrowser {
             options.addArguments("--no-sandbox");
         }
 
-        this.driver = new ChromeDriver(options);
+        driver = new ChromeDriver(options);
+        driver.navigate().to("https://google.com");
 
         try{
             preloadSites("");
@@ -49,9 +51,9 @@ public class VirtualBrowser {
     }
 
     public void preloadSites(String url) throws InterruptedException {
-        if(preloadSpigot){
 
-            driver.executeScript("var popup_window_spigot = window.open('https://www.spigotmc.org/"+ SpigotAPIServer.getRandomInt() +"')");
+        if(preloadSpigot){
+            driver.executeScript("spigot_popup_window = window.open('https://www.spigotmc.org/"+ SpigotAPIServer.getRandomInt() +"');");
 
             try {
                 Thread.sleep(12000L);
@@ -60,7 +62,7 @@ public class VirtualBrowser {
                 Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
 
-            driver.executeScript("popup_window_spigot.close()");
+            driver.executeScript("spigot_popup_window.close();");
 
             try {
                 Thread.sleep(2000L);
@@ -71,7 +73,7 @@ public class VirtualBrowser {
         }
 
         if(preloadMarket){
-            driver.executeScript("var popup_window_market = window.open('https://www.mc-market.org/"+ SpigotAPIServer.getRandomInt() +"')");
+            driver.executeScript("market_popup_window = window.open('https://www.mc-market.org/"+ SpigotAPIServer.getRandomInt() +"');");
 
             try {
                 Thread.sleep(12000L);
@@ -80,7 +82,7 @@ public class VirtualBrowser {
                 Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
 
-            driver.executeScript("popup_window_market.close()");
+            driver.executeScript("market_popup_window.close();");
 
             try {
                 Thread.sleep(2000L);
