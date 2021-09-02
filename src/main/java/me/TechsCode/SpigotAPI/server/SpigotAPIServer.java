@@ -3,11 +3,11 @@ package me.TechsCode.SpigotAPI.server;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Random;
 
 public class SpigotAPIServer {
     private static HttpServer server;
-    private static HttpRouter router;
 
     public static void main(String[] args) throws FileNotFoundException {
         if(!Config.getInstance().isConfigured()){
@@ -19,7 +19,7 @@ public class SpigotAPIServer {
 
         DataManager dataManager = new DataManager();
 
-        router = new HttpRouter(dataManager, Config.getInstance().getToken());
+        new HttpRouter(dataManager, Config.getInstance().getToken());
 
     }
 
@@ -35,7 +35,16 @@ public class SpigotAPIServer {
         Random r = new Random();
         int low = 10;
         int high = 100;
-        int result = r.nextInt(high-low) + low;
-        return result;
+        return r.nextInt(high-low) + low;
+    }
+
+    public static void KillProcess(String processName) {
+        try {
+            Process p = Runtime.getRuntime().exec("taskkill /F /IM "+processName+" /T");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Logger.send("Error killing process: "+processName, true);
+            Logger.send(e.getMessage(), true);
+        }
     }
 }
