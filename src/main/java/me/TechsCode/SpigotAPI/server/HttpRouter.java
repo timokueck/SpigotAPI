@@ -5,6 +5,7 @@ import me.TechsCode.SpigotAPI.server.routs.Actions;
 import me.TechsCode.SpigotAPI.server.routs.Docs;
 import me.TechsCode.SpigotAPI.server.routs.NotFound;
 import me.TechsCode.SpigotAPI.server.routs.Status;
+import me.TechsCode.SpigotAPI.server.routs.actions.CloseChrome;
 import me.TechsCode.SpigotAPI.server.routs.actions.Restart;
 import me.TechsCode.SpigotAPI.server.routs.actions.Screenshot;
 import me.TechsCode.SpigotAPI.server.routs.actions.Stop;
@@ -32,7 +33,7 @@ public class HttpRouter {
             startServer();
         } catch (Exception e) {
             Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
 
         Runtime.getRuntime().addShutdownHook(new Thread(HttpRouter::stopServer));
@@ -49,6 +50,7 @@ Logger.send(Arrays.toString(e.getStackTrace()), true);
         SpigotAPIServer.getServer().createContext("/actions/stop", new Stop());
         SpigotAPIServer.getServer().createContext("/actions/restart", new Restart());
         SpigotAPIServer.getServer().createContext("/actions/screenshot", new Screenshot());
+        SpigotAPIServer.getServer().createContext("/actions/killchrome", new CloseChrome());
 
         //Data spigot
         SpigotAPIServer.getServer().createContext("/data/spigot/all", new All_Spigot());
@@ -80,7 +82,7 @@ Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
         } catch (Exception e) {
             Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 
@@ -92,7 +94,7 @@ Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
         } catch (Exception e) {
             Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 
