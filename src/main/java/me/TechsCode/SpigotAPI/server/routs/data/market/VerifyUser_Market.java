@@ -18,11 +18,14 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class VerifyUser_Market implements HttpHandler {
+    public static boolean isVerifying = false;
+
     public void handle(HttpExchange t) throws IOException {
         Map<String, String> params = HttpRouter.getParamMap(t.getRequestURI().getQuery());
         JSONObject obj = new JSONObject();
         String response;
         int responseCode ;
+        isVerifying = true;
 
         if(params.get("token") !=null){
             String token = params.get("token");
@@ -99,6 +102,8 @@ public class VerifyUser_Market implements HttpHandler {
             response = obj.toString();
             responseCode = 401;
         }
+
+        isVerifying = false;
 
         t.sendResponseHeaders(responseCode, response.length());
         OutputStream os = t.getResponseBody();

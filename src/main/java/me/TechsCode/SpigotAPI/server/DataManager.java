@@ -10,6 +10,8 @@ import me.TechsCode.SpigotAPI.data.lists.UpdatesList;
 import me.TechsCode.SpigotAPI.server.browsers.MarketBrowser;
 import me.TechsCode.SpigotAPI.server.browsers.SpigotBrowser;
 import me.TechsCode.SpigotAPI.server.browsers.VirtualBrowser;
+import me.TechsCode.SpigotAPI.server.routs.data.market.VerifyUser_Market;
+import me.TechsCode.SpigotAPI.server.routs.data.spigot.VerifyUser_Spigot;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -116,6 +118,9 @@ public class DataManager extends Thread {
                         }
 
                         spigot_parser.close();
+                        if(!VerifyUser_Spigot.isVerifying){
+                            SpigotAPIServer.KillProcess("chrome.exe");
+                        }
 
                         latest_spigot = new Dataset(now, resources, purchases, updates, reviews, "spigot");
                         save(latest_spigot);
@@ -166,6 +171,9 @@ public class DataManager extends Thread {
                         //Logger.send("[4/4] Collected " + purchases.size() + " Purchases on MC-Market", false);
 
                         market_parser.close();
+                        if(!VerifyUser_Market.isVerifying){
+                            SpigotAPIServer.KillProcess("chrome.exe");
+                        }
 
                         latest_market = new Dataset(now, resources, purchases, updates, reviews, "market");
                         save(latest_market);
