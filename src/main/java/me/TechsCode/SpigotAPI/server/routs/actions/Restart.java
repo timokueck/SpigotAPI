@@ -28,6 +28,7 @@ public class Restart implements HttpHandler {
                 Logger.send("Restarting SpigotAPI Server...", true);
                 restartAPI = true;
                 VirtualBrowser.quit();
+                SpigotAPIServer.KillProcess("chrome.exe");
 
                 obj.put("Status", "Success");
                 obj.put("Msg", "Restarting API");

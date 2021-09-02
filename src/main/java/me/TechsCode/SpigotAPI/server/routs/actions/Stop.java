@@ -2,11 +2,9 @@ package me.TechsCode.SpigotAPI.server.routs.actions;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import me.TechsCode.SpigotAPI.server.DataManager;
 import me.TechsCode.SpigotAPI.server.HttpRouter;
 import me.TechsCode.SpigotAPI.server.Logger;
 import me.TechsCode.SpigotAPI.server.SpigotAPIServer;
-import me.TechsCode.SpigotAPI.server.browsers.MarketBrowser;
 import me.TechsCode.SpigotAPI.server.browsers.VirtualBrowser;
 import org.json.simple.JSONObject;
 
@@ -23,24 +21,25 @@ public class Stop implements HttpHandler {
 
         boolean stopAPI = false;
 
-        if(params.get("token") !=null){
+        if (params.get("token") != null) {
             String token = params.get("token");
-            if(HttpRouter.isTokenValid(token)){
+            if (HttpRouter.isTokenValid(token)) {
                 Logger.send("Stopping SpigotAPI Server...", true);
                 stopAPI = true;
                 VirtualBrowser.quit();
+                SpigotAPIServer.KillProcess("chrome.exe");
 
                 obj.put("Status", "Success");
                 obj.put("Msg", "Stopping API");
                 response = obj.toString();
                 responseCode = 200;
-            }else{
+            } else {
                 obj.put("Status", "Error");
                 obj.put("Msg", "Invalid token");
                 response = obj.toString();
                 responseCode = 401;
             }
-        }else{
+        } else {
             obj.put("Status", "Error");
             obj.put("Msg", "Missing token");
             response = obj.toString();
@@ -52,7 +51,7 @@ public class Stop implements HttpHandler {
         os.write(response.getBytes());
         os.close();
 
-        if(stopAPI){
+        if (stopAPI) {
             System.exit(0);
         }
     }
