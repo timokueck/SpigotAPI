@@ -148,6 +148,15 @@ public class VirtualBrowser {
     }
 
     public void close() {
+        for(String winHandle : driver.getWindowHandles()) {
+            if (winHandle == driver.getWindowHandles().toArray()[driver.getWindowHandles().size()-1])
+            {
+                continue;
+            }
+            driver.switchTo().window(winHandle);
+            driver.close();
+        }
+
         preloadSpigot = false;
         preloadMarket = false;
         driver.close();
