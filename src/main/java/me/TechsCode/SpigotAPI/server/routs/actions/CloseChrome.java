@@ -1,28 +1,33 @@
-package me.TechsCode.SpigotAPI.server.routs;
+package me.TechsCode.SpigotAPI.server.routs.actions;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import me.TechsCode.SpigotAPI.server.HttpRouter;
+import me.TechsCode.SpigotAPI.server.Logger;
+import me.TechsCode.SpigotAPI.server.SpigotAPIServer;
+import me.TechsCode.SpigotAPI.server.browsers.VirtualBrowser;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Map;
 
-public class Actions implements HttpHandler {
+public class CloseChrome implements HttpHandler {
     public void handle(HttpExchange t) throws IOException {
         Map<String, String> params = HttpRouter.getParamMap(t.getRequestURI().getQuery());
         JSONObject obj = new JSONObject();
         String response;
-        int responseCode ;
+        int responseCode;
 
         if(params.get("token") !=null){
             String token = params.get("token");
             if(HttpRouter.isTokenValid(token)){
-                obj.put("Restart", "/actions/restart?token=");
-                obj.put("Stop", "/actions/stop?token=");
-                obj.put("Screenshot", "/actions/screenshot?token=");
-                obj.put("Kill Chrome", "/actions/killchrome?token=");
+                Logger.send("Closing all chrome browsers", true);
+                SpigotAPIServer.KillProcess("chrome.exe");
+
+                obj.put("Status", "Success");
+                obj.put("Msg", "Stopping Chrome Browsers");
                 response = obj.toString();
                 responseCode = 200;
             }else{
