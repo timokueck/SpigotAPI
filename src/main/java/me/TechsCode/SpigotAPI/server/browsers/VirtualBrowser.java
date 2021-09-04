@@ -3,6 +3,8 @@ package me.TechsCode.SpigotAPI.server.browsers;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import me.TechsCode.SpigotAPI.server.Logger;
 import me.TechsCode.SpigotAPI.server.SpigotAPIServer;
+import me.TechsCode.SpigotAPI.server.routs.data.market.VerifyUser_Market;
+import me.TechsCode.SpigotAPI.server.routs.data.spigot.VerifyUser_Spigot;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -28,8 +30,8 @@ public class VirtualBrowser {
         options.addArguments("--disable-blink-features=AutomationControlled");
         options.setExperimentalOption("useAutomationExtension", false);
         options.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
-        options.addArguments("--disable-gpu");
         options.addArguments("--disable-infobars");
+        options.addArguments("--disable-dev-shm-usage");
         options.addArguments("enable-features=NetworkServiceInProcess");
 
         if(!isWindows() && !isMac()) {
@@ -56,16 +58,7 @@ public class VirtualBrowser {
             driver.executeScript("spigot_popup_window = window.open('https://www.spigotmc.org/"+ SpigotAPIServer.getRandomInt() +"');");
 
             try {
-                Thread.sleep(12000L);
-            } catch (InterruptedException e) {
-                Logger.send(e.getMessage(), true);
-                Logger.send(Arrays.toString(e.getStackTrace()), true);
-            }
-
-            driver.executeScript("spigot_popup_window.close();");
-
-            try {
-                Thread.sleep(2000L);
+                Thread.sleep(14000L);
             } catch (InterruptedException e) {
                 Logger.send(e.getMessage(), true);
                 Logger.send(Arrays.toString(e.getStackTrace()), true);
@@ -76,16 +69,7 @@ public class VirtualBrowser {
             driver.executeScript("market_popup_window = window.open('https://www.mc-market.org/"+ SpigotAPIServer.getRandomInt() +"');");
 
             try {
-                Thread.sleep(12000L);
-            } catch (InterruptedException e) {
-                Logger.send(e.getMessage(), true);
-                Logger.send(Arrays.toString(e.getStackTrace()), true);
-            }
-
-            driver.executeScript("market_popup_window.close();");
-
-            try {
-                Thread.sleep(2000L);
+                Thread.sleep(14000L);
             } catch (InterruptedException e) {
                 Logger.send(e.getMessage(), true);
                 Logger.send(Arrays.toString(e.getStackTrace()), true);
@@ -149,23 +133,23 @@ public class VirtualBrowser {
 
     public void close() {
         for(String winHandle : driver.getWindowHandles()) {
-            if (winHandle == driver.getWindowHandles().toArray()[driver.getWindowHandles().size()-1])
-            {
-                continue;
-            }
             driver.switchTo().window(winHandle);
             driver.close();
         }
 
         preloadSpigot = false;
         preloadMarket = false;
-        driver.close();
+
+        if(!VerifyUser_Market.isVerifying && !VerifyUser_Spigot.isVerifying){
+            SpigotAPIServer.KillProcess("chrome.exe");
+        }
     }
 
     public static void quit() {
         preloadSpigot = false;
         preloadMarket = false;
         driver.quit();
+        SpigotAPIServer.KillProcess("chrome.exe");
     }
 
     public void sleep(long millis) throws InterruptedException {
