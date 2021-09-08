@@ -85,7 +85,7 @@ public class DataManager extends Thread {
                 try{
                     VirtualBrowser.enableSpigotPreload();
                     spigot_parser = new SpigotBrowser(config.getSpigotUsername(), config.getSpigotPassword(), config.getSpigotUserId(), true);
-                }catch (InterruptedException e){
+                }catch (Exception e){
                     Logger.send(e.getMessage(), true);
                     Logger.send(Arrays.toString(e.getStackTrace()), true);
                     spigotParseDone = true;
@@ -128,7 +128,7 @@ public class DataManager extends Thread {
                         Logger.send("Failed SpigotMC Refreshing Cycle", true);
                     }
                     spigotParseDone = true;
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     Logger.send(e.getMessage(), true);
                     Logger.send(Arrays.toString(e.getStackTrace()), true);
                     if(spigot_parser != null)
@@ -146,7 +146,7 @@ public class DataManager extends Thread {
                     Config config = Config.getInstance();
                     VirtualBrowser.enableMarketPreload();
                     market_parser = new MarketBrowser(config.getMarketUsername(), config.getMarketPassword(), config.getMarketUserId(), true);
-                }catch (InterruptedException e){
+                }catch (Exception e){
                     Logger.send(e.getMessage(), true);
                     Logger.send(Arrays.toString(e.getStackTrace()), true);
                     marketParseDone = true;
@@ -178,7 +178,7 @@ public class DataManager extends Thread {
                         Logger.send("Failed MC-Market Refreshing Cycle", true);
                     }
                     marketParseDone = true;
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     Logger.send(e.getMessage(), true);
                     Logger.send(Arrays.toString(e.getStackTrace()), true);
                     if(market_parser != null)
