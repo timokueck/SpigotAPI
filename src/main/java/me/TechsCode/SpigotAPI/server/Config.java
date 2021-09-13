@@ -36,7 +36,7 @@ public class Config {
                 Files.copy(src, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
         }
 
@@ -47,7 +47,7 @@ Logger.send(Arrays.toString(e.getStackTrace()), true);
             root = (JsonObject) jsonParser.parse(json);
         } catch (IOException e) {
             Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 
@@ -89,6 +89,10 @@ Logger.send(Arrays.toString(e.getStackTrace()), true);
 
     public int getPort(){
         return root.get("port").getAsInt();
+    }
+
+    public int getManagerPort(){
+        return root.get("managerPort").getAsInt();
     }
 
     public int getSpigotRefreshDelay(){

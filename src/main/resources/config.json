@@ -8,6 +8,7 @@
 
   "token": "sometoken",
   "port": 80,
+  "managerPort": 81,
   "discordWebhookUrl": "someurl",
   "spigotRefreshDelay": 1,
   "marketRefreshDelay": 1

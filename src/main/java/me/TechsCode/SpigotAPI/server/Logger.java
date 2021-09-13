@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Logger {
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_RED = "\u001B[31m";
 
     private static String getCurrentDateTime(){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -19,6 +22,26 @@ public class Logger {
 
     public static void send(String message, Boolean sendDiscord) {
         System.out.println(getCurrentDateTime() + message);
+
+        saveToFile(message);
+
+        if(sendDiscord){
+            sendDiscord(message);
+        }
+    }
+
+    public static void info(String message, Boolean sendDiscord) {
+        System.out.println(getCurrentDateTime() + ANSI_YELLOW + message + ANSI_RESET);
+
+        saveToFile(message);
+
+        if(sendDiscord){
+            sendDiscord(message);
+        }
+    }
+
+    public static void error(String message, Boolean sendDiscord) {
+        System.out.println(getCurrentDateTime() + ANSI_RED + message + ANSI_RESET);
 
         saveToFile(message);
 

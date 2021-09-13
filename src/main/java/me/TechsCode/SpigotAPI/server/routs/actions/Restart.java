@@ -55,11 +55,11 @@ public class Restart implements HttpHandler {
         if (restartAPI){
             try {
                 String currentPath = new java.io.File(".").getCanonicalPath();
-                Runtime.getRuntime().exec("cmd.exe /c start "+currentPath+"\\start.bat");
+                Runtime.getRuntime().exec("cmd.exe /c start "+currentPath+"\\startup\\SpigotAPI.exe");
                 Thread.sleep(1000L);
             } catch (IOException|InterruptedException e) {
                 Logger.send(e.getMessage(), true);
-Logger.send(Arrays.toString(e.getStackTrace()), true);
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
             System.exit(0);
         }

@@ -1,9 +1,6 @@
-@echo off
-title SpigotAPI
+Title SpigotAPI Manager
 
-echo Starting SpigotAPI after delay
-TIMEOUT /T 5
-cls
-java -jar SpigotAPI.jar
-TIMEOUT /T 10
-exit 0
+start startup\\SpigotAPI.exe
+java -jar SpigotAPI.jar manager
+
+pause
