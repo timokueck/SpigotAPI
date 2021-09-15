@@ -1,17 +1,18 @@
 package me.TechsCode.SpigotAPI.manager;
 
+import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import me.TechsCode.SpigotAPI.manager.routs.*;
 import me.TechsCode.SpigotAPI.server.Config;
 import me.TechsCode.SpigotAPI.server.Logger;
 import me.TechsCode.SpigotAPI.server.SpigotAPIServer;
 import me.TechsCode.SpigotAPI.server.routs.NotFound;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -43,6 +44,8 @@ public class HttpRouterManager {
         SpigotAPIServer.getServer().createContext("/stop", new StopManager());
         SpigotAPIServer.getServer().createContext("/restart", new RestartManager());
         SpigotAPIServer.getServer().createContext("/killchrome", new KillChromeManager());
+        SpigotAPIServer.getServer().createContext("/upload", new UploadManager());
+        SpigotAPIServer.getServer().createContext("/uploadFile", new FileUploadManager());
 
         SpigotAPIServer.getServer().setExecutor(null);
     }

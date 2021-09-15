@@ -143,6 +143,10 @@ public class VirtualBrowser {
         preloadSpigot = false;
         preloadMarket = false;
 
+        try{
+            Thread.sleep(500);
+        }catch (Exception ignored){}
+
         if(!VerifyUser_Market.isVerifying && !VerifyUser_Spigot.isVerifying){
             SpigotAPIServer.KillProcess("chrome.exe");
         }
@@ -152,6 +156,11 @@ public class VirtualBrowser {
         preloadSpigot = false;
         preloadMarket = false;
         driver.quit();
+
+        try{
+            Thread.sleep(500);
+        }catch (Exception ignored){}
+
         SpigotAPIServer.KillProcess("chrome.exe");
     }
 
