@@ -52,31 +52,23 @@ public class Config {
     }
 
     public boolean isConfigured(){
-        return !getSpigotUsername().equals("someuser") || !getMarketUsername().equals("someuser") || !getMarketUserId().equals("someid") || !getSpigotUserId().equals("someid") || !getWebhookUrl().equals("someurl");
+        return !getSpigotUsername().equals("someuser") || !getSpigotUserId().equals("someid") || !getWebhookUrl().equals("someurl");
     }
 
     public String getSpigotUsername(){
-        return root.get("spigotUsername").getAsString();
+        return root.get("username").getAsString();
     }
 
     public String getSpigotPassword(){
-        return root.get("spigotPassword").getAsString();
+        return root.get("password").getAsString();
     }
 
     public String getSpigotUserId(){
-        return root.get("spigotUserId").getAsString();
+        return root.get("userId").getAsString();
     }
 
-    public String getMarketUsername(){
-        return root.get("marketUsername").getAsString();
-    }
-
-    public String getMarketPassword(){
-        return root.get("marketPassword").getAsString();
-    }
-
-    public String getMarketUserId(){
-        return root.get("marketUserId").getAsString();
+    public String get2FAToken() {
+        return root.get("2faToken").getAsString();
     }
 
     public String getToken(){
@@ -95,12 +87,8 @@ public class Config {
         return root.get("managerPort").getAsInt();
     }
 
-    public int getSpigotRefreshDelay(){
-        return root.get("spigotRefreshDelay").getAsInt();
-    }
-
-    public int getMarketRefreshDelay(){
-        return root.get("marketRefreshDelay").getAsInt();
+    public int getRefreshDelay(){
+        return root.get("refreshDelay").getAsInt();
     }
 
 }

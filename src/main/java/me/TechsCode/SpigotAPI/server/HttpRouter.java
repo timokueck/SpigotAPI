@@ -7,10 +7,8 @@ import me.TechsCode.SpigotAPI.server.routs.NotFound;
 import me.TechsCode.SpigotAPI.server.routs.Status;
 import me.TechsCode.SpigotAPI.server.routs.actions.CloseChrome;
 import me.TechsCode.SpigotAPI.server.routs.actions.Restart;
-import me.TechsCode.SpigotAPI.server.routs.actions.Screenshot;
 import me.TechsCode.SpigotAPI.server.routs.actions.Stop;
-import me.TechsCode.SpigotAPI.server.routs.data.market.*;
-import me.TechsCode.SpigotAPI.server.routs.data.spigot.*;
+import me.TechsCode.SpigotAPI.server.routs.Purchases;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -49,26 +47,9 @@ public class HttpRouter {
         SpigotAPIServer.getServer().createContext("/actions", new Actions());
         SpigotAPIServer.getServer().createContext("/actions/stop", new Stop());
         SpigotAPIServer.getServer().createContext("/actions/restart", new Restart());
-        SpigotAPIServer.getServer().createContext("/actions/screenshot", new Screenshot());
         SpigotAPIServer.getServer().createContext("/actions/killchrome", new CloseChrome());
 
-        //Data spigot
-        SpigotAPIServer.getServer().createContext("/data/spigot/all", new All_Spigot());
-        SpigotAPIServer.getServer().createContext("/data/spigot/resources", new Resources_Spigot());
-        SpigotAPIServer.getServer().createContext("/data/spigot/purchases", new Purchases_Spigot());
-        SpigotAPIServer.getServer().createContext("/data/spigot/updates", new Updates_Spigot());
-        SpigotAPIServer.getServer().createContext("/data/spigot/reviews", new Reviews_Spigot());
-
-        //Data market
-        SpigotAPIServer.getServer().createContext("/data/market/all", new All_Market());
-        SpigotAPIServer.getServer().createContext("/data/market/resources", new Resources_Market());
-        SpigotAPIServer.getServer().createContext("/data/market/purchases", new Purchases_Market());
-        SpigotAPIServer.getServer().createContext("/data/market/updates", new Updates_Market());
-        SpigotAPIServer.getServer().createContext("/data/market/reviews", new Reviews_Market());
-
-        //Verify User
-        SpigotAPIServer.getServer().createContext("/spigot/verifyUser", new VerifyUser_Spigot());
-        SpigotAPIServer.getServer().createContext("/market/verifyUser", new VerifyUser_Market());
+        SpigotAPIServer.getServer().createContext("/purchases", new Purchases());
 
         SpigotAPIServer.getServer().setExecutor(null);
     }

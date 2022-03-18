@@ -29,6 +29,8 @@ dependencies {
 
     // Discord
     implementation('club.minnced:discord-webhooks:0.5.8')
+
+    implementation('de.taimos:totp:1.0')
 }
 
 buildscript {

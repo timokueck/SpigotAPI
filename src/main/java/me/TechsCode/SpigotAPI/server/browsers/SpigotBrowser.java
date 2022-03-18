@@ -2,7 +2,9 @@ package me.TechsCode.SpigotAPI.server.browsers;
 
 import me.TechsCode.SpigotAPI.data.*;
 import me.TechsCode.SpigotAPI.data.lists.*;
+import me.TechsCode.SpigotAPI.server.Config;
 import me.TechsCode.SpigotAPI.server.Logger;
+import me.TechsCode.SpigotAPI.server.TwoFactorAuth;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -48,6 +50,10 @@ public class SpigotBrowser extends VirtualBrowser {
             // Login!
             passwordField.submit();
 
+            if (driver.findElementById("ctrl_totp_code") != null){
+                resolve2FA();
+            }
+
             sleep(2000);
         }catch (Exception e){
             Logger.send(e.getMessage(), true);
@@ -55,100 +61,29 @@ public class SpigotBrowser extends VirtualBrowser {
         }
     }
 
-    public ResourcesList collectResources() {
-        ResourcesList resources = new ResourcesList();
-
+    private void resolve2FA() {
         try{
-            if(loggedInUserId == null){
-                return resources;
+            WebElement twoFaField = driver.findElement(By.id("ctrl_totp_code"));
+
+            if(twoFaField == null){
+                throw new IllegalStateException("Could not find a username or password field!");
             }
 
-            navigate(BASE+"/resources/authors/"+loggedInUserId);
+            String twoFaToken = Config.getInstance().get2FAToken();
+            String twoFaCode = TwoFactorAuth.getTOTPCode(twoFaToken);
 
-            Document resourcesPage = Jsoup.parse(driver.getPageSource());
+            // Fill in 2FA Code
+            twoFaField.clear();
+            twoFaField.sendKeys(twoFaCode);
 
-            for(Element item : resourcesPage.getElementsByClass("resourceListItem")){
-                String id = item.id().split("-")[1];
-                String name = item.getElementsByClass("title").first().getElementsByTag("a").first().text();
-                String version = item.getElementsByClass("title").first().getElementsByTag("span").first().text();
-                String tagLine = item.getElementsByClass("tagLine").first().text();
+            // Login!
+            twoFaField.submit();
 
-                Element resourceDetails = item.getElementsByClass("resourceDetails").first();
-                String category = resourceDetails.getAllElements().get(4).text();
-                boolean isPremium = category.equalsIgnoreCase("premium");
-
-                Cost cost = isPremium ? new Cost(item.getElementsByClass("cost").first().text()) : null;
-                Time time = new Time(resourceDetails.getElementsByClass("DateTime").attr("title"));
-
-                resources.add(new Resource(id, name, tagLine, category, version, cost, time));
-            }
+            sleep(1000);
         }catch (Exception e){
             Logger.send(e.getMessage(), true);
             Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
-
-        return resources;
-    }
-
-    public UpdatesList collectUpdates(List<Resource> resources){
-        UpdatesList updates = new UpdatesList();
-
-        try{
-            for(Map.Entry<Resource, List<Element>> pair : collectElementsOfSubPage(resources, "updates", "resourceUpdate").entrySet()){
-                Resource resource = pair.getKey();
-
-                for(Element element : pair.getValue()){
-                    // If there are no updates, spigot redirects to the homepage. Since that div is also used there we have to block it.
-                    if(element.getElementsByClass("textHeading").isEmpty()) continue;
-
-                    String id = element.id().split("-")[1];
-                    String title = element.getElementsByClass("textHeading").first().text();
-                    String description = element.getElementsByClass("messageText").first().text();
-                    Time time = new Time(element.getElementsByClass("DateTime").first().attr("title"));
-
-                    String[] images = element.select("img[data-url]").stream()
-                            .map(x -> x.attr("data-url"))
-                            .toArray(String[]::new);
-
-                    updates.add(new Update(id, resource.getId(), title, images, description, time));
-                }
-            }
-        }catch (Exception e){
-            Logger.send(e.getMessage(), true);
-            Logger.send(Arrays.toString(e.getStackTrace()), true);
-        }
-
-        return updates;
-    }
-
-    public ReviewsList collectReviews(List<Resource> resources) {
-        ReviewsList reviews = new ReviewsList();
-
-        try{
-            for(Map.Entry<Resource, List<Element>> pair : collectElementsOfSubPage(resources, "reviews", "review").entrySet()) {
-                Resource resource = pair.getKey();
-
-                for(Element element : pair.getValue()){
-                    String id = element.id().split("-")[1];
-                    String username = element.attr("data-author");
-                    String userId = element.id().split("-")[2];
-                    String avatarUrl = element.select("img").attr("src");
-                    User user = new User(userId, username, parseAvatarUrl(avatarUrl));
-
-                    String text = element.getElementsByTag("blockquote").text().replace("<br>", "\n");
-                    int rating = Math.round(Float.parseFloat(element.getElementsByClass("ratings").first().attr("title")));
-
-                    Time time = new Time(element.getElementsByClass("DateTime").first().attr("title"));
-
-                    reviews.add(new Review(id, resource.getId(), user, text, rating, time));
-                }
-            }
-        }catch (Exception e){
-            Logger.send(e.getMessage(), true);
-            Logger.send(Arrays.toString(e.getStackTrace()), true);
-        }
-
-        return reviews;
     }
 
     public PurchasesList collectPurchases(List<Resource> resources) {
@@ -175,7 +110,6 @@ public class SpigotBrowser extends VirtualBrowser {
 
                     purchases.add(new Purchase(resource.getId(), user, time, cost));
                 }
-
             }
         }catch (Exception e){
             Logger.send(e.getMessage(), true);
@@ -189,13 +123,13 @@ public class SpigotBrowser extends VirtualBrowser {
         HashMap<Resource, List<Element>> map = new HashMap<>();
 
         try{
-            for(Resource resource : resources){
-                if(!resource.isPremium()){
-                    map.put(resource, Collections.emptyList());
-                    continue;
-                }
+            Logger.info(resources.size()+" resources to fetch", false);
+            int currentResource = 1;
 
+            for(Resource resource : resources){
                 List<Element> elements = new ArrayList<>();
+
+                Logger.info("Starting fetch for "+resource.getName()+". "+currentResource+"/"+resources.size(), false);
 
                 int pageAmount = 1;
                 int currentPage = 1;
@@ -215,8 +149,11 @@ public class SpigotBrowser extends VirtualBrowser {
                     }
 
                     currentPage++;
+                    sleep(800);
                 }
 
+                currentResource++;
+                Logger.info("Fetch for "+resource.getName()+" finished. "+elements.size()+" purchases found.", false);
                 map.put(resource, elements);
             }
         }catch (Exception e){
@@ -233,47 +170,6 @@ public class SpigotBrowser extends VirtualBrowser {
         return url;
     }
 
-    public ProfileComment[] getUserPosts(String userId, Boolean allMessages) {
-        final List<ProfileComment> comments = new ArrayList<>();
-        try{
-            navigate(BASE+"/members/"+userId);
-            Document doc = Jsoup.parse(driver.getPageSource());
-
-            final Elements pageCounter = doc.getElementsByClass("pageNavHeader");
-            int pages = 1;
-
-            if (!pageCounter.isEmpty())
-                pages = Integer.parseInt(pageCounter.first().text().split("of ")[1]);
-
-            for (int page = 1; page <= pages; ++page) {
-                navigate(BASE+"/members/"+userId+"?page="+page);
-                Document pageDoc = Jsoup.parse(driver.getPageSource());
-
-                if (pageDoc != null) {
-                    for(Element item : pageDoc.getElementById("ProfilePostList").getElementsByClass("messageSimple")){
-                        final String commentId = item.attr("id").split("-")[2];
-                        final String user = item.attr("data-author");
-
-                        Element messageInfo = item.getElementsByClass("messageInfo").first();
-                        final String user2 = getUserFromHref(userId).getUsername();
-
-                        if(!user2.equalsIgnoreCase(user) && !allMessages) //Skip if comment is not from
-                            continue;
-
-                        final String text = messageInfo.getElementsByTag("blockquote").text();
-
-                        comments.add(new ProfileComment(commentId, userId, text));
-                    }
-                }
-            }
-        }catch (Exception e){
-            Logger.send(e.getMessage(), true);
-            Logger.send(Arrays.toString(e.getStackTrace()), true);
-        }
-
-        return comments.toArray(new ProfileComment[0]);
-    }
-
     private static User getUserFromHref(String href) {
         href = href.replace("members/", "").replace("/", "");
         final String username = href.split("[.]")[0];
@@ -281,4 +177,5 @@ public class SpigotBrowser extends VirtualBrowser {
 
         return new User(id, username, null);
     }
+
 }

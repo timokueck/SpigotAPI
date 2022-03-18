@@ -26,8 +26,12 @@ public class PurchasesList extends ArrayList<Purchase> {
         return stream().filter(purchase -> purchase.getUser().getUsername().equalsIgnoreCase(username)).collect(Collectors.toCollection(PurchasesList::new));
     }
 
-    public PurchasesList resource(String resourceId){
+    public PurchasesList resourceId(String resourceId){
         return stream().filter(purchase -> purchase.getResource().getId().equals(resourceId)).collect(Collectors.toCollection(PurchasesList::new));
+    }
+
+    public PurchasesList resourceName(String resourceName){
+        return stream().filter(purchase -> purchase.getResource().getName().equals(resourceName)).collect(Collectors.toCollection(PurchasesList::new));
     }
 
     public PurchasesList gifted(){

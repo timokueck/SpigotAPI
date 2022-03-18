@@ -3,20 +3,20 @@ package me.TechsCode.SpigotAPI.server.browsers;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import me.TechsCode.SpigotAPI.server.Logger;
 import me.TechsCode.SpigotAPI.server.SpigotAPIServer;
-import me.TechsCode.SpigotAPI.server.routs.data.market.VerifyUser_Market;
-import me.TechsCode.SpigotAPI.server.routs.data.spigot.VerifyUser_Spigot;
+import org.apache.commons.lang3.SystemUtils;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class VirtualBrowser {
 
     protected static ChromeDriver driver;
-    private static boolean preloadSpigot = false;
-    private static boolean preloadMarket = false;
+    private static boolean preload = false;
 
     private static final String OS = System.getProperty("os.name").toLowerCase();
 
@@ -32,12 +32,19 @@ public class VirtualBrowser {
         options.addArguments("--disable-infobars");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("enable-features=NetworkServiceInProcess");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--no-sandbox");
 
-        if(!isWindows() && !isMac()) {
-            options.addArguments("--disable-extensions");
-            options.addArguments("--headless");
-            options.addArguments("--disable-gpu");
-            options.addArguments("--no-sandbox");
+        Map<String, Object> prefs = new HashMap<String, Object>();
+        prefs.put("credentials_enable_service", false);
+        prefs.put("profile.password_manager_enabled", false);
+        options.setExperimentalOption("prefs", prefs);
+
+        String desktop = System.getenv("XDG_CURRENT_DESKTOP");
+        if(!isWindows() && !isMac() && desktop != null) {
+            Logger.error("This app can only be run on a system with a desktop environment!!!", false);
+            return;
         }
 
         driver = new ChromeDriver(options);
@@ -52,7 +59,7 @@ public class VirtualBrowser {
     }
 
     public void preloadSites(String url) {
-        if (preloadSpigot) {
+        if (preload) {
             driver.executeScript("spigot_popup_window = window.open('https://www.spigotmc.org/" + SpigotAPIServer.getRandomInt() + "');");
 
             try {
@@ -61,17 +68,12 @@ public class VirtualBrowser {
                 Logger.send(e.getMessage(), true);
                 Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
-        }
 
-        if (preloadMarket) {
-            driver.executeScript("market_popup_window = window.open('https://www.mc-market.org/" + SpigotAPIServer.getRandomInt() + "');");
-
-            try {
-                Thread.sleep(14000L);
-            } catch (InterruptedException e) {
-                Logger.send(e.getMessage(), true);
-                Logger.send(Arrays.toString(e.getStackTrace()), true);
+            if (driver.getWindowHandles().stream().findFirst().isPresent()){
+                String firstWindow = driver.getWindowHandles().stream().findFirst().get();
+                driver.switchTo().window(firstWindow);
             }
+
         }
 
         if (!url.isEmpty()) {
@@ -80,11 +82,7 @@ public class VirtualBrowser {
     }
 
     public static void enableSpigotPreload() {
-        preloadSpigot = true;
-    }
-
-    public static void enableMarketPreload() {
-        preloadMarket = true;
+        preload = true;
     }
 
     public static boolean isWindows() {
@@ -128,6 +126,13 @@ public class VirtualBrowser {
                 sleep(1000);
                 System.err.println("<@&311178859171282944> Detected an unsolvable captcha.. waiting...");
             }
+
+            while (driver.getPageSource().contains("429 Too Many Requests")) {
+                Logger.send("Too Many Requests", false);
+                sleep(2000);
+                navigate(url);
+            }
+
         }catch (Exception e){
             Logger.send(e.getMessage(), true);
             Logger.send(Arrays.toString(e.getStackTrace()), true);
@@ -140,21 +145,15 @@ public class VirtualBrowser {
             driver.close();
         }
 
-        preloadSpigot = false;
-        preloadMarket = false;
+        preload = false;
 
         try{
             Thread.sleep(500);
         }catch (Exception ignored){}
-
-        if(!VerifyUser_Market.isVerifying && !VerifyUser_Spigot.isVerifying){
-            SpigotAPIServer.KillProcess("chrome.exe");
-        }
     }
 
     public static void quit() {
-        preloadSpigot = false;
-        preloadMarket = false;
+        preload = false;
         driver.quit();
 
         try{

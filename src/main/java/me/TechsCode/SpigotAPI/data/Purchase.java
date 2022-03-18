@@ -24,7 +24,7 @@ public class Purchase extends JsonSerializable {
     }
 
     public Resource getResource(){
-        return dataset.getResources().id(resourceId).orElse(null);
+        return Resource.valueOfId(resourceId);
     }
 
     public User getUser() {

@@ -3,6 +3,7 @@ package me.TechsCode.SpigotAPI.server;
 import com.sun.net.httpserver.HttpServer;
 import me.TechsCode.SpigotAPI.manager.HttpRouterManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
@@ -12,21 +13,26 @@ public class SpigotAPIServer {
     public static void main(String[] args) {
         boolean managerMode = false;
 
-        if(!Config.getInstance().isConfigured()){
+        if (!Config.getInstance().isConfigured()) {
             System.err.println("Please configure everything in the config.json!");
             return;
         }
 
-        if(args.length == 1){
-            if(args[0].equals("manager")){
+        if (args.length == 1) {
+            if (args[0].equals("manager")) {
                 managerMode = true;
             }
         }
 
-        if(managerMode){
+        File dataDir = new File("data/");
+        if(!dataDir.exists()){
+            dataDir.mkdir();
+        }
+
+        if (managerMode) {
             Logger.send("Starting up SpigotAPI Manager Server...", true);
             new HttpRouterManager(Config.getInstance().getToken());
-        }else{
+        } else {
             Logger.send("Starting up SpigotAPI Server...", true);
 
             DataManager dataManager = new DataManager();
@@ -36,27 +42,27 @@ public class SpigotAPIServer {
 
     }
 
-    public static HttpServer getServer(){
+    public static HttpServer getServer() {
         return server;
     }
 
-    public static void setServer(HttpServer HttpServer){
+    public static void setServer(HttpServer HttpServer) {
         server = HttpServer;
     }
 
-    public static int getRandomInt(){
+    public static int getRandomInt() {
         Random r = new Random();
         int low = 10;
         int high = 100;
-        return r.nextInt(high-low) + low;
+        return r.nextInt(high - low) + low;
     }
 
     public static void KillProcess(String processName) {
         try {
-            Process p = Runtime.getRuntime().exec("taskkill /F /IM "+processName+" /T");
+            Process p = Runtime.getRuntime().exec("taskkill /F /IM " + processName + " /T");
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.send("Error killing process: "+processName, true);
+            Logger.send("Error killing process: " + processName, true);
             Logger.send(e.getMessage(), true);
         }
     }
