@@ -33,7 +33,6 @@ public class VirtualBrowser {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("enable-features=NetworkServiceInProcess");
         options.addArguments("--disable-extensions");
-        options.addArguments("--disable-gpu");
         options.addArguments("--no-sandbox");
 
         Map<String, Object> prefs = new HashMap<String, Object>();
