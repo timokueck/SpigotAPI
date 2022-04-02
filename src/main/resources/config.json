@@ -1,6 +1,11 @@
 {
-  "spigotUsername": "someuser",
-  "spigotPassword": "securepassword",
-
-  "token": "a-random-secure-string-required-for-requests"
+  "username": "someuser",
+  "password": "somepassword",
+  "2faToken": "sometoken",
+  "userId": "someid",
+  "token": "sometoken",
+  "port": 80,
+  "managerPort": 81,
+  "discordWebhookUrl": "someurl",
+  "refreshDelay": 1
 }

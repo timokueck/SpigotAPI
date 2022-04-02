@@ -12,35 +12,42 @@ assemble.dependsOn shadowJar
 repositories {
     maven { url 'https://jitpack.io' }
 
-    jcenter()
     mavenLocal()
     mavenCentral()
 }
 
 dependencies {
+    implementation 'org.jetbrains:annotations:22.0.0'
+
     // Server
-    compile group: 'commons-io', name: 'commons-io', version: '2.8.0'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+    implementation('com.googlecode.json-simple:json-simple:1.1.1')
 
-    // Client
-    compile "org.jsoup:jsoup:1.13.1"
-    compile "org.nanohttpd:nanohttpd:2.3.1"
-
+    // Chrome driver
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
-    implementation("io.github.bonigarcia:webdrivermanager:4.2.2")
+    implementation("io.github.bonigarcia:webdrivermanager:4.4.3")
+
+    // Discord
+    implementation('club.minnced:discord-webhooks:0.5.8')
+
+    // 2FA
+    implementation('de.taimos:totp:1.0')
 }
 
 buildscript {
     repositories {
-        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0"
     }
 }
 
 shadowJar {
     archiveName = 'SpigotAPI.jar'
-    destinationDir = file("build")
+    destinationDir = file("startFiles")
 }
 
 jar {

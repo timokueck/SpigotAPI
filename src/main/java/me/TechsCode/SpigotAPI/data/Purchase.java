@@ -24,7 +24,7 @@ public class Purchase extends JsonSerializable {
     }
 
     public Resource getResource(){
-        return dataset.getResources().id(resourceId).orElse(null);
+        return Resource.valueOfId(resourceId);
     }
 
     public User getUser() {
@@ -59,6 +59,7 @@ public class Purchase extends JsonSerializable {
     public JsonObject getState() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("resourceId", resourceId);
+        jsonObject.addProperty("resourceName", getResource().getName());
         jsonObject.add("user", user.toJsonObject());
         jsonObject.add("time", time.toJsonObject());
         if(cost != null) jsonObject.add("cost", cost.toJsonObject());

@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 
 public class Config {
 
@@ -34,7 +35,8 @@ public class Config {
                 InputStream src = Config.class.getResourceAsStream("/config.json");
                 Files.copy(src, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.send(e.getMessage(), true);
+                Logger.send(Arrays.toString(e.getStackTrace()), true);
             }
         }
 
@@ -44,23 +46,49 @@ public class Config {
             JsonParser jsonParser = new JsonParser();
             root = (JsonObject) jsonParser.parse(json);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.send(e.getMessage(), true);
+            Logger.send(Arrays.toString(e.getStackTrace()), true);
         }
     }
 
     public boolean isConfigured(){
-        return !getSpigotUsername().equals("someuser");
+        return !getSpigotUsername().equals("someuser") || !getSpigotUserId().equals("someid") || !getWebhookUrl().equals("someurl");
     }
 
     public String getSpigotUsername(){
-        return root.get("spigotUsername").getAsString();
+        return root.get("username").getAsString();
     }
 
     public String getSpigotPassword(){
-        return root.get("spigotPassword").getAsString();
+        return root.get("password").getAsString();
+    }
+
+    public String getSpigotUserId(){
+        return root.get("userId").getAsString();
+    }
+
+    public String get2FAToken() {
+        return root.get("2faToken").getAsString();
     }
 
     public String getToken(){
         return root.get("token").getAsString();
     }
+
+    public String getWebhookUrl(){
+        return root.get("discordWebhookUrl").getAsString();
+    }
+
+    public int getPort(){
+        return root.get("port").getAsInt();
+    }
+
+    public int getManagerPort(){
+        return root.get("managerPort").getAsInt();
+    }
+
+    public int getRefreshDelay(){
+        return root.get("refreshDelay").getAsInt();
+    }
+
 }
