@@ -1,5 +1,8 @@
 package me.TechsCode.SpigotAPI.data;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum Resource {
 
     INSANE_SHOPS("Insane Shops", "insane-shops.67352"),
@@ -33,6 +36,10 @@ public enum Resource {
             }
         }
         return null;
+    }
+
+    public static List<Resource> getAllResources(){
+        return Arrays.asList(values());
     }
 
 }

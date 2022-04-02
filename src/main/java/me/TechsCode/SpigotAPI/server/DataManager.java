@@ -89,15 +89,7 @@ public class DataManager extends Thread {
                 try {
                     if (parser != null) {
 
-                        List<Resource> resources = new ArrayList<>();
-                        resources.add(Resource.INSANE_SHOPS);
-                        resources.add(Resource.ULTRA_SCOREBOARDS);
-                        resources.add(Resource.ULTRA_PUNISHMENTS);
-                        resources.add(Resource.ULTRA_CUSTOMIZER);
-                        resources.add(Resource.ULTRA_PERMISSIONS);
-                        resources.add(Resource.ULTRA_ECONOMY);
-                        resources.add(Resource.ULTRA_REGIONS);
-                        resources.add(Resource.ULTRA_MOTD);
+                        List<Resource> resources = Resource.getAllResources();
 
                         PurchasesList purchases = parser.collectPurchases(resources);
                         Logger.send("Collected " + purchases.size() + " Purchases on SpigotMC", true);
