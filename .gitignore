@@ -4,6 +4,7 @@
 .gradle/
 out/
 build/
+startFiles/
 build.properties
 config.json
 lastDataset.json
