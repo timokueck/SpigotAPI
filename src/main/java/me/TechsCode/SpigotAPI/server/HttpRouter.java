@@ -59,7 +59,7 @@ public class HttpRouter {
             if(SpigotAPIServer.getServer() != null) {
                 SpigotAPIServer.getServer().start();
                 Logger.info("API token: "+Config.getInstance().getToken(), false);
-                Logger.send("API listening on port "+Config.getInstance().getPort(), true);
+                Logger.info("API listening on port "+Config.getInstance().getPort(), false);
             }
         } catch (Exception e) {
             Logger.send(e.getMessage(), true);

@@ -42,7 +42,7 @@ public class VirtualBrowser {
 
         String desktop = System.getenv("XDG_CURRENT_DESKTOP");
         if(!isWindows() && !isMac() && desktop != null) {
-            Logger.error("This app can only be run on a system with a desktop environment!!!", false);
+            Logger.error("This app can only be run on a system with a desktop environment!!!", true);
             return;
         }
 
@@ -127,7 +127,7 @@ public class VirtualBrowser {
             }
 
             while (driver.getPageSource().contains("429 Too Many Requests")) {
-                Logger.send("Too Many Requests", false);
+                Logger.send("Too Many Requests", true);
                 sleep(2000);
                 navigate(url);
             }

@@ -1,7 +1,6 @@
 package me.TechsCode.SpigotAPI.server;
 
 import com.sun.net.httpserver.HttpServer;
-import me.TechsCode.SpigotAPI.manager.HttpRouterManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,35 +10,25 @@ public class SpigotAPIServer {
     private static HttpServer server;
 
     public static void main(String[] args) {
-        boolean managerMode = false;
-
         if (!Config.getInstance().isConfigured()) {
             System.err.println("Please configure everything in the config.json!");
             return;
         }
 
-        if (args.length == 1) {
-            if (args[0].equals("manager")) {
-                managerMode = true;
+        File dataDir = new File("data/");
+        if (!dataDir.exists()) {
+            if (dataDir.mkdir()) {
+                Logger.info("Created data folder", true);
+            } else {
+                Logger.info("Error creating data folder", true);
             }
         }
 
-        File dataDir = new File("data/");
-        if(!dataDir.exists()){
-            dataDir.mkdir();
-        }
+        Logger.send("Starting up SpigotAPI Server...", true);
 
-        if (managerMode) {
-            Logger.send("Starting up SpigotAPI Manager Server...", true);
-            new HttpRouterManager(Config.getInstance().getToken());
-        } else {
-            Logger.send("Starting up SpigotAPI Server...", true);
+        DataManager dataManager = new DataManager();
 
-            DataManager dataManager = new DataManager();
-
-            new HttpRouter(dataManager, Config.getInstance().getToken());
-        }
-
+        new HttpRouter(dataManager, Config.getInstance().getToken());
     }
 
     public static HttpServer getServer() {

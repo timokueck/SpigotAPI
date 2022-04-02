@@ -14,7 +14,7 @@ public class Docs implements HttpHandler {
         main.put("Status", "/status?token=");
         main.put("Actions", "/actions?token=");
         main.put("Purchases", "/purchases?token=");
-        main.put("Purchase options", "&userId=, &username=, &resourceId=, &resourceName=, ");
+        main.put("Purchase options", "&userId=, &username=, &resourceId=, &resourceName=");
         String response = main.toString();
         int responseCode = 200;
 

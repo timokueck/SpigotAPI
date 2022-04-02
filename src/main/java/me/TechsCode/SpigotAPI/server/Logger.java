@@ -81,7 +81,11 @@ public class Logger {
         File file = new File(path);
         if(!file.exists()){
             try{
-                file.mkdir();
+                if (file.mkdir()) {
+                    Logger.info("Created logs folder", true);
+                } else {
+                    Logger.info("Error creating logs folder", true);
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }

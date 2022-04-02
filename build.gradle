@@ -30,6 +30,7 @@ dependencies {
     // Discord
     implementation('club.minnced:discord-webhooks:0.5.8')
 
+    // 2FA
     implementation('de.taimos:totp:1.0')
 }
 

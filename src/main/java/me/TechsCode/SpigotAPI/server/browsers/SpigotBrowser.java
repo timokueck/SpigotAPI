@@ -123,13 +123,13 @@ public class SpigotBrowser extends VirtualBrowser {
         HashMap<Resource, List<Element>> map = new HashMap<>();
 
         try{
-            Logger.info(resources.size()+" resources to fetch", false);
+            Logger.info(resources.size()+" resources to fetch", true);
             int currentResource = 1;
 
             for(Resource resource : resources){
                 List<Element> elements = new ArrayList<>();
 
-                Logger.info("Starting fetch for "+resource.getName()+". "+currentResource+"/"+resources.size(), false);
+                Logger.info("Starting fetch for "+resource.getName()+". "+currentResource+"/"+resources.size(), true);
 
                 int pageAmount = 1;
                 int currentPage = 1;
@@ -153,7 +153,7 @@ public class SpigotBrowser extends VirtualBrowser {
                 }
 
                 currentResource++;
-                Logger.info("Fetch for "+resource.getName()+" finished. "+elements.size()+" purchases found.", false);
+                Logger.info("Fetch for "+resource.getName()+" finished. "+elements.size()+" purchases found.", true);
                 map.put(resource, elements);
             }
         }catch (Exception e){

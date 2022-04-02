@@ -100,7 +100,7 @@ public class DataManager extends Thread {
                         resources.add(Resource.ULTRA_MOTD);
 
                         PurchasesList purchases = parser.collectPurchases(resources);
-                        Logger.send("Collected " + purchases.size() + " Purchases on SpigotMC", false);
+                        Logger.send("Collected " + purchases.size() + " Purchases on SpigotMC", true);
                         if (purchases.isEmpty()) {
                             purchases = HttpRouter.getDataManager().latest.getPurchases();
                         }
