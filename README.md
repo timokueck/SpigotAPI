@@ -1,12 +1,12 @@
 # SpigotAPI
-Standalone Web API for retrieving Information off of SpigotMC And MC-Market!
+Standalone Web API for retrieving purchases from [SpigotMc](https://spigotmc.org)!
 
 ## How To Host This API
 
 Requirements:
-* Windows machine
+* Windows or Linux Desktop
 * Available port
-* Google Chrome
+* Google Chrome & Chrome Webdriver
 
 ## How To Start
 1. Run `start.bat`.
@@ -16,4 +16,4 @@ Requirements:
 
 ## More Information
 
-This API will allow you to get information about all of the buyers from each of your plugins, information about all the updates of each of your plugins, every single review posted on any of your plugins, and info about all of your resources.
+This API will allow you to get information about all of the buyers from each of your plugins.
