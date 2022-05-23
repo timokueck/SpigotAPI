@@ -37,13 +37,13 @@ public class Status implements HttpHandler {
                 response = obj.toString();
                 responseCode = 200;
             }else{
-                obj.put("status", "Error");
+                obj.put("status", "error");
                 obj.put("msg", "Invalid token");
                 response = obj.toString();
                 responseCode = 401;
             }
         }else{
-            obj.put("status", "Error");
+            obj.put("status", "error");
             obj.put("msg", "Missing token");
             response = obj.toString();
             responseCode = 401;

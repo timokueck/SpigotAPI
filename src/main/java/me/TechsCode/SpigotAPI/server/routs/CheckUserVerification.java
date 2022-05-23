@@ -37,7 +37,7 @@ public class CheckUserVerification implements HttpHandler {
 
                     JSONObject userVerification = VirtualVerifyBrowser.getVerifiedUser(userId);
                     if(userVerification == null){
-                        obj.put("status", "Error");
+                        obj.put("status", "error");
                         obj.put("msg", "Verification not found");
                         response = obj.toString();
                         responseCode = 404;
@@ -47,13 +47,13 @@ public class CheckUserVerification implements HttpHandler {
                     }
                 }
             }else{
-                obj.put("status", "Error");
+                obj.put("status", "error");
                 obj.put("msg", "Invalid token");
                 response = obj.toString();
                 responseCode = 401;
             }
         }else{
-            obj.put("status", "Error");
+            obj.put("status", "error");
             obj.put("msg", "Missing token");
             response = obj.toString();
             responseCode = 401;

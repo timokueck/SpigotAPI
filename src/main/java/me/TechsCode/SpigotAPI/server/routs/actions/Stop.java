@@ -29,19 +29,19 @@ public class Stop implements HttpHandler {
                 VirtualBrowser.quit();
                 SpigotAPIServer.KillProcess("chrome.exe");
 
-                obj.put("Status", "Success");
-                obj.put("Msg", "Stopping API");
+                obj.put("status", "success");
+                obj.put("msg", "Stopping API");
                 response = obj.toString();
                 responseCode = 200;
             } else {
-                obj.put("Status", "Error");
-                obj.put("Msg", "Invalid token");
+                obj.put("status", "error");
+                obj.put("msg", "Invalid token");
                 response = obj.toString();
                 responseCode = 401;
             }
         } else {
-            obj.put("Status", "Error");
-            obj.put("Msg", "Missing token");
+            obj.put("status", "error");
+            obj.put("msg", "Missing token");
             response = obj.toString();
             responseCode = 401;
         }

@@ -26,19 +26,19 @@ public class CloseChrome implements HttpHandler {
                 Logger.send("Closing all chrome browsers", true);
                 SpigotAPIServer.KillProcess("chrome.exe");
 
-                obj.put("Status", "Success");
-                obj.put("Msg", "Stopping Chrome Browsers");
+                obj.put("status", "success");
+                obj.put("msg", "Stopping Chrome Browsers");
                 response = obj.toString();
                 responseCode = 200;
             }else{
-                obj.put("Status", "Error");
-                obj.put("Msg", "Invalid token");
+                obj.put("status", "error");
+                obj.put("msg", "Invalid token");
                 response = obj.toString();
                 responseCode = 401;
             }
         }else{
-            obj.put("Status", "Error");
-            obj.put("Msg", "Missing token");
+            obj.put("status", "error");
+            obj.put("msg", "Missing token");
             response = obj.toString();
             responseCode = 401;
         }

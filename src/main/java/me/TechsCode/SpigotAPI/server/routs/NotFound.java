@@ -10,7 +10,7 @@ import java.io.OutputStream;
 public class NotFound implements HttpHandler {
     public void handle(HttpExchange t) throws IOException {
         JSONObject main = new JSONObject();
-        main.put("Status", "error");
+        main.put("status", "error");
         main.put("Msg", "Page not found");
         String response = main.toString();
         int responseCode = 200;

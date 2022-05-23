@@ -41,7 +41,7 @@ public class VerifyUser implements HttpHandler {
                     VirtualVerifyBrowser.addVerifiedUser(userId, pendingData);
 
                     if(VirtualVerifyBrowser.isVerifying()){
-                        obj.put("status", "Error");
+                        obj.put("status", "error");
                         obj.put("msg", "A verification is already in progress");
 
                         response = obj.toString();
@@ -110,20 +110,20 @@ public class VerifyUser implements HttpHandler {
                         });
                         t1.start();
 
-                        obj.put("status", "Success");
+                        obj.put("status", "success");
                         obj.put("msg", "Verification Started");
                         response = obj.toString();
                         responseCode = 200;
                     }
                 }
             }else{
-                obj.put("status", "Error");
+                obj.put("status", "error");
                 obj.put("msg", "Invalid token");
                 response = obj.toString();
                 responseCode = 401;
             }
         }else{
-            obj.put("status", "Error");
+            obj.put("status", "error");
             obj.put("msg", "Missing token");
             response = obj.toString();
             responseCode = 401;
