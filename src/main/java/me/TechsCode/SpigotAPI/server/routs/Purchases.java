@@ -49,14 +49,14 @@ public class Purchases implements HttpHandler {
                 response = obj.toString();
                 responseCode = 200;
             }else{
-                obj.put("Status", "Error");
-                obj.put("Msg", "Invalid token");
+                obj.put("status", "Error");
+                obj.put("msg", "Invalid token");
                 response = obj.toString();
                 responseCode = 401;
             }
         }else{
-            obj.put("Status", "Error");
-            obj.put("Msg", "Missing token");
+            obj.put("status", "Error");
+            obj.put("msg", "Missing token");
             response = obj.toString();
             responseCode = 401;
         }

@@ -6,7 +6,13 @@ import org.apache.commons.codec.binary.Hex;
 
 public class TwoFactorAuth {
 
-    public static String getTOTPCode(String secretKey) {
+    private final String secretKey;
+
+    public TwoFactorAuth(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    public String getCode() {
         Base32 base32 = new Base32();
         byte[] bytes = base32.decode(secretKey);
         String hexKey = Hex.encodeHexString(bytes);

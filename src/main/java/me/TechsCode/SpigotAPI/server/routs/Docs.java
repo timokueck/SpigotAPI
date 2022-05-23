@@ -13,6 +13,8 @@ public class Docs implements HttpHandler {
         JSONObject main = new JSONObject();
         main.put("Status", "/status?token=");
         main.put("Actions", "/actions?token=");
+        main.put("Verify User", "/request_verify_user?userId=&token=");
+        main.put("Check User Verification", "/verify_user?userId=&token=");
         main.put("Purchases", "/purchases?token=");
         main.put("Purchase options", "&userId=, &username=, &resourceId=, &resourceName=");
         String response = main.toString();

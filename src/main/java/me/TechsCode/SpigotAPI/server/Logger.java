@@ -25,9 +25,9 @@ public class Logger {
 
         saveToFile(message);
 
-        if(sendDiscord){
-            sendDiscord(message);
-        }
+//        if(sendDiscord){
+//            sendDiscord(message);
+//        }
     }
 
     public static void info(String message, Boolean sendDiscord) {

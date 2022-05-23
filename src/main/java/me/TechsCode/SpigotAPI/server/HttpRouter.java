@@ -1,14 +1,10 @@
 package me.TechsCode.SpigotAPI.server;
 
 import com.sun.net.httpserver.HttpServer;
-import me.TechsCode.SpigotAPI.server.routs.Actions;
-import me.TechsCode.SpigotAPI.server.routs.Docs;
-import me.TechsCode.SpigotAPI.server.routs.NotFound;
-import me.TechsCode.SpigotAPI.server.routs.Status;
+import me.TechsCode.SpigotAPI.server.routs.*;
 import me.TechsCode.SpigotAPI.server.routs.actions.CloseChrome;
 import me.TechsCode.SpigotAPI.server.routs.actions.Restart;
 import me.TechsCode.SpigotAPI.server.routs.actions.Stop;
-import me.TechsCode.SpigotAPI.server.routs.Purchases;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -50,6 +46,8 @@ public class HttpRouter {
         SpigotAPIServer.getServer().createContext("/actions/killchrome", new CloseChrome());
 
         SpigotAPIServer.getServer().createContext("/purchases", new Purchases());
+        SpigotAPIServer.getServer().createContext("/verify_user", new CheckUserVerification());
+        SpigotAPIServer.getServer().createContext("/request_verify_user", new VerifyUser());
 
         SpigotAPIServer.getServer().setExecutor(null);
     }

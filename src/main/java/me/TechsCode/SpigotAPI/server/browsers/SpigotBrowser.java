@@ -8,7 +8,6 @@ import me.TechsCode.SpigotAPI.server.TwoFactorAuth;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -21,6 +20,7 @@ public class SpigotBrowser extends VirtualBrowser {
     private final String loggedInUserId;
 
     public SpigotBrowser(String username, String password, String userId, Boolean loginRequired) {
+        Logger.send("Initializing Spigot Browser...", false);
         if(loginRequired.equals(true)){
             login(username, password);
             loggedInUserId = userId;
@@ -70,7 +70,7 @@ public class SpigotBrowser extends VirtualBrowser {
             }
 
             String twoFaToken = Config.getInstance().get2FAToken();
-            String twoFaCode = TwoFactorAuth.getTOTPCode(twoFaToken);
+            String twoFaCode = new TwoFactorAuth(twoFaToken).getCode();
 
             // Fill in 2FA Code
             twoFaField.clear();
@@ -78,6 +78,15 @@ public class SpigotBrowser extends VirtualBrowser {
 
             // Login!
             twoFaField.submit();
+
+            sleep(1000);
+
+            if(driver.getPageSource().contains("The two-step verification value could not be confirmed. Please try again.")){
+                Logger.error("2FA Token is invalid! Waiting 35 seconds!", false);
+                sleep(35000);
+                resolve2FA();
+                return;
+            }
 
             sleep(1000);
         }catch (Exception e){
@@ -135,6 +144,7 @@ public class SpigotBrowser extends VirtualBrowser {
                 int currentPage = 1;
 
                 while (currentPage <= pageAmount){
+
                     navigate(BASE + "/resources/"+resource.getId()+"/"+subPage+"?page="+currentPage);
 
                     Document document = Jsoup.parse(driver.getPageSource());
@@ -168,14 +178,6 @@ public class SpigotBrowser extends VirtualBrowser {
         if(url.startsWith("data")) return BASE + "/" + url;
         if(url.startsWith("//static")) return "https:" + url;
         return url;
-    }
-
-    private static User getUserFromHref(String href) {
-        href = href.replace("members/", "").replace("/", "");
-        final String username = href.split("[.]")[0];
-        final String id = href.split("[.]")[1];
-
-        return new User(id, username, null);
     }
 
 }
