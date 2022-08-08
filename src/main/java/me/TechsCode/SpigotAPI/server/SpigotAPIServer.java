@@ -5,7 +5,6 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-
 public class SpigotAPIServer {
     private static HttpServer server;
 

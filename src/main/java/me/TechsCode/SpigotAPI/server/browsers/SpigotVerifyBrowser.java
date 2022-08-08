@@ -80,7 +80,7 @@ public class SpigotVerifyBrowser extends VirtualVerifyBrowser {
                 Element post = postsContainer.children().get(i);
                 String user = post.getElementsByClass("username").first().text();
                 String content = post.getElementsByTag("article").first().text();
-                Logger.send("Post: "+user+" - "+content, false);
+                //Logger.send("Post: "+user+" - "+content, false);
                 if(Objects.equals(user, username)){
                     postsList.add(content);
                 }

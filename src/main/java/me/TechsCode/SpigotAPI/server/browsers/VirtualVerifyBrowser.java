@@ -21,26 +21,6 @@ public class VirtualVerifyBrowser {
 
     private static final String OS = System.getProperty("os.name").toLowerCase();
 
-    private static boolean isVerifying = false;
-    private static final HashMap<String, JSONObject> verifiedUsers = new HashMap<>();
-
-    public static void setVerifying(boolean value) {
-        isVerifying = value;
-    }
-    public static boolean isVerifying() {
-        return isVerifying;
-    }
-
-    public static void addVerifiedUser(String userId, JSONObject data) {
-        verifiedUsers.put(userId, data);
-    }
-    public static void removeVerifiedUser(String userId) {
-        verifiedUsers.remove(userId);
-    }
-    public static JSONObject getVerifiedUser(String userId) {
-        return verifiedUsers.get(userId);
-    }
-
     public VirtualVerifyBrowser() {
         WebDriverManager.chromedriver().setup();
         System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY, "true");

@@ -1,24 +1,36 @@
 package me.TechsCode.SpigotAPI.server;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.TechsCode.SpigotAPI.data.Dataset;
 import me.TechsCode.SpigotAPI.data.Resource;
+import me.TechsCode.SpigotAPI.data.UserVerification;
+import me.TechsCode.SpigotAPI.data.UserVerificationStatus;
 import me.TechsCode.SpigotAPI.data.lists.PurchasesList;
+import me.TechsCode.SpigotAPI.data.lists.VerificationsList;
 import me.TechsCode.SpigotAPI.server.browsers.SpigotBrowser;
+import me.TechsCode.SpigotAPI.server.browsers.SpigotVerifyBrowser;
 import me.TechsCode.SpigotAPI.server.browsers.VirtualBrowser;
+import me.TechsCode.SpigotAPI.server.browsers.VirtualVerifyBrowser;
 import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public class DataManager extends Thread {
 
     private static final long REFRESH_DELAY = TimeUnit.MINUTES.toMillis(Config.getInstance().getRefreshDelay());
+
+    private static final VerificationsList verificationQueue = new VerificationsList();
 
     private Dataset latest;
 
@@ -68,6 +80,7 @@ public class DataManager extends Thread {
 
     @Override
     public void run() {
+        runVerification();
         while (true) {
             if ((latest == null || (System.currentTimeMillis() - latest.getTimeCreated()) > REFRESH_DELAY) && parseDone) {
                 parseDone = false;
@@ -117,6 +130,91 @@ public class DataManager extends Thread {
                 fetching = false;
             }
         }
+    }
+
+    public void runVerification(){
+        Thread t1 = new Thread(() -> {
+            Logger.send("Started user verification thread", false);
+            while(true){
+                VerificationsList verificationQueue = DataManager.getVerificationQueue().verificationChecked(false).minutesPast(5);
+                Optional<UserVerification> optionalUserVerification = verificationQueue.stream().findFirst();
+
+                if (optionalUserVerification.isPresent()) {
+                    UserVerification verification = optionalUserVerification.get();
+                    Logger.send("Verifying " + verification.getUserId(), false);
+
+                    Config config = Config.getInstance();
+                    long now = System.currentTimeMillis();
+
+                    SpigotVerifyBrowser parser = null;
+                    try {
+                        VirtualVerifyBrowser.enableSpigotPreload();
+                        parser = new SpigotVerifyBrowser(config.getSpigotUsername(), config.getSpigotPassword(), config.getSpigotUserId(), false);
+                    } catch (Exception e) {
+                        Logger.send(e.getMessage(), true);
+                        Logger.send(Arrays.toString(e.getStackTrace()), true);
+                    }
+
+                    try {
+                        if (parser != null) {
+                            parser.navigateToUserProfile(verification.getUserId());
+                            String username = parser.getUsername();
+                            JsonArray posts = parser.collectPosts(username);
+
+                            parser.navigateToUserProfileInfo(verification.getUserId());
+                            String discord = parser.getDiscord();
+                            verification.setDiscord(discord);
+
+                            parser.close();
+
+                            for (JsonElement post : posts) {
+                                String content = post.getAsString();
+//                                Logger.send("User Post: "+content, false);
+                                if (content.equals(verification.getCode())) {
+                                    verification.setVerified(true);
+                                    verification.setVerificationStatus(UserVerificationStatus.VERIFIED);
+                                    long delay = System.currentTimeMillis() - now;
+                                    Logger.send("Completed SpigotMC User Verification in " + Math.round(TimeUnit.MILLISECONDS.toMinutes(delay)) + " minutes!", true);
+                                    break;
+                                } else {
+                                    verification.setVerified(true);
+                                    verification.setVerificationStatus(UserVerificationStatus.POST_NOT_FOUND);
+                                    Logger.send("Failed SpigotMC User Verification", true);
+                                }
+                            }
+
+                            Logger.send("Fetched " + posts.size() + " Posts!", false);
+                        } else {
+                            Logger.send("Failed SpigotMC User Verification", true);
+                        }
+                    } catch (Exception e) {
+                        Logger.send(e.getMessage(), true);
+                        Logger.send(Arrays.toString(e.getStackTrace()), true);
+                        if (parser != null)
+                            parser.close();
+                    }
+                }
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        t1.start();
+    }
+
+    public static VerificationsList getVerificationQueue() {
+        return verificationQueue;
+    }
+
+    public static void addVerification(UserVerification verification) {
+        verificationQueue.add(verification);
+    }
+
+    public static void removeVerification(UserVerification verification) {
+        verificationQueue.remove(verification);
     }
 
     public Dataset getDataset() {

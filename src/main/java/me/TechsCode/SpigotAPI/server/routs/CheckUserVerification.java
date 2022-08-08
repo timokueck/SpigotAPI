@@ -1,21 +1,18 @@
 package me.TechsCode.SpigotAPI.server.routs;
 
-import com.google.gson.JsonArray;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import me.TechsCode.SpigotAPI.server.Config;
+import me.TechsCode.SpigotAPI.data.UserVerification;
+import me.TechsCode.SpigotAPI.server.DataManager;
 import me.TechsCode.SpigotAPI.server.HttpRouter;
-import me.TechsCode.SpigotAPI.server.Logger;
-import me.TechsCode.SpigotAPI.server.browsers.SpigotVerifyBrowser;
-import me.TechsCode.SpigotAPI.server.browsers.VirtualVerifyBrowser;
+import org.json.JSONArray;
 import org.json.simple.JSONObject;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.Optional;
 
 public class CheckUserVerification implements HttpHandler {
     public void handle(HttpExchange t) throws IOException {
@@ -28,23 +25,34 @@ public class CheckUserVerification implements HttpHandler {
             String token = params.get("token");
             if(HttpRouter.isTokenValid(token)){
 
-                if(params.get("userId") == null) {
-                    obj.put("error", "Missing userId");
-                    response = obj.toString();
-                    responseCode = 401;
-                }else{
+                if(params.get("userId") != null){
                     String userId = params.get("userId");
-
-                    JSONObject userVerification = VirtualVerifyBrowser.getVerifiedUser(userId);
-                    if(userVerification == null){
+                    Optional<UserVerification> userVerification = DataManager.getVerificationQueue().userId(userId);
+                    if(userVerification.isPresent()){
+                        response = userVerification.get().toJsonObject().toString();
+                        responseCode = 200;
+                    }else{
                         obj.put("status", "error");
                         obj.put("msg", "Verification not found");
                         response = obj.toString();
                         responseCode = 404;
-                    }else{
-                        response = userVerification.toString();
-                        responseCode = 200;
                     }
+                }else if(params.get("code") != null){
+                    String code = params.get("code");
+                    Optional<UserVerification> userVerification = DataManager.getVerificationQueue().code(code);
+                    if(userVerification.isPresent()){
+                        response = userVerification.get().toJsonObject().toString();
+                        responseCode = 200;
+                    }else{
+                        obj.put("status", "error");
+                        obj.put("msg", "Verification not found");
+                        response = obj.toString();
+                        responseCode = 404;
+                    }
+                }else{
+                    obj.put("error", "Missing userId or code");
+                    response = obj.toString();
+                    responseCode = 401;
                 }
             }else{
                 obj.put("status", "error");
